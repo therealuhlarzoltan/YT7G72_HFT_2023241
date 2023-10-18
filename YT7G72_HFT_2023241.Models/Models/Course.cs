@@ -20,6 +20,7 @@ namespace YT7G72_HFT_2023241.Models
         [Required]
         [StringLength(50)]
         public string CourseCode { get; set; }
+        public int CourseCapacity { get; set; }
         public CourseType CourseType { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
         [Required]
@@ -30,5 +31,7 @@ namespace YT7G72_HFT_2023241.Models
         [Required]
         public virtual Subject Subject { get; set; }
         public virtual Teacher Teacher { get; set; }
+        public virtual ICollection<Student> EnrolledStudents { get; set; } = new HashSet<Student>();
+        
     }
 }

@@ -18,7 +18,8 @@ namespace YT7G72_HFT_2023241.Models
         public string LastName { get; set; }
         [Required]
         public string StudentCode { get; set; }
-        public virtual ICollection<Student> RegisteredStudents { get; set; } = new HashSet<Student>();
+        public virtual ICollection<Student> RegisteredSubjects { get; set; } = new HashSet<Student>();
+        public virtual ICollection<Course> EnrolledCourses { get; set; } = new HashSet<Course>();
 
 
     }
