@@ -1,6 +1,6 @@
 ﻿namespace YT7G72_HFT_2023241.Models
 {
-    enum Requirement
+    public enum Requirement
     {
         TEACHERS_SIGNATURE,
         MID_TERM_MARK,

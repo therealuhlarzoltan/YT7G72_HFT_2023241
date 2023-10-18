@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace YT7G72_HFT_2023241.Models
 {
-    internal class Subject
+    public class Subject
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

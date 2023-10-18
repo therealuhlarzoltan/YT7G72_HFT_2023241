@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace YT7G72_HFT_2023241.Repository
 {
-    internal abstract class Repository<T> : IRepository<T> where T : class
+    public abstract class Repository<T> : IRepository<T> where T : class
     {
-        protected DbContext universityDatabaseContext;
+        protected UniversityDatabaseContext universityDatabaseContext;
 
-        protected Repository(DbContext universityDatabaseContext)
+        protected Repository(UniversityDatabaseContext universityDatabaseContext)
         {
             this.universityDatabaseContext = universityDatabaseContext;
         }
@@ -35,5 +35,15 @@ namespace YT7G72_HFT_2023241.Repository
 
         public abstract T Read(int id);
         public abstract void Update(T entity);
+
+        protected static void CopyPropertyValues(T source, T target)
+        {
+            var type = typeof(T);
+            var properties = type.GetProperties();
+            foreach (var property in properties)
+            {
+                property.SetValue(target, property.GetValue(source));
+            }
+        }
     }
 }
