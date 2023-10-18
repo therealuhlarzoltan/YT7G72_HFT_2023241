@@ -22,6 +22,6 @@ namespace YT7G72_HFT_2023241.Models
         public virtual Course Course { get; set; }
         [Required]
         [Range(1, 5)]
-        public int Grade {  get; set; }
+        public int Grade { get; set; }
     }
 }
