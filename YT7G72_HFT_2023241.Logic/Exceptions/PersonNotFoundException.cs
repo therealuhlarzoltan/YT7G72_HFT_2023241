@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YT7G72_HFT_2023241.Logic.Exceptions
+namespace YT7G72_HFT_2023241.Logic
 {
-    internal class PersonNotFoundException
+    public class PersonNotFoundException : Exception
     {
     }
 }

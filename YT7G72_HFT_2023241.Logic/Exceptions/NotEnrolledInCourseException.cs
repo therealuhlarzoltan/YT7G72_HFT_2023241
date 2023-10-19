@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace YT7G72_HFT_2023241.Logic.Exceptions
 {
-    internal class NotRegisteredForCourseException
+    public class NotEnrolledInCourseException : Exception
     {
     }
 }
