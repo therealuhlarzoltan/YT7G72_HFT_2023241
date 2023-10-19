@@ -7,7 +7,7 @@ using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Logic
 {
-    internal interface IGradeLogic
+    public interface IGradeLogic
     {
         //grade CRUD logic
         void GradeStudent(Student student, Course course, int mark, string semester);

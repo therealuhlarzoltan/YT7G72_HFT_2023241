@@ -7,7 +7,7 @@ using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Repository
 {
-    internal class SubjectRepository : Repository<Subject>, IRepository<Subject>
+    public class SubjectRepository : Repository<Subject>, IRepository<Subject>
     {
         public SubjectRepository(UniversityDatabaseContext universityDatabaseContext) : base(universityDatabaseContext) { }
 

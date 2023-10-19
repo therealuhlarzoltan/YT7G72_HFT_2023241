@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace YT7G72_HFT_2023241.Models
 {
@@ -19,8 +20,11 @@ namespace YT7G72_HFT_2023241.Models
         [Required]
         public string StudentCode { get; set; }
         public FinancialStatus FinancialStatus { get; set; }
-        public virtual ICollection<Student> RegisteredSubjects { get; set; } = new HashSet<Student>();
+        [JsonIgnore]
+        public virtual ICollection<Subject> RegisteredSubjects { get; set; } = new HashSet<Subject>();
+        [JsonIgnore]
         public virtual ICollection<Course> EnrolledCourses { get; set; } = new HashSet<Course>();
+        public virtual Curriculum Curriculum { get; set; }
 
 
     }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YT7G72_HFT_2023241.Models.Enums;
+using System.Text.Json.Serialization;
 
 namespace YT7G72_HFT_2023241.Models
 {
@@ -31,6 +31,7 @@ namespace YT7G72_HFT_2023241.Models
         [Required]
         public virtual Subject Subject { get; set; }
         public virtual Teacher Teacher { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Student> EnrolledStudents { get; set; } = new HashSet<Student>();
         
     }

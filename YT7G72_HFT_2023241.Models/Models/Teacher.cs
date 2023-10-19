@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YT7G72_HFT_2023241.Models;
 
@@ -22,6 +23,9 @@ namespace YT7G72_HFT_2023241.Models
         [StringLength(50)]
         public string LastName { get; set; }
         public AcademicRank AcademicRank { get; set; }
-        public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
+        [JsonIgnore]
+        public virtual ICollection<Course> Courses { get; set; } = new HashSet<Course>();
+        [JsonIgnore]
+        public virtual ICollection<Subject> Subjects { get; set; } = new HashSet<Subject>();
     }
 }

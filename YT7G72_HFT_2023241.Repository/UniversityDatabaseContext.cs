@@ -43,14 +43,47 @@ namespace YT7G72_HFT_2023241.Repository
                 .Property(s => s.FinancialStatus)
                 .HasDefaultValue(FinancialStatus.WITHOUT_SCHOLARSHIP);
 
+            builder.Entity<Student>()
+                .HasMany(student => student.RegisteredSubjects)
+                .WithMany(subject => subject.RegisteredStudents);
+
+            builder.Entity<Student>()
+                .HasMany(s => s.EnrolledCourses)
+                .WithMany(c => c.EnrolledStudents);
+
             //creating Teacher entity
             builder.Entity<Teacher>()
                 .Property(t => t.AcademicRank)
                 .HasDefaultValue(AcademicRank.TEACHERS_ASSISTANT);
 
-            builder.Entity<Subject>();
-            builder.Entity<Course>();
-            builder.Entity<Curriculum>();
+            builder.Entity<Teacher>()
+                .HasMany(t => t.Courses)
+                .WithOne(c => c.Teacher)
+                .HasForeignKey("TeacherId")
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+
+            builder.Entity<Teacher>()
+                .HasMany(t => t.Subjects)
+                .WithOne(s => s.Teacher)
+                .HasForeignKey("TeacherId")
+                .IsRequired();
+
+            
+            //creating Curriculum entity
+            builder.Entity<Curriculum>()
+                .HasMany(c => c.CurriculumSubjects)
+                .WithOne(s => s.Curriculum)
+                .HasForeignKey("CurriculumId")
+                .IsRequired();
+
+            builder.Entity<Curriculum>()
+                .HasMany(c => c.CurriculumStudents)
+                .WithOne(s => s.Curriculum)
+                .HasForeignKey("CurriculumId");
+
+
+
         }
     }
 }

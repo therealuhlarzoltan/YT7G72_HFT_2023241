@@ -22,5 +22,115 @@ namespace YT7G72_HFT_2023241.Logic
             this.subjectRepository = subjectRepository;
             this.curriculumRepository = curriculumRepository;
         }
+
+        public void AddCourse(Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddCurriculum(Curriculum curriculum)
+        {
+            curriculumRepository.Create(curriculum);
+        }
+
+        public void AddStudentToCurriculum(Student student, Curriculum curriculum)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddSubject(Subject subject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Course> GetAllCourses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Curriculum> GetAllCurriculums()
+        {
+            return curriculumRepository.ReadAll();
+        }
+
+        public IEnumerable<Subject> GetAllSubjects()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Course GetCourse(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Curriculum GetCurriculum(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Subject GetSubject(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterStudentForCourse(Student student, Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterStudentForSubject(Student student, Subject subject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveCourse(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveCurriculum(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveStudentFromCourse(Student student, Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveStudentFromCurriculum(Student student)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveStudentFromSubject(Student student, Subject subject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveSubject(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetSemester()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCourse(Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCurriculum(Curriculum curriculum)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateSubject(Subject subject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

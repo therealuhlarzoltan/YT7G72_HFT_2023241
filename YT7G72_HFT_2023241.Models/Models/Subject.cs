@@ -5,7 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YT7G72_HFT_2023241.Models.Enums;
+using YT7G72_HFT_2023241.Models;
+using System.Text.Json.Serialization;
 
 namespace YT7G72_HFT_2023241.Models
 {
@@ -24,7 +25,13 @@ namespace YT7G72_HFT_2023241.Models
         public int Credits { get; set; }
         public Requirement Requirement { get; set; }
         public virtual Subject PreRequirement { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Student> RegisteredStudents { get; set; } = new HashSet<Student>();
+        [JsonIgnore]
         public virtual ICollection<Course> SubjectCourses { get; set; } = new HashSet<Course>();
+        [JsonIgnore]
+        public virtual Teacher Teacher { get; set; }
+        [JsonIgnore]
+        public virtual Curriculum Curriculum { get; set; }
     }
 }

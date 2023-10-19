@@ -17,6 +17,39 @@ namespace YT7G72_HFT_2023241.Logic
             this.gradeRepository = gradeRepository;
         }
 
+        public IEnumerable<Grade> GetAllGrades()
+        {
+            throw new NotImplementedException();
+        }
 
+        public void GetGrade(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<SemesterStatistics> GetSemesterStatistics()
+        {
+            throw new NotImplementedException();
+        }
+
+        public SemesterStatistics GetSemesterStatistics(string semester)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GradeStudent(Student student, Course course, int mark, string semester)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveGrade(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateGrade(Grade grade)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

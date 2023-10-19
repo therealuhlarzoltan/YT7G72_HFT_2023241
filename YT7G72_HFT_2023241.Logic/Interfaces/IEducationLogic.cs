@@ -7,7 +7,7 @@ using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Logic
 {
-    internal interface IEducationLogic
+    public interface IEducationLogic
     {
         //subject CRUD logic
         void AddSubject(Subject subject);

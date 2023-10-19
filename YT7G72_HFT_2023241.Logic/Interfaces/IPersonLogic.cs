@@ -7,7 +7,7 @@ using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Logic
 {
-    internal interface IPersonLogic
+    public interface IPersonLogic
     {
         //teacher CRUD logic
         void AddTeacher(Teacher teacher);
