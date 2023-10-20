@@ -20,12 +20,22 @@ namespace YT7G72_HFT_2023241.Models
         [Required]
         public string StudentCode { get; set; }
         public FinancialStatus FinancialStatus { get; set; }
+        [Required]
+        public int CurriculumId { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<CourseRegistration> CourseRegistrations { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<SubjectRegistration> SubjectRegistrations { get; set; } = new HashSet<SubjectRegistration>();
         [JsonIgnore]
         public virtual ICollection<Subject> RegisteredSubjects { get; set; } = new HashSet<Subject>();
         [JsonIgnore]
         public virtual ICollection<Course> EnrolledCourses { get; set; } = new HashSet<Course>();
         public virtual Curriculum Curriculum { get; set; }
 
+        public override string ToString()
+        {
+            return $"{FirstName} {LastName} -- {StudentCode}";
+        }
 
     }
 }

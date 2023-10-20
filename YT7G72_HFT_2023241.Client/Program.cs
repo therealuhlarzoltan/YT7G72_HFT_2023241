@@ -20,16 +20,45 @@ namespace YT7G72_HFT_2023241.Client
         static IGradeLogic gradeLogic = new GradeLogic(gradeRepository);
         static void Main(string[] args)
         {
-            
-            Console.WriteLine("Database Created");
-            
-            Console.WriteLine("Repositories Created");
-            
-            Console.WriteLine("Logics Created");
-            var curriculum = CreateCurriculum();
-            educationLogic.AddCurriculum(curriculum);
-            var student = CreateStudent();
-            personLogic.AddStudent(student);
+            Console.WriteLine("Curriculums:");
+            foreach (var curriculum in educationLogic.GetAllCurriculums())
+            {
+                Console.WriteLine($"\t{curriculum}");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Students:");
+            foreach (var student in personLogic.GetStudents())
+            {
+                Console.WriteLine($"\t{student}");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Teachers:");
+            foreach (var teacher in personLogic.GetTeachers())
+            {
+                Console.WriteLine($"\t{teacher}");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Subjects and Courses:");
+            foreach (var subject in educationLogic.GetAllSubjects())
+            {
+                Console.WriteLine($"\tSubject: {subject}; Teacher: {subject.Teacher}");
+                Console.WriteLine("\t\tCourses:");
+                foreach (var course in subject.SubjectCourses)
+                {
+                    Console.WriteLine($"\t\t\t{course}");
+                }
+                Console.WriteLine();
+                Console.WriteLine("Students on Java Web:");
+                foreach (var student in educationLogic.GetSubject(1).RegisteredStudents)
+                {
+                    Console.WriteLine($"\tStudent: {student}");
+                    Console.WriteLine($"\t\tEnrolled Courses");
+                    foreach (var course in student.EnrolledCourses)
+                    {
+                        Console.WriteLine($"\t\t\t{course}");
+                    }
+                }
+            }
 
             
 

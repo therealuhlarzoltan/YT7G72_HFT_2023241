@@ -55,7 +55,7 @@ namespace YT7G72_HFT_2023241.Logic
 
         public IEnumerable<Subject> GetAllSubjects()
         {
-            throw new NotImplementedException();
+            return subjectRepository.ReadAll();
         }
 
         public Course GetCourse(int id)
@@ -70,7 +70,7 @@ namespace YT7G72_HFT_2023241.Logic
 
         public Subject GetSubject(int id)
         {
-            throw new NotImplementedException();
+            return subjectRepository.Read(id);
         }
 
         public void RegisterStudentForCourse(Student student, Course course)

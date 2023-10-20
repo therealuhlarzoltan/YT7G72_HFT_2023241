@@ -27,5 +27,10 @@ namespace YT7G72_HFT_2023241.Models
         public virtual ICollection<Course> Courses { get; set; } = new HashSet<Course>();
         [JsonIgnore]
         public virtual ICollection<Subject> Subjects { get; set; } = new HashSet<Subject>();
+
+        public override string ToString()
+        {
+            return $"{FirstName} {LastName} -- {AcademicRank}";
+        }
     }
 }

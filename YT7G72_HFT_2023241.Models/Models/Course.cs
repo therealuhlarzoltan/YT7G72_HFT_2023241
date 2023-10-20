@@ -19,20 +19,26 @@ namespace YT7G72_HFT_2023241.Models
         public string CourseName { get; set; }
         [Required]
         [StringLength(50)]
-        public string CourseCode { get; set; }
         public int CourseCapacity { get; set; }
         public CourseType CourseType { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
         [Required]
-        [Range(0, 24)]
-        public int StartingHour { get; set; }
+        public TimeSpan StartTime { get; set; }
+        [Required]
+        public string Room {  get; set; }
         [Required]
         public int LengthInMinutes { get; set; }
         [Required]
         public virtual Subject Subject { get; set; }
         public virtual Teacher Teacher { get; set; }
+        public virtual ICollection<CourseRegistration> CourseRegistrations { get; set; } = new HashSet<CourseRegistration>();
         [JsonIgnore]
         public virtual ICollection<Student> EnrolledStudents { get; set; } = new HashSet<Student>();
-        
+
+        public override string ToString()
+        {
+            return $"Course: {CourseName}; Teacher: {Teacher}";
+        }
+
     }
 }

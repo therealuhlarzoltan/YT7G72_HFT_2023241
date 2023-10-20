@@ -28,10 +28,17 @@ namespace YT7G72_HFT_2023241.Models
         [JsonIgnore]
         public virtual ICollection<Student> RegisteredStudents { get; set; } = new HashSet<Student>();
         [JsonIgnore]
+        public virtual ICollection<SubjectRegistration> SubjectRegistrations { get; set; } = new HashSet<SubjectRegistration>();
+        [JsonIgnore]
         public virtual ICollection<Course> SubjectCourses { get; set; } = new HashSet<Course>();
         [JsonIgnore]
         public virtual Teacher Teacher { get; set; }
         [JsonIgnore]
         public virtual Curriculum Curriculum { get; set; }
+
+        public override string ToString()
+        {
+            return $"{SubjectCode} - {SubjectName}";
+        }
     }
 }
