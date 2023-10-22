@@ -2,9 +2,9 @@
 {
     public enum CourseType
     {
-        LECTURE,
-        ELEARNING,
-        TUTORIAL,
-        LAB
+        Lecture,
+        ELearning,
+        Tutorial,
+        Lab
     }
 }

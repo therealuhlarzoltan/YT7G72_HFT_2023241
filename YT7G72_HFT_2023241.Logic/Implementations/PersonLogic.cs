@@ -45,7 +45,7 @@ namespace YT7G72_HFT_2023241.Logic
         {
             var student = studentRepository.Read(id);
             if (student == null)
-                throw new PersonNotFoundException();
+                throw new ObjectNotFoundException(id, typeof(Student));
             return student;
         }
 
@@ -58,7 +58,7 @@ namespace YT7G72_HFT_2023241.Logic
         {
             var teacher = teacherRepository.Read(id);
             if (teacher == null)
-                throw new PersonNotFoundException();
+                throw new ObjectNotFoundException(id, typeof(Teacher));
             return teacher;
         }
 
@@ -69,9 +69,9 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void RemoveStudent(int id)
         {
-            var student = teacherRepository.Read(id);
+            var student = studentRepository.Read(id);
             if (student == null)
-                throw new PersonNotFoundException();
+                throw new ObjectNotFoundException(id, typeof(Student));
             studentRepository.Delete(id);
         }
 
@@ -79,7 +79,7 @@ namespace YT7G72_HFT_2023241.Logic
         {
             var teacher = teacherRepository.Read(id);
             if (teacher == null)
-                throw new PersonNotFoundException();
+                throw new ObjectNotFoundException(id, typeof(Teacher));
             teacherRepository.Delete(id);
         }
 
@@ -87,7 +87,7 @@ namespace YT7G72_HFT_2023241.Logic
         {
             var originalStudent = studentRepository.Read(student.Id);
             if (originalStudent == null)
-                throw new PersonNotFoundException();
+                throw new ObjectNotFoundException(student.Id, typeof(Student));
             studentRepository.Update(student);
         }
 
@@ -95,7 +95,7 @@ namespace YT7G72_HFT_2023241.Logic
         {
             var originalTeacher = teacherRepository.Read(teacher.Id);
             if (originalTeacher == null)
-                throw new PersonNotFoundException();
+                throw new ObjectNotFoundException(teacher.Id, typeof(Teacher));
             teacherRepository.Update(teacher);
         }
 

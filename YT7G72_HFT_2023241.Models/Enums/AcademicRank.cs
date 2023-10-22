@@ -2,10 +2,10 @@
 {
     public enum AcademicRank
     {
-        TEACHERS_ASSISTANT,
-        TECHNICAL_ASSISTANT,
-        SENIOR_LECTURER,
-        ASSOCIATE_PROFESSOR,
-        PROFESSOR
+        Teachers_Assistant,
+        Technical_Assistant,
+        Senior_Lecturer,
+        Associate_Professor,
+        Professor
     }
 }

@@ -35,6 +35,8 @@ namespace YT7G72_HFT_2023241.Models
         public virtual Teacher Teacher { get; set; }
         [JsonIgnore]
         public virtual Curriculum Curriculum { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Grade> Grades { get; set; } = new HashSet<Grade>();
 
         public override string ToString()
         {

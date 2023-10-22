@@ -2,7 +2,7 @@
 {
     public enum FinancialStatus
     {
-        FULL_STATE_SCHOLARSHIP,
-        WITHOUT_SCHOLARSHIP
+        Full_State_Scholarship,
+        Without_Scholarship
     }
 }

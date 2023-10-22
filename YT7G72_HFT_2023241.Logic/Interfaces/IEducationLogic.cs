@@ -28,13 +28,13 @@ namespace YT7G72_HFT_2023241.Logic
         Curriculum GetCurriculum(int id);
         IEnumerable<Curriculum> GetAllCurriculums();
         //subject registration logic
-        void RegisterStudentForSubject(Student student, Subject subject);
-        void RemoveStudentFromSubject(Student student, Subject subject);
+        void RegisterStudentForSubject(int studentId, int subjectId);
+        void RemoveStudentFromSubject(int studentId, int subjectId);
         //course registration logic
-        void RegisterStudentForCourse(Student student, Course course);
-        void RemoveStudentFromCourse(Student student, Course course);
+        void RegisterStudentForCourse(int studentId, int courseId);
+        void RemoveStudentFromCourse(int studentId, int courseId);
         //curriculum registration logic
-        void AddStudentToCurriculum(Student student, Curriculum curriculum);
+        void AddStudentToCurriculum(int studentId, int curriculumId);
         void RemoveStudentFromCurriculum(Student student);
         //semester reset logic
         void ResetSemester();

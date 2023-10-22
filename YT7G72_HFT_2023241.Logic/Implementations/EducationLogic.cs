@@ -25,7 +25,7 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void AddCourse(Course course)
         {
-            throw new NotImplementedException();
+            courseRepository.Create(course);
         }
 
         public void AddCurriculum(Curriculum curriculum)
@@ -33,19 +33,32 @@ namespace YT7G72_HFT_2023241.Logic
             curriculumRepository.Create(curriculum);
         }
 
-        public void AddStudentToCurriculum(Student student, Curriculum curriculum)
+        public void AddStudentToCurriculum(int studentId, int curriculumId)
         {
-            throw new NotImplementedException();
+            var student = studentRepository.Read(studentId);
+            if (student == null)
+            {
+                throw new ObjectNotFoundException(studentId, typeof(Student));
+            }
+
+            var curriculum = curriculumRepository.Read(curriculumId);
+            if (curriculum == null)
+            {
+                throw new ObjectNotFoundException(curriculumId, typeof(Curriculum));
+            }
+
+            student.Curriculum = curriculum;
+            studentRepository.Update(student);
         }
 
         public void AddSubject(Subject subject)
         {
-            throw new NotImplementedException();
+            subjectRepository.Create(subject);
         }
 
         public IEnumerable<Course> GetAllCourses()
         {
-            throw new NotImplementedException();
+            return courseRepository.ReadAll();
         }
 
         public IEnumerable<Curriculum> GetAllCurriculums()
@@ -60,27 +73,100 @@ namespace YT7G72_HFT_2023241.Logic
 
         public Course GetCourse(int id)
         {
-            throw new NotImplementedException();
+            var course = courseRepository.Read(id);
+            if (course == null)
+            {
+                throw new ObjectNotFoundException(id, typeof(Course));
+            }
+            return course;
         }
 
         public Curriculum GetCurriculum(int id)
         {
-            throw new NotImplementedException();
+            var curriculum = curriculumRepository.Read(id);
+            if (curriculum == null)
+            {
+                throw new ObjectNotFoundException(id, typeof(Curriculum));
+            }
+            return curriculum;
         }
 
         public Subject GetSubject(int id)
         {
-            return subjectRepository.Read(id);
+            var subject = subjectRepository.Read(id);
+            if (subject == null)
+            {
+                throw new ObjectNotFoundException(id, typeof(Subject));
+            }
+            return subject;
         }
 
-        public void RegisterStudentForCourse(Student student, Course course)
+        public void RegisterStudentForCourse(int studentId, int courseId)
         {
-            throw new NotImplementedException();
+            var student = studentRepository.Read(studentId);
+            if (student == null)
+            {
+                throw new ObjectNotFoundException(studentId, typeof(Student));
+            }
+
+            var course = courseRepository.Read(courseId);
+            if (course == null)
+            {
+                throw new ObjectNotFoundException(courseId, typeof(Course));
+            }
+
+            if (!course.Subject.RegisteredStudents.Contains(student))
+            {
+                throw new NotRegisteredForSubjectException(student, course.Subject);
+            }
+
+            if (course.EnrolledStudents.Count < course.CourseCapacity)
+            {
+                course.EnrolledStudents.Add(student);
+                courseRepository.Update(course);
+            } 
+            else
+            {
+                throw new CourseIsFullException(course);
+            }
         }
 
-        public void RegisterStudentForSubject(Student student, Subject subject)
+        public void RegisterStudentForSubject(int studentId, int subjectId)
         {
-            throw new NotImplementedException();
+            var student = studentRepository.Read(studentId);
+            if (student == null)
+            {
+                throw new ObjectNotFoundException(studentId, typeof(Student));
+            }
+
+            var subject = subjectRepository.Read(subjectId);
+            if (subject == null)
+            {
+                throw new ObjectNotFoundException(subjectId, typeof(Subject));
+            }
+
+            if (student.CurriculumId != subject.Curriculum.Id)
+            {
+                throw new PreRequirementsNotMetException(student, subject);
+            }
+
+            if (subject.PreRequirement != null)
+            {
+                var newestGrade = student.Grades.Where(grade => grade.SubjectId == subjectId)
+                    .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[0]))
+                    .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[1]))
+                    .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[2]))
+                    .FirstOrDefault();
+                if (newestGrade == null || newestGrade.Mark == 1)
+                    throw new PreRequirementsNotMetException(student, subject);
+                subject.RegisteredStudents.Add(student);
+                subjectRepository.Update(subject);
+            } 
+            else
+            {
+                subject.RegisteredStudents.Add(student);
+                subjectRepository.Update(subject);
+            }
         }
 
         public void RemoveCourse(int id)
@@ -93,9 +179,25 @@ namespace YT7G72_HFT_2023241.Logic
             throw new NotImplementedException();
         }
 
-        public void RemoveStudentFromCourse(Student student, Course course)
+        public void RemoveStudentFromCourse(int studentId, int courseId)
         {
-            throw new NotImplementedException();
+            var student = studentRepository.Read(studentId);
+            if (student == null)
+            {
+                throw new ObjectNotFoundException(studentId, typeof(Student));
+            }
+
+            var course = courseRepository.Read(courseId);
+            if (course == null)
+            {
+                throw new ObjectNotFoundException(courseId, typeof(Course));
+            }
+
+            if (course.EnrolledStudents.Contains(student))
+            {
+                course.EnrolledStudents.Remove(student);
+                courseRepository.Update(course);
+            }
         }
 
         public void RemoveStudentFromCurriculum(Student student)
@@ -103,7 +205,7 @@ namespace YT7G72_HFT_2023241.Logic
             throw new NotImplementedException();
         }
 
-        public void RemoveStudentFromSubject(Student student, Subject subject)
+        public void RemoveStudentFromSubject(int studentId, int subjectId)
         {
             throw new NotImplementedException();
         }

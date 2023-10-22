@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Logic
-{
-    public class NotRegisteredForSubjectException : Exception
+{ 
+    public class PreRequirementsNotMetException : Exception
     {
         public Student Student { get; }
         public Subject Subject { get; }
 
-        public NotRegisteredForSubjectException(Student student, Subject subject) : base()
+        public PreRequirementsNotMetException(Student student, Subject subject) : base()
         {
             Student = student;
             Subject = subject;

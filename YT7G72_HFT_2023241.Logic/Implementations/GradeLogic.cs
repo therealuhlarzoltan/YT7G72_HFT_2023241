@@ -37,7 +37,7 @@ namespace YT7G72_HFT_2023241.Logic
             throw new NotImplementedException();
         }
 
-        public void GradeStudent(Student student, Course course, int mark, string semester)
+        public void GradeStudent(int studentId, int courseId, int mark, string semester)
         {
             throw new NotImplementedException();
         }

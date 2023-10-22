@@ -17,9 +17,11 @@ namespace YT7G72_HFT_2023241.Models
         [StringLength(9)]
         public string Semester { get; set; }
         [Required]
-        public virtual Student Student { get; set; }
+        public int StudentId { get; set; }
         [Required]
-        public virtual Course Course { get; set; }
+        public int SubjectId { get; set; }
+        public virtual Student Student { get; set; }
+        public virtual Subject Subject { get; set; }
         [Required]
         [Range(1, 5)]
         public int Mark { get; set; }

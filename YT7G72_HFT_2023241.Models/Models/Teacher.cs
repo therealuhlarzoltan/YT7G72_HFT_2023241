@@ -10,7 +10,7 @@ using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Models
 {
-    public class Teacher
+    public class Teacher : IRegistableForSubject, IRegistableForCourse
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -24,9 +24,9 @@ namespace YT7G72_HFT_2023241.Models
         public string LastName { get; set; }
         public AcademicRank AcademicRank { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Course> Courses { get; set; } = new HashSet<Course>();
+        public virtual ICollection<Course> RegisteredCourses { get; set; } = new HashSet<Course>();
         [JsonIgnore]
-        public virtual ICollection<Subject> Subjects { get; set; } = new HashSet<Subject>();
+        public virtual ICollection<Subject> RegisteredSubjects { get; set; } = new HashSet<Subject>();
 
         public override string ToString()
         {
