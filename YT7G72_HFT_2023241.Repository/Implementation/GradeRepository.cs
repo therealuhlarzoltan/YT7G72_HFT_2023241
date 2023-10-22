@@ -13,12 +13,12 @@ namespace YT7G72_HFT_2023241.Repository
 
         public override Grade Read(int id)
         {
-            return universityDatabaseContext.GradeBook.FirstOrDefault(g  => g.Id == id);
+            return universityDatabaseContext.GradeBook.FirstOrDefault(g  => g.GradeId == id);
         }
 
         public override void Update(Grade entity)
         {
-            var old = Read(entity.Id);
+            var old = Read(entity.GradeId);
             CopyPropertyValues(entity, old);
             universityDatabaseContext.SaveChanges();
         }

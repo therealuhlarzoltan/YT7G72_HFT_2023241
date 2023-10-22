@@ -13,7 +13,7 @@ namespace YT7G72_HFT_2023241.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int CourseId { get; set; }
         [Required]
         [StringLength(50)]
         public string CourseName { get; set; }
@@ -29,6 +29,9 @@ namespace YT7G72_HFT_2023241.Models
         [Required]
         public int LengthInMinutes { get; set; }
         [Required]
+        public int TeacherId { get; set; }
+        [Required]
+        public int SubjectId { get; set; }
         public virtual Subject Subject { get; set; }
         public virtual Teacher Teacher { get; set; }
         public virtual ICollection<CourseRegistration> CourseRegistrations { get; set; } = new HashSet<CourseRegistration>();

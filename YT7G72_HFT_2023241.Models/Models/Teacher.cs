@@ -14,7 +14,7 @@ namespace YT7G72_HFT_2023241.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int TeacherId { get; set; }
 
         [Required]
         [StringLength(50)]

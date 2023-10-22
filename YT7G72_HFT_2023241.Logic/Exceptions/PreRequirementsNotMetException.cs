@@ -17,5 +17,10 @@ namespace YT7G72_HFT_2023241.Logic
             Student = student;
             Subject = subject;
         }
+
+        public override string ToString()
+        {
+            return $"Student {Student} did not meet the prerequirements for subject {Subject}";
+        }
     }
 }

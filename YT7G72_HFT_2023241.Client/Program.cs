@@ -1,6 +1,8 @@
-﻿using ConsoleTools;
+﻿using Castle.Core.Internal;
+using ConsoleTools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using YT7G72_HFT_2023241.Logic;
@@ -22,7 +24,7 @@ namespace YT7G72_HFT_2023241.Client
         static IEducationLogic educationLogic = new EducationLogic(studentRepository, courseRepository, subjectRepository, curriculumRepository);
         static IGradeLogic gradeLogic = new GradeLogic(gradeRepository);
         const int COLUMN_WIDTH = 16;
-        const int SEPARATOR_WIDTH = 2;
+        const int SEPARATOR_WIDTH = 1;
         static void Main(string[] args)
         {
             ConsoleMenu menu = null;
@@ -30,10 +32,12 @@ namespace YT7G72_HFT_2023241.Client
             var studentSubmenu = new ConsoleMenu(args, level: 1);
             studentSubmenu
             .Add("List", () => { menu.CloseMenu(); studentSubmenu.CloseMenu(); List<Student>(); })
-            .Add("Create", () => Create<Student>())
+            .Add("Create", () => { menu.CloseMenu(); studentSubmenu.CloseMenu(); Create<Student>(); })
             .Add("Delete", () => { menu.CloseMenu(); Delete<Student>(); menu.Show(); })
             .Add("Update", () => Update<Student>())
             .Add("Get Registered Subjects", () => { menu.CloseMenu(); studentSubmenu.CloseMenu(); GetSubjects<Student>(); })
+            .Add("Get Enrolled Courses", () => { menu.CloseMenu(); studentSubmenu.CloseMenu(); GetCourses<Student>(); })
+            .Add("Get Weekly Schedule", () => { menu.CloseMenu(); studentSubmenu.CloseMenu(); GetSchedule<Student>(); })
             .Add("Exit", ConsoleMenu.Close);
 
             var teacherSubmenu = new ConsoleMenu(args, level: 1);
@@ -41,7 +45,11 @@ namespace YT7G72_HFT_2023241.Client
             .Add("List", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); List<Teacher>(); })
             .Add("Create", () => Create<Teacher>())
             .Add("Delete", () => Delete<Teacher>())
-            .Add("Update", () => Update<Teacher>());
+            .Add("Update", () => Update<Teacher>())
+            .Add("Get Taught Subjects", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); GetSubjects<Teacher>(); })
+            .Add("Get Taught Courses", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); GetCourses<Teacher>(); })
+            .Add("Get Weekly Schedule", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); GetSchedule<Teacher>(); } )
+            .Add("Exit", ConsoleMenu.Close);
 
             var subjectSubmenu = new ConsoleMenu(args, level: 1);
             subjectSubmenu
@@ -67,6 +75,14 @@ namespace YT7G72_HFT_2023241.Client
             .Add("Update", () => Update<Grade>())
             .Add("Exit", ConsoleMenu.Close);
 
+            var subjectRegistrationSubmenu = new ConsoleMenu(args, level: 1);
+            subjectRegistrationSubmenu
+                .Add("Register for Subject", () => RegisterForSubject());
+
+            var courseRegistrationSubmenu = new ConsoleMenu(args, level: 1);
+            courseRegistrationSubmenu
+                .Add("Register for Course", () => RegisterForCourse());
+
             menu = new ConsoleMenu(args, level: 0);
             menu
             .Add("Students", () => studentSubmenu.Show())
@@ -74,14 +90,11 @@ namespace YT7G72_HFT_2023241.Client
             .Add("Subjects", () => subjectSubmenu.Show())
             .Add("Courses", () => courseSubmenu.Show())
             .Add("Grades", () => gradeSubmenu.Show())
-            .Add("Subject Registration", () => Console.Write("asd"))
-            .Add("Course Registration", () => Console.Write("asd"))
+            .Add("Subject Registration", () => subjectRegistrationSubmenu.Show())
+            .Add("Course Registration", () => courseRegistrationSubmenu.Show())
             .Add("Exit", ConsoleMenu.Close);
 
             menu.Show();
-
-
-
         }
 
         static void List<T>() where T : class
@@ -153,14 +166,237 @@ namespace YT7G72_HFT_2023241.Client
             Main(new string[] { });
         }
 
-        static void Create<T>()
+        static T CreateInstance<T>()
         {
+            object instance = Activator.CreateInstance(typeof(T));
+            PropertyInfo[] properties = instance.GetType().GetProperties().Where(property => !property.GetAccessors()[0].IsVirtual
+           && !property.Name.Contains($"{typeof(T).Name}Id")).ToArray();
+            foreach (var property in properties)
+            {
+                if (property.PropertyType.IsEnum)
+                {
+                    Type enumType = property.PropertyType;
+                    Console.WriteLine($"Available choices for {enumType.Name}:");
+                    foreach (var value in Enum.GetValues(enumType))
+                    {
+                        Console.WriteLine($"{(int)value} -- {value}");
+                    }
+                }
+                if (property.GetAttribute<RequiredAttribute>() != null)
+                {
+                    Console.Write($"{property.Name} (Required): ");
+                }
+                else
+                {
+                    Console.Write($"{property.Name}: ");
+                }
+
+                string input = Console.ReadLine();
+                if (!input.IsNullOrEmpty())
+                {
+                    if (property.PropertyType == typeof(string))
+                    {
+                        property.SetValue(instance, input);
+                    }
+                    else if (property.PropertyType.IsEnum)
+                    {
+                        var values = Enum.GetValues(property.PropertyType);
+                        int converted;
+                        if (int.TryParse(input, out converted))
+                        {
+                            foreach (var value in values)
+                            {
+                                if ((int)value == converted)
+                                {
+                                    property.SetValue(instance, value);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var methods = property.PropertyType.GetMethods();
+                        var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
+                        if (converterMethod != null)
+                        {
+                            try
+                            {
+                                var convertedValue = converterMethod.Invoke(null, new object[] { input });
+                                property.SetValue(instance, convertedValue);
+                            }
+                            catch (Exception exception)
+                            {
+                                Console.WriteLine("Invalid input value!");
+                                Console.ReadKey();
+                                Main(new string[] { });
+                            }
+                        }
+                    }
+                }
+            }
+            return (T)instance;
 
         }
 
-        static void Update<T>()
+        static void Create<T>()
         {
+            Type type = typeof(T);
+            Console.WriteLine($"Creating new {type.Name} entity...");
+            T entity = CreateInstance<T>();
+            
+            if (type == typeof(Student))
+            {
+                personLogic.AddStudent(entity as Student);
+            }
+            else if (type == typeof(Teacher))
+            {
+                personLogic.AddTeacher(entity as Teacher);
+            }
+            else if (type == typeof(Subject)) 
+            {
+                educationLogic.AddSubject(entity as Subject);
+            }
+            else if (type == typeof(Course))
+            {
+                educationLogic.AddCourse(entity as Course);
+            }
+            else if (type == typeof(Curriculum))
+            {
+                educationLogic.AddCurriculum(entity as Curriculum);
+            }
+            else if (type == typeof(Grade))
+            {
+                gradeLogic.AddGrade(entity as Grade);
+            }
 
+            Console.WriteLine($"New {type.Name} created!");
+            Console.ReadKey();
+            Main(new string[] { });
+
+         }
+
+        static void Update<T>() where T : class
+        {
+            Type type = typeof(T);
+            object instance = null;
+            Console.Write($"Please enter {type.Name} ID: ");
+            int id;
+            if (!int.TryParse(Console.ReadLine(), out id))
+            {
+                Console.WriteLine("Invalid ID provided!");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+
+            try
+            {
+                if (type == typeof(Student))
+                {
+                    instance = personLogic.GetStudent(id);
+                }
+                else if (type == typeof(Teacher))
+                {
+                    instance = personLogic.GetTeacher(id);
+                }
+                else if (type == typeof(Subject))
+                {
+                    instance = educationLogic.GetSubject(id);
+                }
+                else if (type == typeof(Course))
+                {
+                    instance = educationLogic.GetCourse(id);
+                }
+                else if (type == typeof(Curriculum))
+                {
+                    instance = educationLogic.GetCurriculum(id);
+                }
+                else if (type == typeof(Grade))
+                {
+                    instance = gradeLogic.GetGrade(id);
+                }
+                UpdateInstance<T>(instance as T);
+                Console.WriteLine("Entity updated!");
+            }
+            catch (ObjectNotFoundException exception)
+            {
+                Console.WriteLine(exception);
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+        }
+
+        static void UpdateInstance<T>(T instance) where T : class
+        {
+            PropertyInfo[] properties = instance.GetType().GetProperties().Where(property => !property.GetAccessors()[0].IsVirtual
+           && !property.Name.Contains($"{typeof(T).Name}Id")).ToArray();
+            foreach (var property in properties)
+            {
+                if (property.PropertyType.IsEnum)
+                {
+                    Type enumType = property.PropertyType;
+                    Console.WriteLine($"Available choices for {enumType.Name}:");
+                    foreach (var value in Enum.GetValues(enumType))
+                    {
+                        Console.WriteLine($"{(int)value} -- {value}");
+                    }
+                }
+                if (property.GetAttribute<RequiredAttribute>() != null)
+                {
+                    Console.Write($"{property.Name} (Required): ");
+                }
+                else
+                {
+                    Console.Write($"{property.Name}: ");
+                }
+
+                string input = Console.ReadLine();
+                if (!input.IsNullOrEmpty())
+                {
+                    if (property.PropertyType == typeof(string))
+                    {
+                        property.SetValue(instance, input);
+                    }
+                    else if (property.PropertyType.IsEnum)
+                    {
+                        var values = Enum.GetValues(property.PropertyType);
+                        int converted;
+                        if (int.TryParse(input, out converted))
+                        {
+                            foreach (var value in values)
+                            {
+                                if ((int)value == converted)
+                                {
+                                    property.SetValue(instance, value);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var methods = property.PropertyType.GetMethods();
+                        var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
+                        if (converterMethod != null)
+                        {
+                            try
+                            {
+                                var convertedValue = converterMethod.Invoke(null, new object[] { input });
+                                property.SetValue(instance, convertedValue);
+                            }
+                            catch (Exception exception)
+                            {
+                                Console.WriteLine("Invalid input value!");
+                                Console.ReadKey();
+                                Main(new string[] { });
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         static void Delete<T>()
@@ -208,45 +444,255 @@ namespace YT7G72_HFT_2023241.Client
 
         static void GetSubjects<T>() where T : IRegistableForSubject
         {
-
-        }
-
-
-
-        static Curriculum CreateCurriculum()
-        {
-            var curriculum = new Curriculum();
-            Console.Write("Name: ");
-            curriculum.CurriculumName = Console.ReadLine();
-            Console.Write("Code: ");
-            curriculum.CurriculumCode = Console.ReadLine();
-            return curriculum;
-        }
-
-        static Student CreateStudent()
-        {
-            var student = new Student();
-            Console.Write("First Name: ");
-            student.FirstName = Console.ReadLine();
-            Console.Write("Last Name: ");
-            student.LastName = Console.ReadLine();
-            Console.Write("Student Code: ");
-            student.StudentCode = Console.ReadLine();
-            Console.WriteLine();
-            Console.WriteLine("Available Curriculums: ");
-            foreach (var curriculum in educationLogic.GetAllCurriculums())
+            Type type = typeof(T);
+            Console.Write($"Please enter {type.Name} ID  to list their subjects: ");
+            int id;
+            if (!int.TryParse(Console.ReadLine(), out id))
             {
-                Console.WriteLine(curriculum);
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
             }
-            Console.Write("Select Curriculum's Number: ");
-            student.Curriculum = curriculumRepository.ReadAll().AsEnumerable().ElementAt(int.Parse(Console.ReadLine()) - 1);
-            return student;
+
+            try
+            {
+                if (type == typeof(Student))
+                {
+                    var student = personLogic.GetStudent(id);
+                    Console.WriteLine($"({student})'s subjects:");
+                    List<Subject>(student.RegisteredSubjects);
+                }
+                else if (type == typeof(Teacher))
+                {
+                    var teacher = personLogic.GetTeacher(id);
+                    Console.WriteLine($"({teacher})'s subjects:");
+                    List<Subject>(teacher.RegisteredSubjects);
+                }
+                
+            }
+            catch (ObjectNotFoundException excpetion)
+            {
+                Console.WriteLine(excpetion);
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
         }
 
-        static Teacher CreateTeacher()
+        static void GetCourses<T>() where T : IRegistableForCourse
         {
-            return null;
+            Type type = typeof(T);
+            Console.Write($"Please enter {type.Name} ID  to list their courses: ");
+            int id;
+            if (!int.TryParse(Console.ReadLine(), out id))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+
+            try
+            {
+                if (type == typeof(Student))
+                {
+                    var student = personLogic.GetStudent(id);
+                    Console.WriteLine($"({student})'s courses:");
+                    List<Course>(student.RegisteredCourses);
+                }
+                else if (type == typeof(Teacher))
+                {
+                    var teacher = personLogic.GetTeacher(id);
+                    Console.WriteLine($"({teacher})'s courses:");
+                    List<Course>(teacher.RegisteredCourses);
+                }
+
+            }
+            catch (ObjectNotFoundException excpetion)
+            {
+                Console.WriteLine(excpetion);
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
         }
+
+        static void RegisterForSubject()
+        {
+            Console.Write("Please enter Student ID: ");
+            int studentId;
+            if (!int.TryParse(Console.ReadLine(), out studentId))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+            Console.Write("Please enter Subject ID: ");
+            int subjectId;
+            if (!int.TryParse (Console.ReadLine(), out subjectId))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+
+            try
+            {
+                var student = personLogic.GetStudent(studentId);
+                var subject = educationLogic.GetSubject(subjectId);
+
+                educationLogic.RegisterStudentForSubject(studentId, subjectId);
+                Console.WriteLine($"{student} successfuly registered for subject {subject}");
+            }
+            catch (ObjectNotFoundException exception)
+            {
+                Console.WriteLine(exception);
+            }
+            catch (PreRequirementsNotMetException exception)
+            {
+                Console.WriteLine($"Couldn't register for subject: {exception}");
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+        }
+
+        static void RegisterForCourse()
+        {
+            Console.Write("Please enter Student ID: ");
+            int studentId;
+            if (!int.TryParse(Console.ReadLine(), out studentId))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+            Console.Write("Please enter Course ID: ");
+            int courseId;
+            if (!int.TryParse(Console.ReadLine(), out courseId))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+
+            try
+            {
+                var student = personLogic.GetStudent(studentId);
+                var course = educationLogic.GetCourse(courseId);
+
+                educationLogic.RegisterStudentForCourse(studentId, courseId);
+                Console.WriteLine($"{student} successfuly registered for course {course}");
+            }
+            catch (ObjectNotFoundException exception)
+            {
+                Console.WriteLine(exception);
+            }
+            catch (CourseIsFullException exception)
+            {
+                Console.WriteLine($"Couldn't register for course: {exception}");
+            }
+            catch (NotRegisteredForSubjectException exception)
+            {
+                Console.WriteLine($"Couldn't register for course: {exception}");
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+        }
+
+        static void List<T>(IEnumerable<T> collection)
+        {
+            var properties = typeof(T).GetProperties();
+            properties = properties.Where(prop => !prop.GetAccessors()[0].IsVirtual).ToArray();
+
+            foreach (var property in properties)
+            {
+                if (property.Name.Length > COLUMN_WIDTH)
+                {
+                    Console.Write($"{property.Name.Substring(0, COLUMN_WIDTH).PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
+                }
+                else
+                {
+                    Console.Write($"{property.Name.PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
+                }
+            }
+            Console.WriteLine();
+
+
+            foreach (var item in collection ?? Enumerable.Empty<T>())
+            {
+                foreach (var property in properties)
+                {
+                    if (property.GetValue(item) != null)
+                    {
+                        string otuput = property.GetValue(item).ToString();
+                        if (otuput.Length > COLUMN_WIDTH)
+                        {
+                            Console.Write($"{otuput.Substring(0, COLUMN_WIDTH).PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
+                        }
+                        else
+                        {
+                            Console.Write($"{otuput.PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
+                        }
+                    }
+                    else
+                    {
+                        Console.Write("-".PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH));
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void GetSchedule<T>() where T : IRegistableForSubject, IRegistableForCourse
+        {
+            Type type = typeof(T);
+            Console.Write($"Please enter {type.Name} ID: ");
+
+            int id;
+            if (!int.TryParse(Console.ReadLine(), out id))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+
+            try
+            {
+                if (type == typeof(Student))
+                {
+                    var student = personLogic.GetStudent(id);
+                    string schedule = personLogic.GetSchedule<Student>(id);
+                    Console.WriteLine($"({student})'s weekly schedule:");
+                    Console.WriteLine(schedule);
+                }
+                else if (type == typeof(Teacher))
+                {
+                    var teacher = personLogic.GetTeacher(id);
+                    string schedule = personLogic.GetSchedule<Teacher>(id);
+                    Console.WriteLine($"({teacher})'s weekly schedule:");
+                    Console.WriteLine(schedule);
+                }
+            }
+            catch (ObjectNotFoundException exception)
+            {
+                Console.WriteLine(exception);
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+        }
+
 
         static void OldTestingMethod()
         {

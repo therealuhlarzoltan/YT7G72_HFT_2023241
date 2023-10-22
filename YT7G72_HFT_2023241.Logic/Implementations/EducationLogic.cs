@@ -145,14 +145,14 @@ namespace YT7G72_HFT_2023241.Logic
                 throw new ObjectNotFoundException(subjectId, typeof(Subject));
             }
 
-            if (student.CurriculumId != subject.Curriculum.Id)
+            if (student.CurriculumId != subject.CurriculumId)
             {
                 throw new PreRequirementsNotMetException(student, subject);
             }
 
             if (subject.PreRequirement != null)
             {
-                var newestGrade = student.Grades.Where(grade => grade.SubjectId == subjectId)
+                var newestGrade = student.Grades.Where(grade => grade.SubjectId ==  subject.PreRequirementId)
                     .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[0]))
                     .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[1]))
                     .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[2]))

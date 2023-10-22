@@ -85,23 +85,72 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void UpdateStudent(Student student)
         {
-            var originalStudent = studentRepository.Read(student.Id);
+            var originalStudent = studentRepository.Read(student.StudentId);
             if (originalStudent == null)
-                throw new ObjectNotFoundException(student.Id, typeof(Student));
+                throw new ObjectNotFoundException(student.StudentId, typeof(Student));
             studentRepository.Update(student);
         }
 
         public void UpdateTeacher(Teacher teacher)
         {
-            var originalTeacher = teacherRepository.Read(teacher.Id);
+            var originalTeacher = teacherRepository.Read(teacher.TeacherId);
             if (originalTeacher == null)
-                throw new ObjectNotFoundException(teacher.Id, typeof(Teacher));
+                throw new ObjectNotFoundException(teacher.TeacherId, typeof(Teacher));
             teacherRepository.Update(teacher);
         }
 
-        public string GetSchedule(Student student)
+        public string GetSchedule<T>(int id)
         {
-            return "";
+            Type type = typeof(T);
+            string schedule = string.Empty;
+
+            if (type == typeof(Student))
+            {
+                var student = studentRepository.Read(id);
+                var coursesGroupedbyDay = student.RegisteredCourses.GroupBy(course => course.DayOfWeek);
+                foreach (var day in Enum.GetNames(typeof(DayOfWeek)))
+                {
+                    schedule += $"{day}:\n\n";
+                    foreach (var courseGroup in coursesGroupedbyDay.Where(group => group.Key == (DayOfWeek)Enum.Parse(typeof(DayOfWeek), day)))
+                    {
+                        var orderedCourseGroup = courseGroup.OrderBy(g => g.StartTime);
+                        foreach (var course in orderedCourseGroup)
+                        {
+                            schedule += $"\t{course.Subject.SubjectName} - {course.CourseName};\n";
+                            schedule += $"\t\tCourse Type: {course.CourseType}\n";
+                            schedule += $"\t\tTeacher: {course.Teacher.FirstName} {course.Teacher.LastName}\n";
+                            schedule += $"\t\tRoom: {course.Room}\n";
+                            schedule += $"\t\tTime: {course.StartTime} - {course.StartTime + new TimeSpan( 0, course.LengthInMinutes, 0)}\n";
+                            schedule += $"\t\tCapacity: {course.EnrolledStudents.Count}/{course.CourseCapacity}\n";
+                        }
+
+                    }
+                }
+            }
+            else if (type == typeof(Teacher))
+            {
+                var teacher = teacherRepository.Read(id);
+                var coursesGroupedbyDay = teacher.RegisteredCourses.GroupBy(course => course.DayOfWeek);
+                foreach (var day in Enum.GetNames(typeof(DayOfWeek)))
+                {
+                    schedule += $"{day}:\n\n";
+                    foreach (var courseGroup in coursesGroupedbyDay.Where(group => group.Key == (DayOfWeek)Enum.Parse(typeof(DayOfWeek), day)))
+                    {
+                        var orderedCourseGroup = courseGroup.OrderBy(g => g.StartTime);
+                        foreach (var course in orderedCourseGroup)
+                        {
+                            schedule += $"\t{course.Subject.SubjectName} - {course.CourseName};\n";
+                            schedule += $"\t\tCourse Type: {course.CourseType}\n";
+                            schedule += $"\t\tRoom: {course.Room}\n";
+                            schedule += $"\t\tTime: {course.StartTime} - {course.StartTime + new TimeSpan(0, course.LengthInMinutes, 0)}\n";
+                            schedule += $"\t\tCapacity: {course.EnrolledStudents.Count}/{course.CourseCapacity}\n";
+                        }
+
+                    }
+                }
+            }
+
+            return schedule;
         }
     }
 }

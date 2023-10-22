@@ -15,5 +15,10 @@ namespace YT7G72_HFT_2023241.Logic
         {
             Course = course;
         }
+
+        public override string ToString()
+        {
+            return $"Course {Course} is full";
+        }
     }
 }

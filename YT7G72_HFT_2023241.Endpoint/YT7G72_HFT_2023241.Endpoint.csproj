@@ -10,8 +10,4 @@
     <ProjectReference Include="..\YT7G72_HFT_2023241.Repository\YT7G72_HFT_2023241.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

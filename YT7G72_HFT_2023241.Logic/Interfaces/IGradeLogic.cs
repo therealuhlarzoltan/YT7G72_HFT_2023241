@@ -10,10 +10,10 @@ namespace YT7G72_HFT_2023241.Logic
     public interface IGradeLogic
     {
         //grade CRUD logic
-        void GradeStudent(int studentId, int courseId, int mark, string semester);
+        void AddGrade(Grade grade);
         void RemoveGrade(int id);
         void UpdateGrade(Grade grade);
-        void GetGrade(int id);
+        Grade GetGrade(int id);
         IEnumerable<Grade> GetAllGrades();
         //grade non-CRUD logic
         IEnumerable<SemesterStatistics> GetSemesterStatistics();

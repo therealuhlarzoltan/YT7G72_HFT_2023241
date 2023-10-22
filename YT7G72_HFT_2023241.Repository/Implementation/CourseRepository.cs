@@ -13,12 +13,12 @@ namespace YT7G72_HFT_2023241.Repository
 
         public override Course Read(int id)
         {
-            return universityDatabaseContext.Courses.FirstOrDefault(c => c.Id == id);
+            return universityDatabaseContext.Courses.FirstOrDefault(c => c.CourseId == id);
         }
 
         public override void Update(Course entity)
         {
-            var old = Read(entity.Id);
+            var old = Read(entity.CourseId);
             CopyPropertyValues(entity, old);
             universityDatabaseContext.SaveChanges();
         }

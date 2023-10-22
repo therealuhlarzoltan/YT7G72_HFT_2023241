@@ -22,7 +22,7 @@ namespace YT7G72_HFT_2023241.Logic
             throw new NotImplementedException();
         }
 
-        public void GetGrade(int id)
+        public Grade GetGrade(int id)
         {
             throw new NotImplementedException();
         }
@@ -37,9 +37,9 @@ namespace YT7G72_HFT_2023241.Logic
             throw new NotImplementedException();
         }
 
-        public void GradeStudent(int studentId, int courseId, int mark, string semester)
+        public void AddGrade(Grade grade)
         {
-            throw new NotImplementedException();
+            gradeRepository.Create(grade);
         }
 
         public void RemoveGrade(int id)
