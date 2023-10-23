@@ -33,8 +33,8 @@ namespace YT7G72_HFT_2023241.Logic
 
         public IEnumerable<Tuple<Student, double>> GetBestStudents()
         {
-            var students = studentRepository.ReadAll();
-            var gradeGroups = students.SelectMany(student => student.Grades).GroupBy(grade => grade.StudentId);
+            var students = studentRepository.ReadAll().AsEnumerable();
+            var gradeGroups = students.SelectMany(student => student.Grades).AsEnumerable().GroupBy(grade => grade.StudentId).AsEnumerable();
             var studentsWithAvgs = from student in students
                                    join gradeGroup in gradeGroups
                                    on student.StudentId equals gradeGroup.Key
@@ -48,8 +48,8 @@ namespace YT7G72_HFT_2023241.Logic
 
     public IEnumerable<Tuple<Teacher, double>> GetBestTeachers()
         {
-            var teachers = teacherRepository.ReadAll();
-            var gradeGroups = teachers.SelectMany(teacher => teacher.GivenGrades).GroupBy(grade => grade.TeacherId);
+            var teachers = teacherRepository.ReadAll().AsEnumerable();
+            var gradeGroups = teachers.SelectMany(teacher => teacher.GivenGrades).AsEnumerable().GroupBy(grade => grade.TeacherId);
             var teachersWithAvgs = from teacher in teachers
                                    join gradeGroup in gradeGroups
                                    on teacher.TeacherId equals gradeGroup.Key
@@ -60,8 +60,8 @@ namespace YT7G72_HFT_2023241.Logic
 
         public IEnumerable<Tuple<Teacher, double>> GetBestTeachersByAcademicRank(AcademicRank academicRank)
         {
-            var teachers = teacherRepository.ReadAll().Where(teacher => teacher.AcademicRank == academicRank);
-            var gradeGroups = teachers.SelectMany(teacher => teacher.GivenGrades).GroupBy(grade => grade.TeacherId);
+            var teachers = teacherRepository.ReadAll().AsEnumerable().Where(teacher => teacher.AcademicRank == academicRank);
+            var gradeGroups = teachers.SelectMany(teacher => teacher.GivenGrades).AsEnumerable().GroupBy(grade => grade.TeacherId);
             var teachersWithAvgs = from teacher in teachers
                                    join gradeGroup in gradeGroups
                                    on teacher.TeacherId equals gradeGroup.Key

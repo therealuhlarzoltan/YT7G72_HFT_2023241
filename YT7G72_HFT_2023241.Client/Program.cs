@@ -72,10 +72,12 @@ namespace YT7G72_HFT_2023241.Client
 
             var gradeSubmenu = new ConsoleMenu(args, level: 1);
             gradeSubmenu
-            .Add("List", () => { menu.CloseMenu(); courseSubmenu.CloseMenu(); List<Grade>(); })
+            .Add("List", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); List<Grade>(); })
             .Add("Create", () => Create<Grade>())
             .Add("Delete", () => Delete<Grade>())
             .Add("Update", () => Update<Grade>())
+            .Add("Get Best Students", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestStudents(); })
+            .Add("Get Best Teachers", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestTeachers(); })
             .Add("Exit", ConsoleMenu.Close);
 
             var subjectRegistrationSubmenu = new ConsoleMenu(args, level: 1);
@@ -703,6 +705,32 @@ namespace YT7G72_HFT_2023241.Client
                 Console.ReadKey();
                 Main(new string[] { });
             }
+        }
+
+        static void GetBestStudents()
+        {
+            Console.WriteLine("Students with highest weighted averages:");
+            var studentTuples = personLogic.GetBestStudents();
+            foreach (var studentTuple in studentTuples)
+            {
+                Console.WriteLine($"Student: {studentTuple.Item1}, Average: {Math.Round(studentTuple.Item2, 2)}");
+            }
+
+            Console.ReadKey();
+            Main(new string[] { });
+        }
+
+        static void GetBestTeachers()
+        {
+            Console.WriteLine("Teachers with highest average grades given:");
+            var teacherTuples = personLogic.GetBestTeachers();
+            foreach (var teacherTuple in teacherTuples)
+            {
+                Console.WriteLine($"Teacher: {teacherTuple.Item1}, Average: {Math.Round(teacherTuple.Item2, 2)}");
+            }
+
+            Console.ReadKey();
+            Main(new string[] { });
         }
 
 
