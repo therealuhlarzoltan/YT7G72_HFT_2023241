@@ -50,11 +50,6 @@ namespace YT7G72_HFT_2023241.Logic.Implementations
             }
         }
 
-        public void ResetSemester()
-        {
-            throw new NotImplementedException();
-        }
-
         public void UpdateCurriculum(Curriculum curriculum)
         {
             var old = curriculumRepository.Read(curriculum.CurriculumId);

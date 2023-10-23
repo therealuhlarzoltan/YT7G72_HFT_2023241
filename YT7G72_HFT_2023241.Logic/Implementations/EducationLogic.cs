@@ -181,11 +181,6 @@ namespace YT7G72_HFT_2023241.Logic
             }
         }
 
-        public void ResetSemester()
-        {
-            throw new NotImplementedException();
-        }
-
         public void UpdateCourse(Course course)
         {
             var old = courseRepository.Read(course.CourseId);
@@ -201,6 +196,20 @@ namespace YT7G72_HFT_2023241.Logic
             if (old == null)
                 throw new ObjectNotFoundException(subject.SubjectId, typeof(Subject));
             subjectRepository.Update(subject);
+        }
+
+        public void ResetSemester()
+        {
+            foreach (var subject in subjectRepository.ReadAll())
+            {
+                foreach (var course in subject.SubjectCourses)
+                {
+                    course.CourseRegistrations.Clear();
+                    courseRepository.Update(course);
+                }
+                subject.SubjectRegistrations.Clear();
+                subjectRepository.Update(subject);
+            }
         }
     }
 }

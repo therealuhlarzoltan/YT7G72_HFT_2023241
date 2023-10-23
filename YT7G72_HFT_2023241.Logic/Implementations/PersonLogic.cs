@@ -31,14 +31,32 @@ namespace YT7G72_HFT_2023241.Logic
             teacherRepository.Create(teacher);
         }
 
-        public IEnumerable<Student> GetBestStudents()
+        public IEnumerable<Tuple<Student, double>> GetBestStudents()
         {
+            var students = studentRepository.ReadAll();
+            var grades = students.SelectMany(student => student.Grades);
+            var subjects = students.SelectMany(student => student.Grades).Select(grade => grade.Subject).Distinct();
+            var studentsWithAvgs = from student in students
+                                   join grade in grades.GroupBy(grade => grade.StudentId)
+                                   on student.StudentId equals grade.Key
+                                   join subject in subjects
+                                   on grade.FirstOrDefault()?. equals subject.SubjectId
+                                   select
+                                   Tuple.Create(student, Sum() / Sum());
+
+            return null;
+        }
+
+
+    public IEnumerable<Tuple<Teacher, double>> GetBestTeachers()
+        {
+            var teachers = teacherRepository.ReadAll().Where(teacher => teacher.RegisteredCourses.Any() && !teacher.RegisteredCourses.All(course => course.CourseType == CourseType.Lecture));
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Teacher> GetBestTeachers()
+        public IEnumerable<Tuple<Teacher, double>> GetBestLecturers()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public Student GetStudent(int id)

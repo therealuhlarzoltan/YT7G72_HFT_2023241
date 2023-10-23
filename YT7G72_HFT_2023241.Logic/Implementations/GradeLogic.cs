@@ -82,10 +82,28 @@ namespace YT7G72_HFT_2023241.Logic
 
         public SubjectStatistics GetSubjectStatistics(int subjectId)
         {
-            var resultSet = gradeRepository.ReadAll().Where(grade => grade.SubjectId == subjectId)
-                .Select(grade => new SubjectStatistics() { });
-
-            return null;
+            var grades = gradeRepository.ReadAll().Where(grade => grade.SubjectId == subjectId);
+            try
+            {
+                var result = new SubjectStatistics()
+                {
+                    Subject = grades.FirstOrDefault()?.Subject,
+                    NumberOfRegistrations = grades.Count(),
+                    PassPerRegistrationRatio = (double)grades.Count(g => g.Mark > 1) / (double)(grades.Count()),
+                    Avg = grades.Average(g => g.Mark)
+                };
+                return result;
+            }
+            catch (DivideByZeroException)
+            {
+                return new SubjectStatistics()
+                {
+                    Subject = grades.FirstOrDefault()?.Subject,
+                    NumberOfRegistrations = grades.Count(),
+                    PassPerRegistrationRatio = double.NaN,
+                    Avg = double.NaN
+                };
+            }
         }
     }
 }
