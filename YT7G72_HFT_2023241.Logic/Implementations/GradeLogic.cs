@@ -19,22 +19,40 @@ namespace YT7G72_HFT_2023241.Logic
 
         public IEnumerable<Grade> GetAllGrades()
         {
-            throw new NotImplementedException();
+            return gradeRepository.ReadAll();
         }
 
         public Grade GetGrade(int id)
         {
-            throw new NotImplementedException();
+            var grade = gradeRepository.Read(id);
+            if (grade == null)
+                throw new ObjectNotFoundException(id, typeof(Grade));
+            return grade;
         }
 
         public IEnumerable<SemesterStatistics> GetSemesterStatistics()
         {
-            throw new NotImplementedException();
+            var resultSet = new List<SemesterStatistics>();
+            var semesterGroups = gradeRepository.ReadAll().Select(grade => grade.Semester).GroupBy(semester => semester)
+                .OrderBy(semesterGroup => semesterGroup.Count());
+            foreach (var group in semesterGroups)
+            {
+                resultSet.Add(GetSemesterStatistics(group.Key));
+            }
+            return resultSet;
         }
 
         public SemesterStatistics GetSemesterStatistics(string semester)
         {
-            throw new NotImplementedException();
+            var relevantGrades = gradeRepository.ReadAll().Where(grade => grade.Semester ==  semester);
+            if (!relevantGrades.Any())
+            {
+                return new SemesterStatistics() { Semester = semester, NumberOfFailures = 0, NumberOfPasses = 0, WeightedAvg = double.NaN };
+            }
+            int failures = relevantGrades.Count(grade => grade.Mark < 1);
+            int passes = relevantGrades.Count(grade => grade.Mark > 1);
+            double average = relevantGrades.Sum(grade => grade.Mark * grade.Subject.Credits) / relevantGrades.Sum(grade => grade.Subject.Credits);
+            return new SemesterStatistics() {  Semester = semester, NumberOfFailures = failures, NumberOfPasses= passes, WeightedAvg = average };
         }
 
         public void AddGrade(Grade grade)
@@ -44,12 +62,30 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void RemoveGrade(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                gradeRepository.Delete(id);
+            }
+            catch (ArgumentNullException) 
+            {
+                throw new ObjectNotFoundException(id, typeof(Grade));
+            }
         }
 
         public void UpdateGrade(Grade grade)
         {
-            throw new NotImplementedException();
+            var old = gradeRepository.Read(grade.GradeId);
+            if (old == null)
+                throw new ObjectNotFoundException(grade.GradeId, typeof(Grade));
+            gradeRepository.Update(grade);
+        }
+
+        public SubjectStatistics GetSubjectStatistics(int subjectId)
+        {
+            var resultSet = gradeRepository.ReadAll().Where(grade => grade.SubjectId == subjectId)
+                .Select(grade => new SubjectStatistics() { });
+
+            return null;
         }
     }
 }

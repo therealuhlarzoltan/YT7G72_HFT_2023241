@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using YT7G72_HFT_2023241.Logic;
+using YT7G72_HFT_2023241.Logic.Implementations;
+using YT7G72_HFT_2023241.Logic.Interfaces;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.Repository;
 
@@ -16,13 +18,14 @@ namespace YT7G72_HFT_2023241.Client
         static UniversityDatabaseContext context = new UniversityDatabaseContext();
         static IRepository<Student> studentRepository = new StudentRepository(context);
         static IRepository<Teacher> teacherRepository = new TeacherRepository(context);
+        static IRepository<Curriculum> curriculumRepository = new CurriculumRepository(context);
         static IRepository<Subject> subjectRepository = new SubjectRepository(context);
         static IRepository<Course> courseRepository = new CourseRepository(context);
-        static IRepository<Curriculum> curriculumRepository = new CurriculumRepository(context);
         static IRepository<Grade> gradeRepository = new GradeRepository(context);
         static IPersonLogic personLogic = new PersonLogic(studentRepository, teacherRepository);
-        static IEducationLogic educationLogic = new EducationLogic(studentRepository, courseRepository, subjectRepository, curriculumRepository);
+        static IEducationLogic educationLogic = new EducationLogic(studentRepository, courseRepository, subjectRepository);
         static IGradeLogic gradeLogic = new GradeLogic(gradeRepository);
+        static ICurriculumLogic curriculumLogic = new CurriculumLogic(curriculumRepository);
         const int COLUMN_WIDTH = 16;
         const int SEPARATOR_WIDTH = 1;
         static void Main(string[] args)
@@ -119,6 +122,10 @@ namespace YT7G72_HFT_2023241.Client
             else if (type == typeof(Course))
             {
                 querySet = educationLogic.GetAllCourses();
+            }
+            else if (type == typeof(Curriculum))
+            {
+                querySet = curriculumLogic.GetCurriculums();
             }
 
             properties = properties.Where(prop => !prop.GetAccessors()[0].IsVirtual).ToArray();
@@ -225,7 +232,7 @@ namespace YT7G72_HFT_2023241.Client
                                 var convertedValue = converterMethod.Invoke(null, new object[] { input });
                                 property.SetValue(instance, convertedValue);
                             }
-                            catch (Exception exception)
+                            catch (Exception)
                             {
                                 Console.WriteLine("Invalid input value!");
                                 Console.ReadKey();
@@ -263,7 +270,7 @@ namespace YT7G72_HFT_2023241.Client
             }
             else if (type == typeof(Curriculum))
             {
-                educationLogic.AddCurriculum(entity as Curriculum);
+                curriculumLogic.AddCurriculum(entity as Curriculum);
             }
             else if (type == typeof(Grade))
             {
@@ -309,12 +316,13 @@ namespace YT7G72_HFT_2023241.Client
                 }
                 else if (type == typeof(Curriculum))
                 {
-                    instance = educationLogic.GetCurriculum(id);
+                    instance = curriculumLogic.GetCurriculum(id);
                 }
                 else if (type == typeof(Grade))
                 {
                     instance = gradeLogic.GetGrade(id);
                 }
+                Console.WriteLine("Updating entity...");
                 UpdateInstance<T>(instance as T);
                 Console.WriteLine("Entity updated!");
             }
@@ -402,7 +410,7 @@ namespace YT7G72_HFT_2023241.Client
         static void Delete<T>()
         {
             Type type = typeof(T);
-            Console.Write($"Enter {type} ID to delete: ");
+            Console.Write($"Enter {type.Name} ID to delete: ");
             int id;
             if (!Int32.TryParse(Console.ReadLine(), out id))
             {
@@ -429,7 +437,11 @@ namespace YT7G72_HFT_2023241.Client
                 {
                     educationLogic.RemoveCourse(id);
                 }
-                Console.WriteLine($"{type} with ID of {id} was deleted");
+                else if (type == typeof(Grade))
+                {
+                    gradeLogic.RemoveGrade(id);
+                }
+                Console.WriteLine($"{type.Name} with ID of {id} was deleted");
             }
             catch (ObjectNotFoundException exception)
             {
@@ -697,7 +709,7 @@ namespace YT7G72_HFT_2023241.Client
         static void OldTestingMethod()
         {
             Console.WriteLine("Curriculums:");
-            foreach (var curriculum in educationLogic.GetAllCurriculums())
+            foreach (var curriculum in curriculumLogic.GetCurriculums())
             {
                 Console.WriteLine($"\t{curriculum}");
             }

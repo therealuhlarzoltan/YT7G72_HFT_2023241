@@ -23,6 +23,7 @@ namespace YT7G72_HFT_2023241.Logic
         IEnumerable<Student> GetStudents();
         //non-CRUD logic
         IEnumerable<Student> GetBestStudents();
+        IEnumerable<Teacher> GetBestLecturers();
         IEnumerable<Teacher> GetBestTeachers();
         string GetSchedule<T>(int id);
 

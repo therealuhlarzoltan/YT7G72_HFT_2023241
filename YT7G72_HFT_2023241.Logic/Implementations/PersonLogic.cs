@@ -69,18 +69,26 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void RemoveStudent(int id)
         {
-            var student = studentRepository.Read(id);
-            if (student == null)
+            try
+            {
+                studentRepository.Delete(id);
+            }
+            catch (ArgumentNullException) 
+            {
                 throw new ObjectNotFoundException(id, typeof(Student));
-            studentRepository.Delete(id);
+            }
         }
 
         public void RemoveTeacher(int id)
         {
-            var teacher = teacherRepository.Read(id);
-            if (teacher == null)
+            try
+            {
+                teacherRepository.Delete(id);
+            }
+            catch(ArgumentNullException)
+            {
                 throw new ObjectNotFoundException(id, typeof(Teacher));
-            teacherRepository.Delete(id);
+            }
         }
 
         public void UpdateStudent(Student student)

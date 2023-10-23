@@ -13,14 +13,12 @@ namespace YT7G72_HFT_2023241.Logic
         private IRepository<Student> studentRepository;
         private IRepository<Course> courseRepository;
         private IRepository<Subject> subjectRepository;
-        private IRepository<Curriculum> curriculumRepository;
 
-        public EducationLogic(IRepository<Student> studentRepository, IRepository<Course> courseRepository, IRepository<Subject> subjectRepository, IRepository<Curriculum> curriculumRepository)
+        public EducationLogic(IRepository<Student> studentRepository, IRepository<Course> courseRepository, IRepository<Subject> subjectRepository)
         {
             this.studentRepository = studentRepository;
             this.courseRepository = courseRepository;
             this.subjectRepository = subjectRepository;
-            this.curriculumRepository = curriculumRepository;
         }
 
         public void AddCourse(Course course)
@@ -28,28 +26,6 @@ namespace YT7G72_HFT_2023241.Logic
             courseRepository.Create(course);
         }
 
-        public void AddCurriculum(Curriculum curriculum)
-        {
-            curriculumRepository.Create(curriculum);
-        }
-
-        public void AddStudentToCurriculum(int studentId, int curriculumId)
-        {
-            var student = studentRepository.Read(studentId);
-            if (student == null)
-            {
-                throw new ObjectNotFoundException(studentId, typeof(Student));
-            }
-
-            var curriculum = curriculumRepository.Read(curriculumId);
-            if (curriculum == null)
-            {
-                throw new ObjectNotFoundException(curriculumId, typeof(Curriculum));
-            }
-
-            student.Curriculum = curriculum;
-            studentRepository.Update(student);
-        }
 
         public void AddSubject(Subject subject)
         {
@@ -59,11 +35,6 @@ namespace YT7G72_HFT_2023241.Logic
         public IEnumerable<Course> GetAllCourses()
         {
             return courseRepository.ReadAll();
-        }
-
-        public IEnumerable<Curriculum> GetAllCurriculums()
-        {
-            return curriculumRepository.ReadAll();
         }
 
         public IEnumerable<Subject> GetAllSubjects()
@@ -79,16 +50,6 @@ namespace YT7G72_HFT_2023241.Logic
                 throw new ObjectNotFoundException(id, typeof(Course));
             }
             return course;
-        }
-
-        public Curriculum GetCurriculum(int id)
-        {
-            var curriculum = curriculumRepository.Read(id);
-            if (curriculum == null)
-            {
-                throw new ObjectNotFoundException(id, typeof(Curriculum));
-            }
-            return curriculum;
         }
 
         public Subject GetSubject(int id)
@@ -171,12 +132,15 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void RemoveCourse(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveCurriculum(int id)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                courseRepository.Delete(id);
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ObjectNotFoundException(id, typeof(Course));
+            }
+            
         }
 
         public void RemoveStudentFromCourse(int studentId, int courseId)
@@ -200,11 +164,6 @@ namespace YT7G72_HFT_2023241.Logic
             }
         }
 
-        public void RemoveStudentFromCurriculum(Student student)
-        {
-            throw new NotImplementedException();
-        }
-
         public void RemoveStudentFromSubject(int studentId, int subjectId)
         {
             throw new NotImplementedException();
@@ -212,7 +171,14 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void RemoveSubject(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                subjectRepository.Delete(id);
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ObjectNotFoundException(id, typeof(Subject));
+            }
         }
 
         public void ResetSemester()
@@ -222,17 +188,19 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void UpdateCourse(Course course)
         {
-            throw new NotImplementedException();
+            var old = courseRepository.Read(course.CourseId);
+            if (old == null)
+                throw new ObjectNotFoundException(course.CourseId, typeof(Course));
+            courseRepository.Update(course);
         }
 
-        public void UpdateCurriculum(Curriculum curriculum)
-        {
-            throw new NotImplementedException();
-        }
 
         public void UpdateSubject(Subject subject)
         {
-            throw new NotImplementedException();
+            var old = subjectRepository.Read(subject.SubjectId);
+            if (old == null)
+                throw new ObjectNotFoundException(subject.SubjectId, typeof(Subject));
+            subjectRepository.Update(subject);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace YT7G72_HFT_2023241.Logic
         //grade non-CRUD logic
         IEnumerable<SemesterStatistics> GetSemesterStatistics();
         SemesterStatistics GetSemesterStatistics(string semester);
+        SubjectStatistics GetSubjectStatistics(int subjectId);
 
     }
 }
