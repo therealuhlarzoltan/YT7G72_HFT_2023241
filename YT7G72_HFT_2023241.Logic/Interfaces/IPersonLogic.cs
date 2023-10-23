@@ -23,7 +23,7 @@ namespace YT7G72_HFT_2023241.Logic
         IEnumerable<Student> GetStudents();
         //non-CRUD logic
         IEnumerable<Tuple<Student, double>> GetBestStudents();
-        IEnumerable<Tuple<Teacher, double>> GetBestLecturers();
+        IEnumerable<Tuple<Teacher, double>> GetBestTeachersByAcademicRank(AcademicRank academicRank);
         IEnumerable<Tuple<Teacher, double>> GetBestTeachers();
         string GetSchedule<T>(int id);
 

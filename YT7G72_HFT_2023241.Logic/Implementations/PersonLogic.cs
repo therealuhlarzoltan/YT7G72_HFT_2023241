@@ -34,17 +34,15 @@ namespace YT7G72_HFT_2023241.Logic
         public IEnumerable<Tuple<Student, double>> GetBestStudents()
         {
             var students = studentRepository.ReadAll();
-            var grades = students.SelectMany(student => student.Grades).GroupBy();
-            var subjects = students.SelectMany(student => student.Grades).Select(grade => grade.Subject).Distinct();
+            var gradeGroups = students.SelectMany(student => student.Grades).GroupBy(grade => grade.StudentId);
             var studentsWithAvgs = from student in students
-                                   join grade in grades.GroupBy(grade => grade.StudentId)
-                                   on student.StudentId equals grade.Key
-                                   join subject in subjects
-                                   on grade.FirstOrDefault()?. equals subject.SubjectId
-                                   select
-                                   Tuple.Create(student, Sum() / Sum());
+                                   join gradeGroup in gradeGroups
+                                   on student.StudentId equals gradeGroup.Key
+                                   let totalWeightedSum = gradeGroup.Sum(grade => grade.Mark * grade.Subject.Credits)
+                                   let totalCredits = gradeGroup.Sum(grade => grade.Subject.Credits)
+                                   select Tuple.Create(student, (double)totalWeightedSum / (double)totalCredits);
 
-            return null;
+            return studentsWithAvgs.OrderByDescending(tuple => tuple.Item2).Take(3);
         }
 
 
