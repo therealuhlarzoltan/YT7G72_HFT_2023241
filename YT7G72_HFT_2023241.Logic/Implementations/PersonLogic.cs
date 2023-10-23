@@ -34,7 +34,7 @@ namespace YT7G72_HFT_2023241.Logic
         public IEnumerable<Tuple<Student, double>> GetBestStudents()
         {
             var students = studentRepository.ReadAll();
-            var grades = students.SelectMany(student => student.Grades);
+            var grades = students.SelectMany(student => student.Grades).GroupBy();
             var subjects = students.SelectMany(student => student.Grades).Select(grade => grade.Subject).Distinct();
             var studentsWithAvgs = from student in students
                                    join grade in grades.GroupBy(grade => grade.StudentId)
@@ -50,13 +50,26 @@ namespace YT7G72_HFT_2023241.Logic
 
     public IEnumerable<Tuple<Teacher, double>> GetBestTeachers()
         {
-            var teachers = teacherRepository.ReadAll().Where(teacher => teacher.RegisteredCourses.Any() && !teacher.RegisteredCourses.All(course => course.CourseType == CourseType.Lecture));
-            throw new NotImplementedException();
+            var teachers = teacherRepository.ReadAll();
+            var gradeGroups = teachers.SelectMany(teacher => teacher.GivenGrades).GroupBy(grade => grade.TeacherId);
+            var teachersWithAvgs = from teacher in teachers
+                                   join gradeGroup in gradeGroups
+                                   on teacher.TeacherId equals gradeGroup.Key
+                                   select Tuple.Create(teacher, gradeGroup.Average(grade => grade.Mark));
+
+            return teachersWithAvgs.OrderByDescending(tupple => tupple.Item2).Take(3);
         }
 
-        public IEnumerable<Tuple<Teacher, double>> GetBestLecturers()
+        public IEnumerable<Tuple<Teacher, double>> GetBestTeachersByAcademicRank(AcademicRank academicRank)
         {
-            throw new NotSupportedException();
+            var teachers = teacherRepository.ReadAll().Where(teacher => teacher.AcademicRank == academicRank);
+            var gradeGroups = teachers.SelectMany(teacher => teacher.GivenGrades).GroupBy(grade => grade.TeacherId);
+            var teachersWithAvgs = from teacher in teachers
+                                   join gradeGroup in gradeGroups
+                                   on teacher.TeacherId equals gradeGroup.Key
+                                   select Tuple.Create(teacher, gradeGroup.Average(grade => grade.Mark));
+
+            return teachersWithAvgs.OrderByDescending(tupple => tupple.Item2).Take(3);
         }
 
         public Student GetStudent(int id)
