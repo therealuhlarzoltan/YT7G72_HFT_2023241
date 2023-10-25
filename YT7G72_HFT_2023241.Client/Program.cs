@@ -15,22 +15,13 @@ namespace YT7G72_HFT_2023241.Client
 {
     internal class Program
     {
-        static UniversityDatabaseContext context = new UniversityDatabaseContext();
-        static IRepository<Student> studentRepository = new StudentRepository(context);
-        static IRepository<Teacher> teacherRepository = new TeacherRepository(context);
-        static IRepository<Curriculum> curriculumRepository = new CurriculumRepository(context);
-        static IRepository<Subject> subjectRepository = new SubjectRepository(context);
-        static IRepository<Course> courseRepository = new CourseRepository(context);
-        static IRepository<Grade> gradeRepository = new GradeRepository(context);
-        static IPersonLogic personLogic = new PersonLogic(studentRepository, teacherRepository);
-        static IEducationLogic educationLogic = new EducationLogic(studentRepository, courseRepository, subjectRepository);
-        static IGradeLogic gradeLogic = new GradeLogic(gradeRepository);
-        static ICurriculumLogic curriculumLogic = new CurriculumLogic(curriculumRepository);
+        private static RestService restService;
         const int COLUMN_WIDTH = 16;
         const int SEPARATOR_WIDTH = 1;
         static void Main(string[] args)
         {
             ConsoleMenu menu = null;
+            restService = new RestService("http://localhost:4180");
 
             var studentSubmenu = new ConsoleMenu(args, level: 1);
             studentSubmenu
@@ -112,27 +103,27 @@ namespace YT7G72_HFT_2023241.Client
 
             if (type == typeof(Student))
             {
-                querySet = personLogic.GetStudents();
+                querySet = restService.Get<Student>("/People/Students");
             }
             else if (type == typeof(Teacher))
             {
-                querySet = personLogic.GetTeachers();
+                querySet = restService.Get<Teacher>("/People/Teachers");
             }
             else if (type == typeof(Subject))
             {
-                querySet = educationLogic.GetAllSubjects();
+                querySet = restService.Get<Subject>("/Education/Subjects");
             }
             else if (type == typeof(Course))
             {
-                querySet = educationLogic.GetAllCourses();
+                querySet = restService.Get<Course>("/Education/Courses");
             }
             else if (type == typeof(Curriculum))
             {
-                querySet = curriculumLogic.GetCurriculums();
+                querySet = restService.Get<Subject>("/Curriculums");
             }
             else if (type == typeof(Grade))
             {
-                querySet = gradeLogic.GetAllGrades();
+                querySet = restService.Get<Grade>("/Grades");
             }
 
             properties = properties.Where(prop => !prop.GetAccessors()[0].IsVirtual).ToArray();
@@ -263,27 +254,27 @@ namespace YT7G72_HFT_2023241.Client
             {
                 if (type == typeof(Student))
                 {
-                    personLogic.AddStudent(entity as Student);
+                    restService.Post<Student>("/People/Students", entity as Student);
                 }
                 else if (type == typeof(Teacher))
                 {
-                    personLogic.AddTeacher(entity as Teacher);
+                    restService.Post<Teacher>("/People/Teachers", entity as Teacher);
                 }
                 else if (type == typeof(Subject))
                 {
-                    educationLogic.AddSubject(entity as Subject);
+                    restService.Post<Subject>("/Education/Subjects", entity as Subject);
                 }
                 else if (type == typeof(Course))
                 {
-                    educationLogic.AddCourse(entity as Course);
+                    restService.Post<Course>("/Education/Courses", entity as Course);
                 }
                 else if (type == typeof(Curriculum))
                 {
-                    curriculumLogic.AddCurriculum(entity as Curriculum);
+                    restService.Post<Curriculum>("/Curriculums", entity as Curriculum);
                 }
                 else if (type == typeof(Grade))
                 {
-                    gradeLogic.AddGrade(entity as Grade);
+                    restService.Post<Grade>("/Grades", entity as Grade);
                 }
                 Console.WriteLine($"New {type.Name} created!");
             }
@@ -316,39 +307,39 @@ namespace YT7G72_HFT_2023241.Client
             {
                 if (type == typeof(Student))
                 {
-                    instance = personLogic.GetStudent(id);
+                    instance = restService.Get<Student>("/People/Students", id);
                     UpdateInstance<T>(instance as T);
-                    personLogic.UpdateStudent(instance as Student);
+                    restService.Put<Student>("/People/Students", instance as Student);
                 }
                 else if (type == typeof(Teacher))
                 {
-                    instance = personLogic.GetTeacher(id);
+                    instance = restService.Get<Teacher>("/People/Teachers", id);
                     UpdateInstance<T>(instance as T);
-                    personLogic.UpdateTeacher(instance as Teacher);
+                    restService.Put<Teacher>("/People/Teachers", instance as Teacher);
                 }
                 else if (type == typeof(Subject))
                 {
-                    instance = educationLogic.GetSubject(id);
+                    instance = restService.Get<Subject>("/Education/Subjects", id);
                     UpdateInstance<T>(instance as T);
-                    educationLogic.UpdateSubject(instance as Subject);
+                    restService.Put<Subject>("/Education/Subjects", instance as Subject);
                 }
                 else if (type == typeof(Course))
                 {
-                    instance = educationLogic.GetCourse(id);
+                    instance = restService.Get<Course>("/Education/Courses", id);
                     UpdateInstance<T>(instance as T);
-                    educationLogic.UpdateCourse(instance as Course);
+                    restService.Put<Course>("/Education/Courses", instance as Course);
                 }
                 else if (type == typeof(Curriculum))
                 {
-                    instance = curriculumLogic.GetCurriculum(id);
+                    instance = restService.Get<Curriculum>("/Curriculums", id);
                     UpdateInstance<T>(instance as T);
-                    curriculumLogic.UpdateCurriculum(instance as Curriculum);
+                    restService.Put<Curriculum>("/Curriculums", instance as Curriculum);
                 }
                 else if (type == typeof(Grade))
                 {
-                    instance = gradeLogic.GetGrade(id);
+                    instance = restService.Get<Grade>("/Grades", id);
                     UpdateInstance<T>(instance as T);
-                    gradeLogic.UpdateGrade(instance as Grade);
+                    restService.Put<Grade>("/Grades", instance as Grade);
                 }
                 
                 Console.WriteLine("Entity updated!");
@@ -454,23 +445,23 @@ namespace YT7G72_HFT_2023241.Client
             {
                 if (type == typeof(Student))
                 {
-                    personLogic.RemoveStudent(id);
+                    restService.Delete("/People/Students", id);
                 }
                 else if (type == typeof(Teacher))
                 {
-                    personLogic.RemoveTeacher(id);
+                    restService.Delete("/People/Teachers", id);
                 }
                 else if (type == typeof(Subject))
                 {
-                    educationLogic.RemoveSubject(id);
+                    restService.Delete("/Education/Subjects", id);
                 }
                 else if (type == typeof(Course))
                 {
-                    educationLogic.RemoveCourse(id);
+                    restService.Delete("/Education/Courses", id);
                 }
                 else if (type == typeof(Grade))
                 {
-                    gradeLogic.RemoveGrade(id);
+                    restService.Delete("/Grades", id);
                 }
                 Console.WriteLine($"{type.Name} with ID of {id} was deleted");
             }
@@ -501,13 +492,13 @@ namespace YT7G72_HFT_2023241.Client
             {
                 if (type == typeof(Student))
                 {
-                    var student = personLogic.GetStudent(id);
+                    var student = restService.Get<Student>("/People/Students", id);
                     Console.WriteLine($"({student})'s subjects:");
                     List<Subject>(student.RegisteredSubjects);
                 }
                 else if (type == typeof(Teacher))
                 {
-                    var teacher = personLogic.GetTeacher(id);
+                    var teacher = restService.Get<Teacher>("/People/Teachers", id);
                     Console.WriteLine($"({teacher})'s subjects:");
                     List<Subject>(teacher.RegisteredSubjects);
                 }
@@ -540,13 +531,13 @@ namespace YT7G72_HFT_2023241.Client
             {
                 if (type == typeof(Student))
                 {
-                    var student = personLogic.GetStudent(id);
+                    var student = restService.Get<Student>("/People/Students", id);
                     Console.WriteLine($"({student})'s courses:");
                     List<Course>(student.RegisteredCourses);
                 }
                 else if (type == typeof(Teacher))
                 {
-                    var teacher = personLogic.GetTeacher(id);
+                    var teacher = restService.Get<Teacher>("/People/Teachers", id);
                     Console.WriteLine($"({teacher})'s courses:");
                     List<Course>(teacher.RegisteredCourses);
                 }
@@ -584,10 +575,10 @@ namespace YT7G72_HFT_2023241.Client
 
             try
             {
-                var student = personLogic.GetStudent(studentId);
-                var subject = educationLogic.GetSubject(subjectId);
+                var student = restService.Get<Student>("/People/Student", studentId);
+                var subject = restService.Get<Subject>("/Education/Subjects", subjectId);
 
-                educationLogic.RegisterStudentForSubject(studentId, subjectId);
+                //educationLogic.RegisterStudentForSubject(studentId, subjectId);
                 Console.WriteLine($"{student} successfuly registered for subject {subject}");
             }
             catch (ObjectNotFoundException exception)
@@ -626,10 +617,10 @@ namespace YT7G72_HFT_2023241.Client
 
             try
             {
-                var student = personLogic.GetStudent(studentId);
-                var course = educationLogic.GetCourse(courseId);
+                var student = restService.Get<Student>("/People/Students", studentId);
+                var course = restService.Get<Teacher>("/Education/Courses", courseId);
 
-                educationLogic.RegisterStudentForCourse(studentId, courseId);
+                //educationLogic.RegisterStudentForCourse(studentId, courseId);
                 Console.WriteLine($"{student} successfuly registered for course {course}");
             }
             catch (ObjectNotFoundException exception)
@@ -712,15 +703,15 @@ namespace YT7G72_HFT_2023241.Client
             {
                 if (type == typeof(Student))
                 {
-                    var student = personLogic.GetStudent(id);
-                    string schedule = personLogic.GetSchedule<Student>(id);
+                    var student = restService.Get<Student>("/People/Students", id);
+                    string schedule = restService.Get<string>("/People/Students/Schedule", id);
                     Console.WriteLine($"({student})'s weekly schedule:");
                     Console.WriteLine(schedule);
                 }
                 else if (type == typeof(Teacher))
                 {
-                    var teacher = personLogic.GetTeacher(id);
-                    string schedule = personLogic.GetSchedule<Teacher>(id);
+                    var teacher = restService.Get<Teacher>("/People/Teachers", id);
+                    string schedule = restService.Get<string>("/People/Teachers/Schedule", id);
                     Console.WriteLine($"({teacher})'s weekly schedule:");
                     Console.WriteLine(schedule);
                 }
@@ -739,7 +730,7 @@ namespace YT7G72_HFT_2023241.Client
         static void GetBestStudents()
         {
             Console.WriteLine("Students with highest weighted averages:");
-            var studentTuples = personLogic.GetBestStudents();
+            var studentTuples = restService.Get<Tuple<Student, double>>("/People/Students/Best");
             foreach (var studentTuple in studentTuples)
             {
                 Console.WriteLine($"Student: {studentTuple.Item1}, Average: {Math.Round(studentTuple.Item2, 2)}");
@@ -752,7 +743,7 @@ namespace YT7G72_HFT_2023241.Client
         static void GetBestTeachers()
         {
             Console.WriteLine("Teachers with highest average grades given:");
-            var teacherTuples = personLogic.GetBestTeachers();
+            var teacherTuples = restService.Get<Tuple<Teacher, double>>("/People/Teachers/Best");
             foreach (var teacherTuple in teacherTuples)
             {
                 Console.WriteLine($"Teacher: {teacherTuple.Item1}, Average: {Math.Round(teacherTuple.Item2, 2)}");
@@ -768,7 +759,7 @@ namespace YT7G72_HFT_2023241.Client
             string semester = Console.ReadLine();
             if (semester.IsNullOrEmpty() )
             {
-                var results = gradeLogic.GetSemesterStatistics();
+                var results = restService.Get<SemesterStatistics>("/Grades/Semester/Statistics");
                 foreach (var semesterResult in results)
                 {
                     Console.WriteLine($"Semster: {semesterResult.Semester}\n\tSuccessful subject completions: {semesterResult.NumberOfPasses}" +
@@ -777,72 +768,9 @@ namespace YT7G72_HFT_2023241.Client
             }
             else
             {
-                var semesterResult = gradeLogic.GetSemesterStatistics(semester);
+                var semesterResult = restService.Get<SemesterStatistics>("/Grades/Semester/Statistics", 1);
                 Console.WriteLine($"Semster: {semesterResult.Semester}\n\tSuccessful subject completions: {semesterResult.NumberOfPasses}" +
                        $"\n\tFailed subject completions: {semesterResult.NumberOfFailures}\n\tWeighted Avrage ammong all studetns: {Math.Round(semesterResult.WeightedAvg, 2)}");
-            }
-        }
-
-
-        static void OldTestingMethod()
-        {
-            Console.WriteLine("Curriculums:");
-            foreach (var curriculum in curriculumLogic.GetCurriculums())
-            {
-                Console.WriteLine($"\t{curriculum}");
-            }
-            Console.WriteLine();
-            Console.WriteLine("Students:");
-            foreach (var student in personLogic.GetStudents())
-            {
-                Console.WriteLine($"\t{student}");
-            }
-            Console.WriteLine();
-            Console.WriteLine("Teachers:");
-            foreach (var teacher in personLogic.GetTeachers())
-            {
-                Console.WriteLine($"\t{teacher}");
-            }
-            Console.WriteLine();
-            Console.WriteLine("Subjects and Courses:");
-            foreach (var subject in educationLogic.GetAllSubjects())
-            {
-                Console.WriteLine($"\tSubject: {subject}; Teacher: {subject.Teacher}");
-                Console.WriteLine("\t\tCourses:");
-                foreach (var course in subject.SubjectCourses)
-                {
-                    Console.WriteLine($"\t\t\t{course}");
-                }
-            }
-            Console.WriteLine();
-            Console.WriteLine("Students on Java Web:");
-            foreach (var student in educationLogic.GetSubject(1).RegisteredStudents)
-            {
-                Console.WriteLine($"\tStudent: {student}");
-                Console.WriteLine($"\t\tEnrolled Courses");
-                foreach (var course in student.RegisteredCourses)
-                {
-                    Console.WriteLine($"\t\t\t{course}");
-                }
-            }
-            Console.WriteLine();
-            try
-            {
-                Console.WriteLine($"Student with ID of 123232: {personLogic.GetStudent(123232)}");
-            }
-            catch (ObjectNotFoundException exception)
-            {
-                Console.WriteLine(exception);
-            }
-
-            Console.WriteLine();
-            try
-            {
-                educationLogic.RegisterStudentForSubject(1, 2);
-            }
-            catch (PreRequirementsNotMetException exception)
-            {
-                Console.WriteLine($"{exception.Student} did not meet the entry requirement for {exception.Subject}");
             }
         }
     }

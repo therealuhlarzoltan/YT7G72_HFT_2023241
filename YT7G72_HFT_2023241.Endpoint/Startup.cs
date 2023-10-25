@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Logic.Implementations;
@@ -50,6 +51,12 @@ namespace YT7G72_HFT_2023241.Endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("NEPTUN API v2");
+                });
+
             });
 
             app.UseExceptionHandler(c => c.Run(async context =>

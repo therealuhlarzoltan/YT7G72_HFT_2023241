@@ -48,14 +48,15 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
            gradeLogic.RemoveGrade(id);
         }
 
-        [Route("/Semester/Statistics/{year}")]
+        [Route("Semester/Statistics/{year}")]
         [HttpGet]
         public SemesterStatistics GetSemesterStatistics(string year)
         {
+            year = year.Replace("-", "/");
             return gradeLogic.GetSemesterStatistics(year);
         }
 
-        [Route("/Semester/Statistics")]
+        [Route("Semester/Statistics")]
         [HttpGet]
         public IEnumerable<SemesterStatistics> GetAllSemesterStatistics()
         {

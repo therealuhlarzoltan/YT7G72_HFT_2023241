@@ -6,6 +6,7 @@ using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Endpoint.Controllers
 {
+    [ApiController]
     [Route("/Curriculums")]
     public class CurriculumController : Controller
     {

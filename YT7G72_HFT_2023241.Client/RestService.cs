@@ -13,7 +13,7 @@ namespace YT7G72_HFT_2023241.Client
     {
         HttpClient client;
 
-        public RestService(string baseurl, string pingableEndpoint = "swagger")
+        public RestService(string baseurl, string pingableEndpoint = "/")
         {
             bool isOk = false;
             do
