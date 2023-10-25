@@ -21,14 +21,36 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void AddStudent(Student student)
         {
-            
-            studentRepository.Create(student);
+            bool isValid = IPersonLogic.ValidatePerson<Student>(student);
+            if (!isValid )
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                studentRepository.Create(student);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+            }
         }
 
         public void AddTeacher(Teacher teacher)
         {
-            
-            teacherRepository.Create(teacher);
+            bool isValid = IPersonLogic.ValidatePerson<Teacher>(teacher);
+            if (!isValid )
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                teacherRepository.Create(teacher);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Failed to update database, most likely due to violation of foreign key constraint");
+            }
         }
 
         public IEnumerable<Tuple<Student, double>> GetBestStudents()
@@ -125,7 +147,19 @@ namespace YT7G72_HFT_2023241.Logic
             var originalStudent = studentRepository.Read(student.StudentId);
             if (originalStudent == null)
                 throw new ObjectNotFoundException(student.StudentId, typeof(Student));
-            studentRepository.Update(student);
+            bool isValid = IPersonLogic.ValidatePerson<Student>(student);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                studentRepository.Update(student);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+            }
         }
 
         public void UpdateTeacher(Teacher teacher)
@@ -133,7 +167,19 @@ namespace YT7G72_HFT_2023241.Logic
             var originalTeacher = teacherRepository.Read(teacher.TeacherId);
             if (originalTeacher == null)
                 throw new ObjectNotFoundException(teacher.TeacherId, typeof(Teacher));
-            teacherRepository.Update(teacher);
+            bool isValid = IPersonLogic.ValidatePerson<Teacher>(teacher);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                teacherRepository.Update(teacher);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violtion");
+            }
         }
 
         public string GetSchedule<T>(int id)

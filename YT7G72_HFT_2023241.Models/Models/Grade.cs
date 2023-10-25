@@ -14,7 +14,7 @@ namespace YT7G72_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GradeId { get; set; }
         [Required]
-        [StringLength(9)]
+        [StringLength(9, MinimumLength = 9)]
         public string Semester { get; set; }
         [Required]
         public int StudentId { get; set; }

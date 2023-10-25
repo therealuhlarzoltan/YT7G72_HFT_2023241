@@ -13,12 +13,13 @@ namespace YT7G72_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StudentId { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 2)]
         public string FirstName { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 2)]
         public string LastName { get; set; }
         [Required]
+        [StringLength(6, MinimumLength = 6)]
         public string StudentCode { get; set; }
         public FinancialStatus FinancialStatus { get; set; }
         [Required]

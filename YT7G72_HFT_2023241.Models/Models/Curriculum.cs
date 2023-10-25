@@ -15,10 +15,10 @@ namespace YT7G72_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CurriculumId { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 4)]
         public string CurriculumName { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 4)]
         public string CurriculumCode { get; set; }
         [JsonIgnore]
         public virtual ICollection<Subject> CurriculumSubjects { get; set; } = new HashSet<Subject>();

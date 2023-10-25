@@ -17,10 +17,10 @@ namespace YT7G72_HFT_2023241.Models
         public int TeacherId { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 2)]
         public string FirstName { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 2)]
         public string LastName { get; set; }
         public AcademicRank AcademicRank { get; set; }
         [JsonIgnore]

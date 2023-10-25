@@ -20,7 +20,17 @@ namespace YT7G72_HFT_2023241.Logic.Implementations
 
         public void AddCurriculum(Curriculum curriculum)
         {
-            curriculumRepository.Create(curriculum);
+            bool isValid = ICurriculumLogic.ValidateCurriculum(curriculum);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                curriculumRepository.Create(curriculum);
+            } catch (Exception) {
+                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+            }
         }
 
         public Curriculum GetCurriculum(int id)
@@ -55,7 +65,19 @@ namespace YT7G72_HFT_2023241.Logic.Implementations
             var old = curriculumRepository.Read(curriculum.CurriculumId);
             if (old == null)
                 throw new ObjectNotFoundException(curriculum.CurriculumId, typeof(Curriculum));
-            curriculumRepository.Update(curriculum);
+            bool isValid = ICurriculumLogic.ValidateCurriculum(curriculum);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                curriculumRepository.Update(curriculum);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+            }
         }
     }
 }

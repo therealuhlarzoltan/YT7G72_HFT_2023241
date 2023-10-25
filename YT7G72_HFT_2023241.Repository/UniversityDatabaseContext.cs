@@ -171,7 +171,7 @@ namespace YT7G72_HFT_2023241.Repository
                      new Student {StudentId = 33, FirstName = "Orsolya", LastName = "Tóth", StudentCode = "ASD234", CurriculumId = 1},
                      new Student {StudentId = 34, FirstName = "Márton", LastName = "Nagy", StudentCode = "JKL567", CurriculumId = 1},
                      new Student {StudentId = 35, FirstName = "György", LastName = "Balogh", StudentCode = "RFV890", CurriculumId = 1},
-                     new Student {StudentId = 36, FirstName = "Hanna", LastName = "Varga", StudentCode = "S8HE123", CurriculumId = 1},
+                     new Student {StudentId = 36, FirstName = "Hanna", LastName = "Varga", StudentCode = "S8HE12", CurriculumId = 1},
                      new Student {StudentId = 37, FirstName = "Krisztina", LastName = "Kiss", StudentCode = "OLP456", CurriculumId = 1},
                      new Student {StudentId = 38, FirstName = "Mátyás", LastName = "Papp", StudentCode = "UIO789", CurriculumId = 1},
                      new Student {StudentId = 39, FirstName = "Anna", LastName = "Kertész", StudentCode = "COH012", CurriculumId = 1},

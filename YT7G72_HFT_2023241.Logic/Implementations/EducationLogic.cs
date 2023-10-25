@@ -29,7 +29,18 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void AddSubject(Subject subject)
         {
-            subjectRepository.Create(subject);
+            bool isValid = IEducationLogic.ValidateObject<Subject>(subject);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                subjectRepository.Create(subject);
+            }
+            catch (Exception) {
+                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+            }
         }
 
         public IEnumerable<Course> GetAllCourses()
@@ -195,7 +206,19 @@ namespace YT7G72_HFT_2023241.Logic
             var old = courseRepository.Read(course.CourseId);
             if (old == null)
                 throw new ObjectNotFoundException(course.CourseId, typeof(Course));
-            courseRepository.Update(course);
+            bool isValid = IEducationLogic.ValidateObject<Course>(course);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                courseRepository.Update(course);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Failed to update database, most likely due to foregin key constraint violation");
+            }
         }
 
 
@@ -204,7 +227,19 @@ namespace YT7G72_HFT_2023241.Logic
             var old = subjectRepository.Read(subject.SubjectId);
             if (old == null)
                 throw new ObjectNotFoundException(subject.SubjectId, typeof(Subject));
-            subjectRepository.Update(subject);
+            bool isValid = IEducationLogic.ValidateObject<Subject>(subject);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
+            try
+            {
+                subjectRepository.Update(subject);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Failed to update database, most likely due to foregin key constraint violation");
+            }
         }
 
         public void ResetSemester()

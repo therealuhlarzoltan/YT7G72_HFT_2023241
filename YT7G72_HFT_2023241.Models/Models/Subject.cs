@@ -16,10 +16,10 @@ namespace YT7G72_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SubjectId { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 4)]
         public string SubjectName { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 4)]
         public string SubjectCode { get; set; }
         [Required]
         public int Credits { get; set; }

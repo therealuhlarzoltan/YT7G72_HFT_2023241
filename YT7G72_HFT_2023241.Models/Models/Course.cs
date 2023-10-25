@@ -15,12 +15,12 @@ namespace YT7G72_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CourseId { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 4)]
         public string CourseName { get; set; }
         [Required]
-        [StringLength(50)]
         public int CourseCapacity { get; set; }
         public CourseType CourseType { get; set; }
+        [Required]
         public DayOfWeek DayOfWeek { get; set; }
         [Required]
         public TimeSpan StartTime { get; set; }

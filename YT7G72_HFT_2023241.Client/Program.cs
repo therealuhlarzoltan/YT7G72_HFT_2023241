@@ -258,35 +258,44 @@ namespace YT7G72_HFT_2023241.Client
             Type type = typeof(T);
             Console.WriteLine($"Creating new {type.Name} entity...");
             T entity = CreateInstance<T>();
-            
-            if (type == typeof(Student))
-            {
-                personLogic.AddStudent(entity as Student);
-            }
-            else if (type == typeof(Teacher))
-            {
-                personLogic.AddTeacher(entity as Teacher);
-            }
-            else if (type == typeof(Subject)) 
-            {
-                educationLogic.AddSubject(entity as Subject);
-            }
-            else if (type == typeof(Course))
-            {
-                educationLogic.AddCourse(entity as Course);
-            }
-            else if (type == typeof(Curriculum))
-            {
-                curriculumLogic.AddCurriculum(entity as Curriculum);
-            }
-            else if (type == typeof(Grade))
-            {
-                gradeLogic.AddGrade(entity as Grade);
-            }
 
-            Console.WriteLine($"New {type.Name} created!");
-            Console.ReadKey();
-            Main(new string[] { });
+            try
+            {
+                if (type == typeof(Student))
+                {
+                    personLogic.AddStudent(entity as Student);
+                }
+                else if (type == typeof(Teacher))
+                {
+                    personLogic.AddTeacher(entity as Teacher);
+                }
+                else if (type == typeof(Subject))
+                {
+                    educationLogic.AddSubject(entity as Subject);
+                }
+                else if (type == typeof(Course))
+                {
+                    educationLogic.AddCourse(entity as Course);
+                }
+                else if (type == typeof(Curriculum))
+                {
+                    curriculumLogic.AddCurriculum(entity as Curriculum);
+                }
+                else if (type == typeof(Grade))
+                {
+                    gradeLogic.AddGrade(entity as Grade);
+                }
+                Console.WriteLine($"New {type.Name} created!");
+            }
+            catch (ArgumentException exception)
+            {
+                Console.WriteLine($"Failed to create new {type.Name} enitity -- {exception.Message}");
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
 
          }
 
@@ -302,7 +311,7 @@ namespace YT7G72_HFT_2023241.Client
                 Console.ReadKey();
                 Main(new string[] { });
             }
-
+            Console.WriteLine("Updating entity...");
             try
             {
                 if (type == typeof(Student))
@@ -329,13 +338,16 @@ namespace YT7G72_HFT_2023241.Client
                 {
                     instance = gradeLogic.GetGrade(id);
                 }
-                Console.WriteLine("Updating entity...");
                 UpdateInstance<T>(instance as T);
                 Console.WriteLine("Entity updated!");
             }
             catch (ObjectNotFoundException exception)
             {
                 Console.WriteLine(exception);
+            }
+            catch (ArgumentException exception)
+            {
+                Console.WriteLine($"Failed to update {type.Name} entity -- {exception.Message}");
             }
             finally
             {
@@ -402,7 +414,7 @@ namespace YT7G72_HFT_2023241.Client
                                 var convertedValue = converterMethod.Invoke(null, new object[] { input });
                                 property.SetValue(instance, convertedValue);
                             }
-                            catch (Exception exception)
+                            catch (Exception)
                             {
                                 Console.WriteLine("Invalid input value!");
                                 Console.ReadKey();
