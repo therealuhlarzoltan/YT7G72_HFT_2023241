@@ -62,14 +62,14 @@ namespace YT7G72_HFT_2023241.Logic.Implementations
 
         public void UpdateCurriculum(Curriculum curriculum)
         {
-            var old = curriculumRepository.Read(curriculum.CurriculumId);
-            if (old == null)
-                throw new ObjectNotFoundException(curriculum.CurriculumId, typeof(Curriculum));
             bool isValid = ICurriculumLogic.ValidateCurriculum(curriculum);
             if (!isValid)
             {
                 throw new ArgumentException("Invalid argument(s) provided!");
             }
+            var old = curriculumRepository.Read(curriculum.CurriculumId);
+            if (old == null)
+                throw new ObjectNotFoundException(curriculum.CurriculumId, typeof(Curriculum));
             try
             {
                 curriculumRepository.Update(curriculum);

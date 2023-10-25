@@ -33,6 +33,17 @@ namespace YT7G72_HFT_2023241.Logic
         {
             Type type = person.GetType();
             var properties = type.GetProperties();
+
+            if (type == typeof(Student))
+            {
+                string regEx = "^[A-Z0-9]{6}$";
+                string propValue = (string)properties.Where(p => p.Name == "StudentCode").First().GetValue(person);
+                if (!System.Text.RegularExpressions.Regex.IsMatch(propValue, regEx))
+                {
+                    return false;
+                }
+            }
+
             foreach ( var property in properties )
             {
                 var attributes = property.GetCustomAttributes();

@@ -203,14 +203,14 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void UpdateCourse(Course course)
         {
-            var old = courseRepository.Read(course.CourseId);
-            if (old == null)
-                throw new ObjectNotFoundException(course.CourseId, typeof(Course));
             bool isValid = IEducationLogic.ValidateObject<Course>(course);
             if (!isValid)
             {
                 throw new ArgumentException("Invalid argument(s) provided!");
             }
+            var old = courseRepository.Read(course.CourseId);
+            if (old == null)
+                throw new ObjectNotFoundException(course.CourseId, typeof(Course));
             try
             {
                 courseRepository.Update(course);
@@ -224,14 +224,14 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void UpdateSubject(Subject subject)
         {
-            var old = subjectRepository.Read(subject.SubjectId);
-            if (old == null)
-                throw new ObjectNotFoundException(subject.SubjectId, typeof(Subject));
             bool isValid = IEducationLogic.ValidateObject<Subject>(subject);
             if (!isValid)
             {
                 throw new ArgumentException("Invalid argument(s) provided!");
             }
+            var old = subjectRepository.Read(subject.SubjectId);
+            if (old == null)
+                throw new ObjectNotFoundException(subject.SubjectId, typeof(Subject));
             try
             {
                 subjectRepository.Update(subject);

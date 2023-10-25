@@ -144,14 +144,14 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void UpdateStudent(Student student)
         {
-            var originalStudent = studentRepository.Read(student.StudentId);
-            if (originalStudent == null)
-                throw new ObjectNotFoundException(student.StudentId, typeof(Student));
             bool isValid = IPersonLogic.ValidatePerson<Student>(student);
             if (!isValid)
             {
                 throw new ArgumentException("Invalid argument(s) provided!");
             }
+            var originalStudent = studentRepository.Read(student.StudentId);
+            if (originalStudent == null)
+                throw new ObjectNotFoundException(student.StudentId, typeof(Student));
             try
             {
                 studentRepository.Update(student);
@@ -164,14 +164,14 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void UpdateTeacher(Teacher teacher)
         {
-            var originalTeacher = teacherRepository.Read(teacher.TeacherId);
-            if (originalTeacher == null)
-                throw new ObjectNotFoundException(teacher.TeacherId, typeof(Teacher));
             bool isValid = IPersonLogic.ValidatePerson<Teacher>(teacher);
             if (!isValid)
             {
                 throw new ArgumentException("Invalid argument(s) provided!");
             }
+            var originalTeacher = teacherRepository.Read(teacher.TeacherId);
+            if (originalTeacher == null)
+                throw new ObjectNotFoundException(teacher.TeacherId, typeof(Teacher));
             try
             {
                 teacherRepository.Update(teacher);

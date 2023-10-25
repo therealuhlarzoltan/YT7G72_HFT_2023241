@@ -27,6 +27,15 @@ namespace YT7G72_HFT_2023241.Logic
             var properties = type.GetProperties();
             foreach (var property in properties)
             {
+                if (property.Name == "Semester")
+                {
+                    string value = (string)property.GetValue(grade);
+                    string regEx = "^\\d{4}/\\d{2}/\\d$";
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(value, regEx))
+                    {
+                        return false;
+                    }
+                }
                 var attributes = property.GetCustomAttributes();
                 foreach (var attribute in attributes)
                 {

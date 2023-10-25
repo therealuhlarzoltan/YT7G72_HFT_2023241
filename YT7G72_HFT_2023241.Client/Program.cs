@@ -317,28 +317,40 @@ namespace YT7G72_HFT_2023241.Client
                 if (type == typeof(Student))
                 {
                     instance = personLogic.GetStudent(id);
+                    UpdateInstance<T>(instance as T);
+                    personLogic.UpdateStudent(instance as Student);
                 }
                 else if (type == typeof(Teacher))
                 {
                     instance = personLogic.GetTeacher(id);
+                    UpdateInstance<T>(instance as T);
+                    personLogic.UpdateTeacher(instance as Teacher);
                 }
                 else if (type == typeof(Subject))
                 {
                     instance = educationLogic.GetSubject(id);
+                    UpdateInstance<T>(instance as T);
+                    educationLogic.UpdateSubject(instance as Subject);
                 }
                 else if (type == typeof(Course))
                 {
                     instance = educationLogic.GetCourse(id);
+                    UpdateInstance<T>(instance as T);
+                    educationLogic.UpdateCourse(instance as Course);
                 }
                 else if (type == typeof(Curriculum))
                 {
                     instance = curriculumLogic.GetCurriculum(id);
+                    UpdateInstance<T>(instance as T);
+                    curriculumLogic.UpdateCurriculum(instance as Curriculum);
                 }
                 else if (type == typeof(Grade))
                 {
                     instance = gradeLogic.GetGrade(id);
+                    UpdateInstance<T>(instance as T);
+                    gradeLogic.UpdateGrade(instance as Grade);
                 }
-                UpdateInstance<T>(instance as T);
+                
                 Console.WriteLine("Entity updated!");
             }
             catch (ObjectNotFoundException exception)

@@ -58,16 +58,35 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void AddGrade(Grade grade)
         {
+            bool isValid = IGradeLogic.ValidateGrade(grade);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
             var old = gradeRepository.ReadAll().FirstOrDefault(g => g.StudentId == grade.StudentId 
             && g.SubjectId == grade.SubjectId && g.Semester == grade.Semester);
             if (old != null)
             {
                 grade.GradeId = old.GradeId;
-                gradeRepository.Update(grade);
+                try
+                {
+                    gradeRepository.Update(grade);
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+                }
             }
             else
             {
-                gradeRepository.Create(grade);
+                try
+                {
+                    gradeRepository.Create(grade);
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+                }
             }
         }
 
@@ -85,10 +104,22 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void UpdateGrade(Grade grade)
         {
+            bool isValid = IGradeLogic.ValidateGrade(grade);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid argument(s) provided!");
+            }
             var old = gradeRepository.Read(grade.GradeId);
             if (old == null)
                 throw new ObjectNotFoundException(grade.GradeId, typeof(Grade));
-            gradeRepository.Update(grade);
+            try
+            {
+                gradeRepository.Update(grade);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Failed to update database, most likely due to foreign key cosntraint violation");
+            }
         }
 
         public SubjectStatistics GetSubjectStatistics(int subjectId)
