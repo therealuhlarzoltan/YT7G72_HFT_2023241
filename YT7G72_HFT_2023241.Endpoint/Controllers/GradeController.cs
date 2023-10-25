@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using YT7G72_HFT_2023241.Logic;
+using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Endpoint.Controllers
 {
@@ -7,79 +10,63 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
     [Route("/Grades")]
     public class GradeController : Controller
     {
-        //// GET: GradeController
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+        private IGradeLogic gradeLogic;
+        
+        public GradeController(IGradeLogic gradeLogic)
+        {
+            this.gradeLogic = gradeLogic;
+        }
 
-        //// GET: GradeController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        [HttpGet("{id}")]
+        public Grade Get(int id)
+        {
+            return gradeLogic.GetGrade(id);
+        }
 
-        //// GET: GradeController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public IEnumerable<Grade> GetAll()
+        {
+            return gradeLogic.GetAllGrades();
+        }
 
-        //// POST: GradeController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [HttpPost]
+        public void Create([FromBody] Grade grade)
+        {
+            gradeLogic.AddGrade(grade);
+        }
 
-        //// GET: GradeController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+        [HttpPut]
+        public void Edit([FromBody] Grade grade)
+        {
+            gradeLogic.UpdateGrade(grade);
+        }
 
-        //// POST: GradeController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
 
-        //// GET: GradeController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+           gradeLogic.RemoveGrade(id);
+        }
 
-        //// POST: GradeController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [Route("/Semester/Statistics/{year}")]
+        [HttpGet]
+        public SemesterStatistics GetSemesterStatistics(string year)
+        {
+            return gradeLogic.GetSemesterStatistics(year);
+        }
+
+        [Route("/Semester/Statistics")]
+        [HttpGet]
+        public IEnumerable<SemesterStatistics> GetAllSemesterStatistics()
+        {
+            return gradeLogic.GetSemesterStatistics();
+        }
+
+        [Route("/Subjects/Statistics/{id}")]
+        [HttpGet]
+        public SubjectStatistics GetSubjectStatistics(int id)
+        {
+            return gradeLogic.GetSubjectStatistics(id);
+        }
     }
 }

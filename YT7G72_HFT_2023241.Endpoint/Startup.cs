@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YT7G72_HFT_2023241.Logic;
+using YT7G72_HFT_2023241.Logic.Implementations;
+using YT7G72_HFT_2023241.Logic.Interfaces;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.Repository;
 
@@ -30,6 +32,7 @@ namespace YT7G72_HFT_2023241.Endpoint
             services.AddTransient<IPersonLogic, PersonLogic>();
             services.AddTransient<IGradeLogic, GradeLogic>();
             services.AddTransient<IEducationLogic, EducationLogic>();
+            services.AddTransient<ICurriculumLogic, CurriculumLogic>();
             services.AddControllers();
 
         }
@@ -46,10 +49,7 @@ namespace YT7G72_HFT_2023241.Endpoint
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
 
             app.UseExceptionHandler(c => c.Run(async context =>

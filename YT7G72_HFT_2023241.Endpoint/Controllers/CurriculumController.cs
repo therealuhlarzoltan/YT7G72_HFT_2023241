@@ -1,83 +1,49 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using YT7G72_HFT_2023241.Logic.Interfaces;
+using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Endpoint.Controllers
 {
+    [Route("/Curriculums")]
     public class CurriculumController : Controller
     {
-        // GET: CurriculumController
-        public ActionResult Index()
+        private ICurriculumLogic curriculumLogic;
+
+        public CurriculumController(ICurriculumLogic curriculumLogic)
         {
-            return View();
+            this.curriculumLogic = curriculumLogic;
         }
 
-        // GET: CurriculumController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("{id}")]
+        public Curriculum Get(int id)
         {
-            return View();
+            return curriculumLogic.GetCurriculum(id);
         }
 
-        // GET: CurriculumController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public IEnumerable<Curriculum> GetAll()
         {
-            return View();
+            return curriculumLogic.GetCurriculums();
         }
 
-        // POST: CurriculumController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public void Create([FromBody] Curriculum curriculum)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            curriculumLogic.AddCurriculum(curriculum);
         }
 
-        // GET: CurriculumController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpPut]
+        public void Edit([FromBody] Curriculum curriculum)
         {
-            return View();
+            curriculumLogic.UpdateCurriculum(curriculum);
         }
 
-        // POST: CurriculumController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CurriculumController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: CurriculumController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            curriculumLogic.RemoveCurriculum(id);
         }
     }
 }
