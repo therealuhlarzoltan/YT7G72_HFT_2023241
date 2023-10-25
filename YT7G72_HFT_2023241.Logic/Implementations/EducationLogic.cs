@@ -115,8 +115,8 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 var newestGrade = student.Grades.Where(grade => grade.SubjectId ==  subject.PreRequirementId)
                     .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[0]))
-                    .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[1]))
-                    .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[2]))
+                    .ThenByDescending(grade => int.Parse(grade.Semester.Split('/')[1]))
+                    .ThenByDescending(grade => int.Parse(grade.Semester.Split('/')[2]))
                     .FirstOrDefault();
                 if (newestGrade == null || newestGrade.Mark == 1)
                     throw new PreRequirementsNotMetException(student, subject);
@@ -166,7 +166,16 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void RemoveStudentFromSubject(int studentId, int subjectId)
         {
-            throw new NotImplementedException();
+            var student = studentRepository.Read(studentId);
+            var subject = subjectRepository.Read(subjectId);
+            if (student == null)
+                throw new ObjectNotFoundException(studentId, typeof(Student));
+            if (subject == null)
+                throw new ObjectNotFoundException(subjectId, typeof(Subject));
+            if (!subject.RegisteredStudents.Contains(student))
+                throw new NotRegisteredForSubjectException(student, subject);
+            subject.RegisteredStudents.Remove(student);
+            subjectRepository.Update(subject);
         }
 
         public void RemoveSubject(int id)

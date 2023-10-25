@@ -33,13 +33,14 @@ namespace YT7G72_HFT_2023241.Logic
         public IEnumerable<SemesterStatistics> GetSemesterStatistics()
         {
             var resultSet = new List<SemesterStatistics>();
-            var semesterGroups = gradeRepository.ReadAll().Select(grade => grade.Semester).GroupBy(semester => semester)
+            var semesterGroups = gradeRepository.ReadAll().Select(grade => grade.Semester).AsEnumerable().GroupBy(semester => semester)
                 .OrderBy(semesterGroup => semesterGroup.Count());
             foreach (var group in semesterGroups)
             {
                 resultSet.Add(GetSemesterStatistics(group.Key));
             }
-            return resultSet;
+            return resultSet.OrderBy(stat => int.Parse(stat.Semester.Split('/')[0])).
+                ThenBy(stat => int.Parse(stat.Semester.Split('/')[1])).ThenBy(stat => int.Parse(stat.Semester.Split('/')[2]));
         }
 
         public SemesterStatistics GetSemesterStatistics(string semester)
@@ -49,15 +50,25 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 return new SemesterStatistics() { Semester = semester, NumberOfFailures = 0, NumberOfPasses = 0, WeightedAvg = double.NaN };
             }
-            int failures = relevantGrades.Count(grade => grade.Mark < 1);
+            int failures = relevantGrades.Count(grade => grade.Mark == 1);
             int passes = relevantGrades.Count(grade => grade.Mark > 1);
-            double average = relevantGrades.Sum(grade => grade.Mark * grade.Subject.Credits) / relevantGrades.Sum(grade => grade.Subject.Credits);
+            double average = (double)relevantGrades.Sum(grade => grade.Mark * grade.Subject.Credits) / (double)relevantGrades.Sum(grade => grade.Subject.Credits);
             return new SemesterStatistics() {  Semester = semester, NumberOfFailures = failures, NumberOfPasses= passes, WeightedAvg = average };
         }
 
         public void AddGrade(Grade grade)
         {
-            gradeRepository.Create(grade);
+            var old = gradeRepository.ReadAll().FirstOrDefault(g => g.StudentId == grade.StudentId 
+            && g.SubjectId == grade.SubjectId && g.Semester == grade.Semester);
+            if (old != null)
+            {
+                grade.GradeId = old.GradeId;
+                gradeRepository.Update(grade);
+            }
+            else
+            {
+                gradeRepository.Create(grade);
+            }
         }
 
         public void RemoveGrade(int id)

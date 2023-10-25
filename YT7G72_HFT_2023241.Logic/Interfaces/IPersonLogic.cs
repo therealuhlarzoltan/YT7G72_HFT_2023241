@@ -26,6 +26,10 @@ namespace YT7G72_HFT_2023241.Logic
         IEnumerable<Tuple<Teacher, double>> GetBestTeachersByAcademicRank(AcademicRank academicRank);
         IEnumerable<Tuple<Teacher, double>> GetBestTeachers();
         string GetSchedule<T>(int id);
+        static bool ValidatePerson<T>(T person)
+        {
+            return false;
+        }
 
         
 

@@ -299,8 +299,12 @@ namespace YT7G72_HFT_2023241.Repository
                             new Grade() { GradeId = 1, StudentId = 1, Semester = "2022/23/2", Mark = 5, TeacherId = 6, SubjectId = 3},
                             new Grade() { GradeId = 2, StudentId = 1, Semester = "2022/23/1", Mark = 5, TeacherId = 11, SubjectId = 2},
                             new Grade() { GradeId = 3, StudentId = 1, Semester = "2023/24/1", Mark = 4, TeacherId = 12, SubjectId = 4},
-                            new Grade() { GradeId = 4, StudentId = 2, Semester = "2023/24/1", Mark = 3, TeacherId = 11, SubjectId = 2}
-                            
+                            new Grade() { GradeId = 4, StudentId = 2, Semester = "2023/24/1", Mark = 3, TeacherId = 11, SubjectId = 2},
+                            new Grade() { GradeId = 5, StudentId = 2, Semester = "2022/23/2", Mark = 2, TeacherId = 12, SubjectId = 1},
+                            new Grade() { GradeId = 6, StudentId = 2, Semester = "2022/23/1", Mark = 1, TeacherId = 12, SubjectId = 1},
+                            new Grade() { GradeId = 7, StudentId = 6, Semester = "2022/23/1", Mark = 1, TeacherId = 12, SubjectId = 1},
+                            new Grade() { GradeId = 8, StudentId = 4, Semester = "2022/23/1", Mark = 2, TeacherId = 12, SubjectId = 2}
+
                         }
                 );
 

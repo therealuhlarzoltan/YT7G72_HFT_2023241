@@ -29,6 +29,10 @@ namespace YT7G72_HFT_2023241.Logic
         void RemoveStudentFromCourse(int studentId, int courseId);
 
         void ResetSemester();
+        static bool ValidateObject<T>(T obj)
+        {
+            return false;
+        }
 
     }
 }

@@ -78,6 +78,7 @@ namespace YT7G72_HFT_2023241.Client
             .Add("Update", () => Update<Grade>())
             .Add("Get Best Students", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestStudents(); })
             .Add("Get Best Teachers", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestTeachers(); })
+            .Add("Get Semester Statistics", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetSemesterStatistics(); })
             .Add("Exit", ConsoleMenu.Close);
 
             var subjectRegistrationSubmenu = new ConsoleMenu(args, level: 1);
@@ -128,6 +129,10 @@ namespace YT7G72_HFT_2023241.Client
             else if (type == typeof(Curriculum))
             {
                 querySet = curriculumLogic.GetCurriculums();
+            }
+            else if (type == typeof(Grade))
+            {
+                querySet = gradeLogic.GetAllGrades();
             }
 
             properties = properties.Where(prop => !prop.GetAccessors()[0].IsVirtual).ToArray();
@@ -731,6 +736,27 @@ namespace YT7G72_HFT_2023241.Client
 
             Console.ReadKey();
             Main(new string[] { });
+        }
+
+        static void GetSemesterStatistics()
+        {
+            Console.Write("Enter semester (Optional): ");
+            string semester = Console.ReadLine();
+            if (semester.IsNullOrEmpty() )
+            {
+                var results = gradeLogic.GetSemesterStatistics();
+                foreach (var semesterResult in results)
+                {
+                    Console.WriteLine($"Semster: {semesterResult.Semester}\n\tSuccessful subject completions: {semesterResult.NumberOfPasses}" +
+                        $"\n\tFailed subject completions: {semesterResult.NumberOfFailures}\n\tWeighted Avrage ammong all studetns: {Math.Round(semesterResult.WeightedAvg, 2)}");
+                }
+            }
+            else
+            {
+                var semesterResult = gradeLogic.GetSemesterStatistics(semester);
+                Console.WriteLine($"Semster: {semesterResult.Semester}\n\tSuccessful subject completions: {semesterResult.NumberOfPasses}" +
+                       $"\n\tFailed subject completions: {semesterResult.NumberOfFailures}\n\tWeighted Avrage ammong all studetns: {Math.Round(semesterResult.WeightedAvg, 2)}");
+            }
         }
 
 
