@@ -185,8 +185,16 @@ namespace YT7G72_HFT_2023241.Logic
                 throw new ObjectNotFoundException(subjectId, typeof(Subject));
             if (!subject.RegisteredStudents.Contains(student))
                 throw new NotRegisteredForSubjectException(student, subject);
+            foreach (var course in student.RegisteredCourses)
+            {
+                if (course.Subject == subject)
+                {
+                    student.RegisteredCourses.Remove(course);
+                }
+            }
             subject.RegisteredStudents.Remove(student);
             subjectRepository.Update(subject);
+            studentRepository.Update(student);
         }
 
         public void RemoveSubject(int id)

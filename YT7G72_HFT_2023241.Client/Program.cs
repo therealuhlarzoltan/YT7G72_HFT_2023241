@@ -70,11 +70,13 @@ namespace YT7G72_HFT_2023241.Client
 
             var subjectRegistrationSubmenu = new ConsoleMenu(args, level: 1);
             subjectRegistrationSubmenu
-                .Add("Register for Subject", () => RegisterForSubject());
+                .Add("Register for Subject", () => RegisterForSubject())
+                .Add("Unregister from Subject", () => UnregisterFromSubject());
 
             var courseRegistrationSubmenu = new ConsoleMenu(args, level: 1);
             courseRegistrationSubmenu
-                .Add("Register for Course", () => RegisterForCourse());
+                .Add("Register for Course", () => RegisterForCourse())
+                .Add("Unregister from Course", () => UnregisterFromCourse());
 
             menu = new ConsoleMenu(args, level: 0);
             menu
@@ -603,6 +605,48 @@ namespace YT7G72_HFT_2023241.Client
             }
         }
 
+        static void UnregisterFromSubject()
+        {
+            Console.Write("Please enter Student ID: ");
+            int studentId;
+            if (!int.TryParse(Console.ReadLine(), out studentId))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+            Console.Write("Please enter Subject ID: ");
+            int subjectId;
+            if (!int.TryParse(Console.ReadLine(), out subjectId))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+
+            try
+            {
+                var student = restService.Get<Student>("/People/Students", studentId);
+                var subject = restService.Get<Subject>("/Education/Subjects", subjectId);
+
+                restService.Delete($"/Education/Subjects/{subjectId}/Register/{studentId}");
+                Console.WriteLine($"{student} successfuly unregistered from subject {subject}");
+            }
+            catch (ObjectNotFoundException exception)
+            {
+                Console.WriteLine(exception);
+            }
+            catch (PreRequirementsNotMetException exception)
+            {
+                Console.WriteLine($"Couldn't unregister from subject: {exception}");
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+        }
+
         static void RegisterForCourse()
         {
             Console.Write("Please enter Student ID: ");
@@ -625,7 +669,7 @@ namespace YT7G72_HFT_2023241.Client
             try
             {
                 var student = restService.Get<Student>("/People/Students", studentId);
-                var course = restService.Get<Teacher>("/Education/Courses", courseId);
+                var course = restService.Get<Course>("/Education/Courses", courseId);
 
                 restService.Post($"/Education/Courses/{courseId}/Register/{studentId}");
                 Console.WriteLine($"{student} successfuly registered for course {course}");
@@ -641,6 +685,52 @@ namespace YT7G72_HFT_2023241.Client
             catch (NotRegisteredForSubjectException exception)
             {
                 Console.WriteLine($"Couldn't register for course: {exception}");
+            }
+            finally
+            {
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+        }
+
+        static void UnregisterFromCourse()
+        {
+            Console.Write("Please enter Student ID: ");
+            int studentId;
+            if (!int.TryParse(Console.ReadLine(), out studentId))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+            Console.Write("Please enter Course ID: ");
+            int courseId;
+            if (!int.TryParse(Console.ReadLine(), out courseId))
+            {
+                Console.WriteLine("Invalid ID provided");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+
+            try
+            {
+                var student = restService.Get<Student>("/People/Students", studentId);
+                var course = restService.Get<Course>("/Education/Courses", courseId);
+
+                restService.Delete($"/Education/Courses/{courseId}/Register/{studentId}");
+                Console.WriteLine($"{student} successfuly unregistered from course {course}");
+            }
+            catch (ObjectNotFoundException exception)
+            {
+                Console.WriteLine(exception);
+            }
+            catch (CourseIsFullException exception)
+            {
+                Console.WriteLine($"Couldn't unregister from course: {exception}");
+            }
+            catch (NotRegisteredForSubjectException exception)
+            {
+                Console.WriteLine($"Couldn't unregister from course: {exception}");
             }
             finally
             {

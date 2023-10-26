@@ -28,6 +28,7 @@ namespace YT7G72_HFT_2023241.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
+            builder.EnableSensitiveDataLogging();
             if (!builder.IsConfigured)
             {
                 string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\uhlar\source\repos\YT7G72_HFT_2023241\YT7G72_HFT_2023241.Repository\Database\UniversityDatabase.mdf;Integrated Security=True;Initial Catalog=UniversityDatabase;MultipleActiveResultSets=True";
@@ -77,7 +78,7 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasMany(t => t.RegisteredCourses)
                 .WithOne(c => c.Teacher)
                 .HasForeignKey(t => t.TeacherId)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired();
 
             builder.Entity<Teacher>()
@@ -134,7 +135,7 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasMany(c => c.CurriculumStudents)
                 .WithOne(s => s.Curriculum)
                 .HasForeignKey(s => s.CurriculumId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             //prepopulating database
             builder.Entity<Curriculum>()

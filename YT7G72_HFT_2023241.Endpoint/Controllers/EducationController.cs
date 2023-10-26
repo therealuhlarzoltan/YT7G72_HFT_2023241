@@ -94,11 +94,25 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
             educationLogic.RegisterStudentForSubject(subjectId, studentId);
         }
 
-        [Route("Courses/{coursetId}/Register/{studentId}")]
+        [Route("Subjects/{subjectId}/Register/{studentId}")]
+        [HttpDelete]
+        public void UnregisterFromSubject(int subjectId, int studentId)
+        {
+            educationLogic.RemoveStudentFromSubject(studentId, subjectId);
+        }
+
+        [Route("Courses/{courseId}/Register/{studentId}")]
         [HttpPost]
         public void RegisterForCourse(int courseId, int studentId)
         {
-            educationLogic.RegisterStudentForCourse(courseId, studentId);
+            educationLogic.RegisterStudentForCourse(studentId, courseId);
+        }
+
+        [Route("Courses/{courseId}/Register/{studentId}")]
+        [HttpDelete]
+        public void UnregisterFromCourse(int courseId, int studentId)
+        {
+            educationLogic.RemoveStudentFromCourse(studentId, courseId);
         }
     }
 }
