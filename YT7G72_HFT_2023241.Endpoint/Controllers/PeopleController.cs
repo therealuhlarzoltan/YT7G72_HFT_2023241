@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Models;
 
@@ -92,23 +93,26 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
 
         [Route("Students/Best")]
         [HttpGet]
-        public IEnumerable<Tuple<Student, double>> GetBestStudents()
+        public IEnumerable<AverageByPersonDTO<Student>> GetBestStudents()
         {
-            return personLogic.GetBestStudents();
+            var result = personLogic.GetBestStudents();
+            return result.Select(r => new AverageByPersonDTO<Student>(r.Item1, r.Item2));
         }
 
         [Route("Teachers/Best")]
         [HttpGet]
-        public IEnumerable<Tuple<Teacher, double>> GetBestTeachers()
+        public IEnumerable<AverageByPersonDTO<Teacher>> GetBestTeachers()
         {
-            return personLogic.GetBestTeachers();
+            var result = personLogic.GetBestTeachers();
+            return result.Select(r => new AverageByPersonDTO<Teacher>(r.Item1, r.Item2));
         }
 
         [Route("Teachers/Best/{academicRank}")]
         [HttpGet]
-        public IEnumerable<Tuple<Teacher, double>> GetBestTeachersByAcademicRank(AcademicRank academicRank)
+        public IEnumerable<AverageByPersonDTO<Teacher>> GetBestTeachersByAcademicRank(AcademicRank academicRank)
         {
-            return personLogic.GetBestTeachersByAcademicRank(academicRank);
+            var result = personLogic.GetBestTeachersByAcademicRank(academicRank);
+            return result.Select(r => new AverageByPersonDTO<Teacher>(r.Item1, r.Item2));
         }
 
         [Route("Students/Schedule/{id}")]

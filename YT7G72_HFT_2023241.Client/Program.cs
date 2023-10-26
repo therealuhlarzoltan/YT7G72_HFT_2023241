@@ -65,8 +65,16 @@ namespace YT7G72_HFT_2023241.Client
             .Add("Update", () => Update<Grade>())
             .Add("Get Best Students", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestStudents(); })
             .Add("Get Best Teachers", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestTeachers(); })
+            .Add("Get Best Teachers By Academic Rank", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestTeachersByAcademicRank(); })
             .Add("Get Semester Statistics", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetSemesterStatistics(); })
             .Add("Exit", ConsoleMenu.Close);
+
+            var curriculumSubmenu = new ConsoleMenu(args, level: 1);
+            curriculumSubmenu
+                .Add("List", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); List<Curriculum>(); })
+                .Add("Create", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Create<Curriculum>(); })
+                .Add("Update", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Update<Curriculum>(); })
+                .Add("Delete", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Delete<Curriculum>(); });
 
             var subjectRegistrationSubmenu = new ConsoleMenu(args, level: 1);
             subjectRegistrationSubmenu
@@ -85,6 +93,7 @@ namespace YT7G72_HFT_2023241.Client
             .Add("Subjects", () => subjectSubmenu.Show())
             .Add("Courses", () => courseSubmenu.Show())
             .Add("Grades", () => gradeSubmenu.Show())
+            .Add("Curriculums", () => curriculumSubmenu.Show())
             .Add("Subject Registration", () => subjectRegistrationSubmenu.Show())
             .Add("Course Registration", () => courseRegistrationSubmenu.Show())
             .Add("Exit", ConsoleMenu.Close);
@@ -117,7 +126,7 @@ namespace YT7G72_HFT_2023241.Client
             }
             else if (type == typeof(Curriculum))
             {
-                querySet = restService.Get<Subject>("/Curriculums");
+                querySet = restService.Get<Curriculum>("/Curriculums");
             }
             else if (type == typeof(Grade))
             {
@@ -827,10 +836,10 @@ namespace YT7G72_HFT_2023241.Client
         static void GetBestStudents()
         {
             Console.WriteLine("Students with highest weighted averages:");
-            var studentTuples = restService.Get<Tuple<Student, double>>("/People/Students/Best");
-            foreach (var studentTuple in studentTuples)
+            var studentDTOs = restService.Get<AverageByPersonDTO<Student>>("/People/Students/Best");
+            foreach (var dto in studentDTOs)
             {
-                Console.WriteLine($"Student: {studentTuple.Item1}, Average: {Math.Round(studentTuple.Item2, 2)}");
+                Console.WriteLine(dto);
             }
 
             Console.ReadKey();
@@ -840,10 +849,57 @@ namespace YT7G72_HFT_2023241.Client
         static void GetBestTeachers()
         {
             Console.WriteLine("Teachers with highest average grades given:");
-            var teacherTuples = restService.Get<Tuple<Teacher, double>>("/People/Teachers/Best");
-            foreach (var teacherTuple in teacherTuples)
+            var teacherDTOs = restService.Get<AverageByPersonDTO<Teacher>>("/People/Teachers/Best");
+            foreach (var dto in teacherDTOs)
             {
-                Console.WriteLine($"Teacher: {teacherTuple.Item1}, Average: {Math.Round(teacherTuple.Item2, 2)}");
+                Console.WriteLine(dto);
+            }
+
+            Console.ReadKey();
+            Main(new string[] { });
+        }
+
+        static void GetBestTeachersByAcademicRank()
+        {
+            Console.WriteLine("Available choices for Academic Rank");
+            foreach (var value in Enum.GetValues(typeof(AcademicRank)))
+            {
+                Console.WriteLine($"{(int)value} -- {value}");
+            }
+            Console.Write("Selected Academic Rank: ");
+            string input = Console.ReadLine();
+            int intValue;
+            if (!int.TryParse(input, out intValue))
+            {
+                Console.WriteLine("Invalid value!");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+
+            bool isValid = false;
+            foreach (var value in Enum.GetValues(typeof(AcademicRank)))
+            {
+                if (intValue == (int)value)
+                {
+                    isValid = true;
+                    break;
+                }
+            }
+
+            
+
+            if (isValid)
+            {
+                Console.WriteLine("Teachers with highest average grades given:");
+                var teacherDTOs = restService.Get<AverageByPersonDTO<Teacher>>("/People/Teachers/Best");
+                foreach (var dto in teacherDTOs)
+                {
+                    Console.WriteLine(dto);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid value!");
             }
 
             Console.ReadKey();

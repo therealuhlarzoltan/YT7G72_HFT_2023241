@@ -43,7 +43,8 @@ namespace YT7G72_HFT_2023241.Repository
         {
             //creating Student entity
             builder.Entity<Student>()
-                .HasAlternateKey(s => s.StudentCode);
+                .HasIndex(student => student.StudentCode)
+                .IsUnique();
 
             builder.Entity<Student>()
                 .Property(s => s.FinancialStatus)

@@ -42,7 +42,8 @@ namespace YT7G72_HFT_2023241.Repository
             var properties = type.GetProperties();
             foreach (var property in properties)
             {
-                property.SetValue(target, property.GetValue(source));
+                if (!property.GetAccessors()[0].IsVirtual)
+                    property.SetValue(target, property.GetValue(source));
             }
         }
     }
