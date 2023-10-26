@@ -6,22 +6,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using YT7G72_HFT_2023241.Logic;
-using YT7G72_HFT_2023241.Logic.Implementations;
-using YT7G72_HFT_2023241.Logic.Interfaces;
 using YT7G72_HFT_2023241.Models;
-using YT7G72_HFT_2023241.Repository;
 
 namespace YT7G72_HFT_2023241.Client
 {
     internal class Program
     {
-        private static RestService restService;
+        private static RestService restService = new RestService("http://localhost:4180");
         const int COLUMN_WIDTH = 16;
         const int SEPARATOR_WIDTH = 1;
         static void Main(string[] args)
         {
             ConsoleMenu menu = null;
-            restService = new RestService("http://localhost:4180");
 
             var studentSubmenu = new ConsoleMenu(args, level: 1);
             studentSubmenu
@@ -221,20 +217,31 @@ namespace YT7G72_HFT_2023241.Client
                     }
                     else
                     {
-                        var methods = property.PropertyType.GetMethods();
-                        var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
-                        if (converterMethod != null)
+                        if (property.PropertyType == typeof(int?))
                         {
-                            try
+                            int converted;
+                            if (int.TryParse(input, out converted))
                             {
-                                var convertedValue = converterMethod.Invoke(null, new object[] { input });
-                                property.SetValue(instance, convertedValue);
+                                property.SetValue(instance, converted);
                             }
-                            catch (Exception)
+                        }
+                        else
+                        {
+                            var methods = property.PropertyType.GetMethods();
+                            var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
+                            if (converterMethod != null)
                             {
-                                Console.WriteLine("Invalid input value!");
-                                Console.ReadKey();
-                                Main(new string[] { });
+                                try
+                                {
+                                    var convertedValue = converterMethod.Invoke(null, new object[] { input });
+                                    property.SetValue(instance, convertedValue);
+                                }
+                                catch (Exception)
+                                {
+                                    Console.WriteLine("Invalid input value!");
+                                    Console.ReadKey();
+                                    Main(new string[] { });
+                                }
                             }
                         }
                     }
@@ -575,10 +582,10 @@ namespace YT7G72_HFT_2023241.Client
 
             try
             {
-                var student = restService.Get<Student>("/People/Student", studentId);
+                var student = restService.Get<Student>("/People/Students", studentId);
                 var subject = restService.Get<Subject>("/Education/Subjects", subjectId);
 
-                //educationLogic.RegisterStudentForSubject(studentId, subjectId);
+                restService.Post($"/Education/Subjects/{subjectId}/Register/{studentId}");
                 Console.WriteLine($"{student} successfuly registered for subject {subject}");
             }
             catch (ObjectNotFoundException exception)
@@ -620,7 +627,7 @@ namespace YT7G72_HFT_2023241.Client
                 var student = restService.Get<Student>("/People/Students", studentId);
                 var course = restService.Get<Teacher>("/Education/Courses", courseId);
 
-                //educationLogic.RegisterStudentForCourse(studentId, courseId);
+                restService.Post($"/Education/Courses/{courseId}/Register/{studentId}");
                 Console.WriteLine($"{student} successfuly registered for course {course}");
             }
             catch (ObjectNotFoundException exception)

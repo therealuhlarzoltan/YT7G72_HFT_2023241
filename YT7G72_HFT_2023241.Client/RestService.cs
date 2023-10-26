@@ -102,6 +102,19 @@ namespace YT7G72_HFT_2023241.Client
             response.EnsureSuccessStatusCode();
         }
 
+        public void Post(string parameterizedEndpoint)
+        {
+            HttpResponseMessage response =
+                client.PostAsync(parameterizedEndpoint, null).GetAwaiter().GetResult();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
+                throw new ArgumentException(error.Msg);
+            }
+            response.EnsureSuccessStatusCode();
+        }
+
         public void Delete(string endpoint, int id)
         {
             HttpResponseMessage response =

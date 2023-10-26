@@ -32,6 +32,13 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         }
 
         [Route("Subjects")]
+        [HttpPost]
+        public void CreateSubject([FromBody] Subject subject)
+        {
+            educationLogic.AddSubject(subject);
+        }
+
+        [Route("Subjects")]
         [HttpPut]
         public void UpdateSubject([FromBody] Subject subject)
         {
@@ -60,6 +67,13 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         }
 
         [Route("Courses")]
+        [HttpPost]
+        public void CreateCourse([FromBody] Course course)
+        {
+            educationLogic.AddCourse(course);
+        }
+
+        [Route("Courses")]
         [HttpPut]
         public void UpdateCourse([FromBody] Course course)
         {
@@ -71,6 +85,20 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void DeleteCourse(int id)
         {
             educationLogic.RemoveCourse(id);
+        }
+
+        [Route("Subjects/{subjectId}/Register/{studentId}")]
+        [HttpPost]
+        public void RegisterForSubject(int subjectId, int studentId)
+        {
+            educationLogic.RegisterStudentForSubject(subjectId, studentId);
+        }
+
+        [Route("Courses/{coursetId}/Register/{studentId}")]
+        [HttpPost]
+        public void RegisterForCourse(int courseId, int studentId)
+        {
+            educationLogic.RegisterStudentForCourse(courseId, studentId);
         }
     }
 }

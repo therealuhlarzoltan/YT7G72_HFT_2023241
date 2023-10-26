@@ -23,7 +23,7 @@ namespace YT7G72_HFT_2023241.Endpoint
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<UniversityDatabaseContext>();
+            services.AddSingleton<UniversityDatabaseContext>();
             services.AddTransient<IRepository<Student>, StudentRepository>();
             services.AddTransient<IRepository<Teacher>, TeacherRepository>();
             services.AddTransient<IRepository<Curriculum>, CurriculumRepository>();

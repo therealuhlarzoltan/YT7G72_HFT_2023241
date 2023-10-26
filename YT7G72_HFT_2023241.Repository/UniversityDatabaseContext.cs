@@ -31,7 +31,10 @@ namespace YT7G72_HFT_2023241.Repository
             if (!builder.IsConfigured)
             {
                 string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\uhlar\source\repos\YT7G72_HFT_2023241\YT7G72_HFT_2023241.Repository\Database\UniversityDatabase.mdf;Integrated Security=True;Initial Catalog=UniversityDatabase;MultipleActiveResultSets=True";
-                builder.UseLazyLoadingProxies().UseSqlServer(connectionString);
+                builder
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(connectionString);
+                    //.UseInMemoryDatabase("UniversityDatabase");
             }
         }
 

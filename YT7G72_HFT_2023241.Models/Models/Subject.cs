@@ -25,6 +25,7 @@ namespace YT7G72_HFT_2023241.Models
         public int Credits { get; set; }
         [Required]
         public Requirement Requirement { get; set; }
+        [JsonIgnore]
         public virtual Subject PreRequirement { get; set; }
         [Required]
         public int TeacherId { get; set; }
