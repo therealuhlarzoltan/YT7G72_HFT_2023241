@@ -63,8 +63,6 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasMany(s => s.RegisteredCourses)
                 .WithMany(c => c.EnrolledStudents)
                 .UsingEntity<CourseRegistration>(
-                    //courseReg => courseReg.HasOne(courseReg => courseReg.Course).WithMany().HasForeignKey(courseReg => courseReg.CourseId).OnDelete(DeleteBehavior.Cascade),
-                    //courseReg => courseReg.HasOne(courseReg => courseReg.Student).WithMany().HasForeignKey(courseReg => courseReg.StudentId).OnDelete(DeleteBehavior.Cascade)
                     l => l.HasOne(e => e.Course).WithMany(e => e.CourseRegistrations).OnDelete(DeleteBehavior.NoAction),
                     r => r.HasOne(e => e.Student).WithMany(e => e.CourseRegistrations).OnDelete(DeleteBehavior.NoAction)
                 );

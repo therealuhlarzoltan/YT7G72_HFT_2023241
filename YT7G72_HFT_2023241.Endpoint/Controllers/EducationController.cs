@@ -91,7 +91,7 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         [HttpPost]
         public void RegisterForSubject(int subjectId, int studentId)
         {
-            educationLogic.RegisterStudentForSubject(subjectId, studentId);
+            educationLogic.RegisterStudentForSubject(studentId, subjectId);
         }
 
         [Route("Subjects/{subjectId}/Register/{studentId}")]
