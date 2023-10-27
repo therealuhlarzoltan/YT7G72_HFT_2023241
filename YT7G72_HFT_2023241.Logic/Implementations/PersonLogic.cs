@@ -201,7 +201,7 @@ namespace YT7G72_HFT_2023241.Logic
                         {
                             schedule += $"\t{course.Subject.SubjectName} - {course.CourseName};\n";
                             schedule += $"\t\tCourse Type: {course.CourseType}\n";
-                            schedule += $"\t\tTeacher: {course.Teacher.FirstName} {course.Teacher.LastName}\n";
+                            schedule += $"\t\tTeacher: {course.Teacher?.FirstName} {course.Teacher?.LastName}\n";
                             schedule += $"\t\tRoom: {course.Room}\n";
                             schedule += $"\t\tTime: {course.StartTime} - {course.StartTime + new TimeSpan( 0, course.LengthInMinutes, 0)}\n";
                             schedule += $"\t\tCapacity: {course.EnrolledStudents.Count}/{course.CourseCapacity}\n";

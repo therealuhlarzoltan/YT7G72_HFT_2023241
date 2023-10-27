@@ -13,12 +13,15 @@ namespace YT7G72_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StudentId { get; set; }
         [Required]
+        [Format("String between 2 and 50 characters")]
         [StringLength(50, MinimumLength = 2)]
         public string FirstName { get; set; }
         [Required]
+        [Format("String between 2 and 50 characters")]
         [StringLength(50, MinimumLength = 2)]
         public string LastName { get; set; }
         [Required]
+        [Format("String with 6 characters, containing only English upper case letters and numbers")]
         [StringLength(6, MinimumLength = 6)]
         public string StudentCode { get; set; }
         public FinancialStatus FinancialStatus { get; set; }

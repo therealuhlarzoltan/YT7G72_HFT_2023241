@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Formats.Asn1;
 using System.Net.Http.Json;
 using System.Text.Json;
+using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Models
 {
@@ -20,6 +21,7 @@ namespace YT7G72_HFT_2023241.Models
         public int CourseId { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 4)]
+        [Format("String between 4 and 50 characters")]
         public string CourseName { get; set; }
         [Required]
         public int CourseCapacity { get; set; }
@@ -27,14 +29,16 @@ namespace YT7G72_HFT_2023241.Models
         [Required]
         public DayOfWeek DayOfWeek { get; set; }
         [Required]
+        [Format("HH:MM")]
         [JsonConverter(typeof(TimeSpanConverter))]
         public TimeSpan StartTime { get; set; }
         [Required]
+        [StringLength (50, MinimumLength = 4)]
+        [Format("String between 4 and 50 characters")]
         public string Room { get; set; }
         [Required]
         public int LengthInMinutes { get; set; }
-        [Required]
-        public int TeacherId { get; set; }
+        public int? TeacherId { get; set; }
         [Required]
         public int SubjectId { get; set; }
         [JsonIgnore]

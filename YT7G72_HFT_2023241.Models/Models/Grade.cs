@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Models
 {
@@ -15,6 +16,7 @@ namespace YT7G72_HFT_2023241.Models
         public int GradeId { get; set; }
         [Required]
         [StringLength(9, MinimumLength = 9)]
+        [Format("e.g. 2023/24/1")]
         public string Semester { get; set; }
         [Required]
         public int StudentId { get; set; }
@@ -26,6 +28,7 @@ namespace YT7G72_HFT_2023241.Models
         public virtual Subject Subject { get; set; }
         public virtual Teacher Teacher { get; set; }
         [Required]
+        [Format("Integer between 1 and 5")]
         [Range(1, 5)]
         public int Mark { get; set; }
     }

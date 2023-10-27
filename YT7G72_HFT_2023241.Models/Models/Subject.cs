@@ -16,9 +16,11 @@ namespace YT7G72_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SubjectId { get; set; }
         [Required]
+        [Format("String between 4 and 50 characters")]
         [StringLength(50, MinimumLength = 4)]
         public string SubjectName { get; set; }
         [Required]
+        [Format("String between 4 and 50 characters")]
         [StringLength(50, MinimumLength = 4)]
         public string SubjectCode { get; set; }
         [Required]
@@ -27,8 +29,7 @@ namespace YT7G72_HFT_2023241.Models
         public Requirement Requirement { get; set; }
         [JsonIgnore]
         public virtual Subject PreRequirement { get; set; }
-        [Required]
-        public int TeacherId { get; set; }
+        public int? TeacherId { get; set; }
         [Required]
         public int CurriculumId { get; set; }
         public int? PreRequirementId { get; set; }

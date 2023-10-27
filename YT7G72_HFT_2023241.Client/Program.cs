@@ -102,6 +102,8 @@ namespace YT7G72_HFT_2023241.Client
             menu.Show();
         }
 
+        #region Generic CRUD Methods
+
         static void List<T>() where T : class
         {
             Type type = typeof(T);
@@ -179,89 +181,7 @@ namespace YT7G72_HFT_2023241.Client
             Main(new string[] { });
         }
 
-        static T CreateInstance<T>()
-        {
-            object instance = Activator.CreateInstance(typeof(T));
-            PropertyInfo[] properties = instance.GetType().GetProperties().Where(property => !property.GetAccessors()[0].IsVirtual
-           && !property.Name.Contains($"{typeof(T).Name}Id")).ToArray();
-            foreach (var property in properties)
-            {
-                if (property.PropertyType.IsEnum)
-                {
-                    Type enumType = property.PropertyType;
-                    Console.WriteLine($"Available choices for {enumType.Name}:");
-                    foreach (var value in Enum.GetValues(enumType))
-                    {
-                        Console.WriteLine($"{(int)value} -- {value}");
-                    }
-                }
-                if (property.GetAttribute<RequiredAttribute>() != null)
-                {
-                    Console.Write($"{property.Name} (Required): ");
-                }
-                else
-                {
-                    Console.Write($"{property.Name}: ");
-                }
-
-                string input = Console.ReadLine();
-                if (!input.IsNullOrEmpty())
-                {
-                    if (property.PropertyType == typeof(string))
-                    {
-                        property.SetValue(instance, input);
-                    }
-                    else if (property.PropertyType.IsEnum)
-                    {
-                        var values = Enum.GetValues(property.PropertyType);
-                        int converted;
-                        if (int.TryParse(input, out converted))
-                        {
-                            foreach (var value in values)
-                            {
-                                if ((int)value == converted)
-                                {
-                                    property.SetValue(instance, value);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (property.PropertyType == typeof(int?))
-                        {
-                            int converted;
-                            if (int.TryParse(input, out converted))
-                            {
-                                property.SetValue(instance, converted);
-                            }
-                        }
-                        else
-                        {
-                            var methods = property.PropertyType.GetMethods();
-                            var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
-                            if (converterMethod != null)
-                            {
-                                try
-                                {
-                                    var convertedValue = converterMethod.Invoke(null, new object[] { input });
-                                    property.SetValue(instance, convertedValue);
-                                }
-                                catch (Exception)
-                                {
-                                    Console.WriteLine("Invalid input value!");
-                                    Console.ReadKey();
-                                    Main(new string[] { });
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return (T)instance;
-
-        }
+        
 
         static void Create<T>()
         {
@@ -378,75 +298,7 @@ namespace YT7G72_HFT_2023241.Client
             }
         }
 
-        static void UpdateInstance<T>(T instance) where T : class
-        {
-            PropertyInfo[] properties = instance.GetType().GetProperties().Where(property => !property.GetAccessors()[0].IsVirtual
-           && !property.Name.Contains($"{typeof(T).Name}Id")).ToArray();
-            foreach (var property in properties)
-            {
-                if (property.PropertyType.IsEnum)
-                {
-                    Type enumType = property.PropertyType;
-                    Console.WriteLine($"Available choices for {enumType.Name}:");
-                    foreach (var value in Enum.GetValues(enumType))
-                    {
-                        Console.WriteLine($"{(int)value} -- {value}");
-                    }
-                }
-                if (property.GetAttribute<RequiredAttribute>() != null)
-                {
-                    Console.Write($"{property.Name} (Required): ");
-                }
-                else
-                {
-                    Console.Write($"{property.Name}: ");
-                }
-
-                string input = Console.ReadLine();
-                if (!input.IsNullOrEmpty())
-                {
-                    if (property.PropertyType == typeof(string))
-                    {
-                        property.SetValue(instance, input);
-                    }
-                    else if (property.PropertyType.IsEnum)
-                    {
-                        var values = Enum.GetValues(property.PropertyType);
-                        int converted;
-                        if (int.TryParse(input, out converted))
-                        {
-                            foreach (var value in values)
-                            {
-                                if ((int)value == converted)
-                                {
-                                    property.SetValue(instance, value);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var methods = property.PropertyType.GetMethods();
-                        var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
-                        if (converterMethod != null)
-                        {
-                            try
-                            {
-                                var convertedValue = converterMethod.Invoke(null, new object[] { input });
-                                property.SetValue(instance, convertedValue);
-                            }
-                            catch (Exception)
-                            {
-                                Console.WriteLine("Invalid input value!");
-                                Console.ReadKey();
-                                Main(new string[] { });
-                            }
-                        }
-                    }
-                }
-            }
-        }
+      
 
         static void Delete<T>()
         {
@@ -494,6 +346,10 @@ namespace YT7G72_HFT_2023241.Client
                 Main(new string[] { }); 
             }
         }
+
+        #endregion
+
+        #region Advanced CRUD Methods
 
         static void GetSubjects<T>() where T : IRegistableForSubject
         {
@@ -751,8 +607,6 @@ namespace YT7G72_HFT_2023241.Client
             }
         }
 
-      
-
         static void GetSchedule<T>() where T : IRegistableForSubject, IRegistableForCourse
         {
             Type type = typeof(T);
@@ -793,7 +647,9 @@ namespace YT7G72_HFT_2023241.Client
                 Main(new string[] { });
             }
         }
+        #endregion
 
+        #region non-CRUD Methods
         static void GetBestStudents()
         {
             Console.WriteLine("Students with highest weighted averages:");
@@ -849,7 +705,7 @@ namespace YT7G72_HFT_2023241.Client
 
             if (isValid)
             {
-                Console.WriteLine("Teachers with highest average grades given:");
+                Console.WriteLine("Teachers who gave the higest grades on average::");
                 var teacherDTOs = restService.Get<AverageByPersonDTO<Teacher>>("/People/Teachers/Best");
                 foreach (var dto in teacherDTOs)
                 {
@@ -904,6 +760,174 @@ namespace YT7G72_HFT_2023241.Client
                 Main(new string[] { });
             }
         }
+        #endregion
+
+        #region Helper Methods
+
+        static void UpdateInstance<T>(T instance) where T : class
+        {
+            PropertyInfo[] properties = instance.GetType().GetProperties().Where(property => !property.GetAccessors()[0].IsVirtual
+           && !property.Name.Contains($"{typeof(T).Name}Id")).ToArray();
+            foreach (var property in properties)
+            {
+                if (property.PropertyType.IsEnum)
+                {
+                    Type enumType = property.PropertyType;
+                    Console.WriteLine($"Available choices for {enumType.Name}:");
+                    foreach (var value in Enum.GetValues(enumType))
+                    {
+                        Console.WriteLine($"{(int)value} -- {value}");
+                    }
+                }
+                if (property.GetAttribute<RequiredAttribute>() != null)
+                {
+                    if (property.GetAttribute<FormatAttribute>() != null)
+                        Console.Write($"{property.Name} ({property.GetAttribute<FormatAttribute>().FormatDescription}) (Required): ");
+                    else
+                        Console.Write($"{property.Name} (Required): ");
+                }
+                else
+                {
+                    if (property.GetAttribute<FormatAttribute>() != null)
+                        Console.Write($"{property.Name} ({property.GetAttribute<FormatAttribute>().FormatDescription}): ");
+                    else
+                        Console.Write($"{property.Name}: ");
+                }
+
+                string input = Console.ReadLine();
+                if (!input.IsNullOrEmpty())
+                {
+                    if (property.PropertyType == typeof(string))
+                    {
+                        property.SetValue(instance, input);
+                    }
+                    else if (property.PropertyType.IsEnum)
+                    {
+                        var values = Enum.GetValues(property.PropertyType);
+                        int converted;
+                        if (int.TryParse(input, out converted))
+                        {
+                            foreach (var value in values)
+                            {
+                                if ((int)value == converted)
+                                {
+                                    property.SetValue(instance, value);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var methods = property.PropertyType.GetMethods();
+                        var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
+                        if (converterMethod != null)
+                        {
+                            try
+                            {
+                                var convertedValue = converterMethod.Invoke(null, new object[] { input });
+                                property.SetValue(instance, convertedValue);
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Invalid input value!");
+                                Console.ReadKey();
+                                Main(new string[] { });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        static T CreateInstance<T>()
+        {
+            object instance = Activator.CreateInstance(typeof(T));
+            PropertyInfo[] properties = instance.GetType().GetProperties().Where(property => !property.GetAccessors()[0].IsVirtual
+           && !property.Name.Contains($"{typeof(T).Name}Id")).ToArray();
+            foreach (var property in properties)
+            {
+                if (property.PropertyType.IsEnum)
+                {
+                    Type enumType = property.PropertyType;
+                    Console.WriteLine($"Available choices for {enumType.Name}:");
+                    foreach (var value in Enum.GetValues(enumType))
+                    {
+                        Console.WriteLine($"{(int)value} -- {value}");
+                    }
+                }
+                if (property.GetAttribute<RequiredAttribute>() != null)
+                {
+                    if (property.GetAttribute<FormatAttribute>() != null)
+                        Console.Write($"{property.Name} ({property.GetAttribute<FormatAttribute>().FormatDescription}) (Required): ");
+                    else
+                        Console.Write($"{property.Name} (Required): ");
+                }
+                else
+                {
+                    if ( property.GetAttribute<FormatAttribute>() != null)
+                        Console.Write($"{property.Name} ({property.GetAttribute<FormatAttribute>().FormatDescription}): ");
+                    else
+                        Console.Write($"{property.Name}: ");
+                }
+
+                string input = Console.ReadLine();
+                if (!input.IsNullOrEmpty())
+                {
+                    if (property.PropertyType == typeof(string))
+                    {
+                        property.SetValue(instance, input);
+                    }
+                    else if (property.PropertyType.IsEnum)
+                    {
+                        var values = Enum.GetValues(property.PropertyType);
+                        int converted;
+                        if (int.TryParse(input, out converted))
+                        {
+                            foreach (var value in values)
+                            {
+                                if ((int)value == converted)
+                                {
+                                    property.SetValue(instance, value);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (property.PropertyType == typeof(int?))
+                        {
+                            int converted;
+                            if (int.TryParse(input, out converted))
+                            {
+                                property.SetValue(instance, converted);
+                            }
+                        }
+                        else
+                        {
+                            var methods = property.PropertyType.GetMethods();
+                            var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
+                            if (converterMethod != null)
+                            {
+                                try
+                                {
+                                    var convertedValue = converterMethod.Invoke(null, new object[] { input });
+                                    property.SetValue(instance, convertedValue);
+                                }
+                                catch (Exception)
+                                {
+                                    Console.WriteLine("Invalid input value!");
+                                    Console.ReadKey();
+                                    Main(new string[] { });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return (T)instance;
+        }
 
         static void List<T>(IEnumerable<T> collection)
         {
@@ -948,5 +972,6 @@ namespace YT7G72_HFT_2023241.Client
                 Console.WriteLine();
             }
         }
+        #endregion
     }
 }

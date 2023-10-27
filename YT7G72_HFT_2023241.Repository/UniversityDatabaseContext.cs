@@ -54,8 +54,8 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasMany(e => e.RegisteredSubjects)
                 .WithMany(e => e.RegisteredStudents)
                 .UsingEntity<SubjectRegistration>(
-                    l => l.HasOne(e => e.Subject).WithMany(e => e.SubjectRegistrations).OnDelete(DeleteBehavior.NoAction),
-                    r => r.HasOne(e => e.Student).WithMany(e => e.SubjectRegistrations).OnDelete(DeleteBehavior.NoAction)
+                    l => l.HasOne(e => e.Subject).WithMany(e => e.SubjectRegistrations).OnDelete(DeleteBehavior.Cascade),
+                    r => r.HasOne(e => e.Student).WithMany(e => e.SubjectRegistrations).OnDelete(DeleteBehavior.Cascade)
                 );
         
 
@@ -63,9 +63,15 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasMany(s => s.RegisteredCourses)
                 .WithMany(c => c.EnrolledStudents)
                 .UsingEntity<CourseRegistration>(
-                    l => l.HasOne(e => e.Course).WithMany(e => e.CourseRegistrations).OnDelete(DeleteBehavior.NoAction),
-                    r => r.HasOne(e => e.Student).WithMany(e => e.CourseRegistrations).OnDelete(DeleteBehavior.NoAction)
+                    l => l.HasOne(e => e.Course).WithMany(e => e.CourseRegistrations).OnDelete(DeleteBehavior.Cascade),
+                    r => r.HasOne(e => e.Student).WithMany(e => e.CourseRegistrations).OnDelete(DeleteBehavior.Cascade)
                 );
+
+            builder.Entity<Student>()
+                .HasMany(student => student.Grades)
+                .WithOne(grade => grade.Student)
+                .HasForeignKey(grade => grade.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             //creating Teacher entity
@@ -77,14 +83,19 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasMany(t => t.RegisteredCourses)
                 .WithOne(c => c.Teacher)
                 .HasForeignKey(t => t.TeacherId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Teacher>()
                 .HasMany(t => t.RegisteredSubjects)
                 .WithOne(s => s.Teacher)
                 .HasForeignKey(t => t.TeacherId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Teacher>()
+                .HasMany(teacher => teacher.GivenGrades)
+                .WithOne(grade => grade.Teacher)
+                .HasForeignKey(grade => grade.TeacherId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             //creating Subject entity
@@ -99,21 +110,12 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasForeignKey<Subject>(s => s.PreRequirementId)
                 .IsRequired(false);
 
+            builder.Entity<Subject>()
+                .HasMany(s => s.Grades)
+                .WithOne(g => g.Subject)
+                .HasForeignKey(g => g.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //creating Grade entity
-            builder.Entity<Grade>()
-                .HasOne(grade => grade.Student)
-                .WithMany(student => student.Grades)
-                .HasForeignKey(student => student.StudentId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
-
-            builder.Entity<Grade>()
-                .HasOne(grade => grade.Subject)
-                .WithMany(subject => subject.Grades)
-                .HasForeignKey(grade => grade.SubjectId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
 
             builder.Entity<Grade>()
                 .HasOne(grade => grade.Teacher)
