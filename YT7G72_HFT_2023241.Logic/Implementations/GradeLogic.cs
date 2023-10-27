@@ -45,10 +45,10 @@ namespace YT7G72_HFT_2023241.Logic
 
         public SemesterStatistics GetSemesterStatistics(string semester)
         {
-            var relevantGrades = gradeRepository.ReadAll().Where(grade => grade.Semester ==  semester);
+            var relevantGrades = gradeRepository.ReadAll().Where(grade => grade.Semester ==  semester && grade.Subject.Credits > 0);
             if (!relevantGrades.Any())
             {
-                return new SemesterStatistics() { Semester = semester, NumberOfFailures = 0, NumberOfPasses = 0, WeightedAvg = double.NaN };
+                return new SemesterStatistics() { Semester = semester, NumberOfFailures = -1, NumberOfPasses = -1, WeightedAvg = -1 };
             }
             int failures = relevantGrades.Count(grade => grade.Mark == 1);
             int passes = relevantGrades.Count(grade => grade.Mark > 1);
@@ -125,27 +125,16 @@ namespace YT7G72_HFT_2023241.Logic
         public SubjectStatistics GetSubjectStatistics(int subjectId)
         {
             var grades = gradeRepository.ReadAll().Where(grade => grade.SubjectId == subjectId);
-            try
+            
+            
+            var result = new SubjectStatistics()
             {
-                var result = new SubjectStatistics()
-                {
-                    Subject = grades.FirstOrDefault()?.Subject,
-                    NumberOfRegistrations = grades.Count(),
-                    PassPerRegistrationRatio = (double)grades.Count(g => g.Mark > 1) / (double)(grades.Count()),
-                    Avg = grades.Average(g => g.Mark)
-                };
-                return result;
-            }
-            catch (DivideByZeroException)
-            {
-                return new SubjectStatistics()
-                {
-                    Subject = grades.FirstOrDefault()?.Subject,
-                    NumberOfRegistrations = grades.Count(),
-                    PassPerRegistrationRatio = double.NaN,
-                    Avg = double.NaN
-                };
-            }
+                Subject = grades.FirstOrDefault() == null ? null : grades.FirstOrDefault().Subject,
+                NumberOfRegistrations = grades.Count(),
+                PassPerRegistrationRatio = double.IsNaN((double)grades.Count(g => g.Mark > 1) / (double)grades.Count()) ? -1 : (double)grades.Count(g => g.Mark > 1) / (double)grades.Count(),
+                Avg = grades.FirstOrDefault() == null ? -1 : grades.Average(g => g.Mark)
+            };
+            return result;
         }
     }
 }

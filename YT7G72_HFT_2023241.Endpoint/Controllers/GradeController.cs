@@ -63,7 +63,7 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
             return gradeLogic.GetSemesterStatistics();
         }
 
-        [Route("/Subjects/Statistics/{id}")]
+        [Route("Subjects/Statistics/{id}")]
         [HttpGet]
         public SubjectStatistics GetSubjectStatistics(int id)
         {

@@ -66,6 +66,7 @@ namespace YT7G72_HFT_2023241.Client
             .Add("Get Best Students", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestStudents(); })
             .Add("Get Best Teachers", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestTeachers(); })
             .Add("Get Best Teachers By Academic Rank", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestTeachersByAcademicRank(); })
+            .Add("Get Subject Statistics", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetSubjectStatistics(); })
             .Add("Get Semester Statistics", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetSemesterStatistics(); })
             .Add("Exit", ConsoleMenu.Close);
 
@@ -616,6 +617,8 @@ namespace YT7G72_HFT_2023241.Client
 
         static void UnregisterFromSubject()
         {
+            var exc = new ArgumentException("Invalid lsdjlsd");
+            Console.WriteLine(exc);
             Console.Write("Please enter Student ID: ");
             int studentId;
             if (!int.TryParse(Console.ReadLine(), out studentId))
@@ -748,49 +751,7 @@ namespace YT7G72_HFT_2023241.Client
             }
         }
 
-        static void List<T>(IEnumerable<T> collection)
-        {
-            var properties = typeof(T).GetProperties();
-            properties = properties.Where(prop => !prop.GetAccessors()[0].IsVirtual).ToArray();
-
-            foreach (var property in properties)
-            {
-                if (property.Name.Length > COLUMN_WIDTH)
-                {
-                    Console.Write($"{property.Name.Substring(0, COLUMN_WIDTH).PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
-                }
-                else
-                {
-                    Console.Write($"{property.Name.PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
-                }
-            }
-            Console.WriteLine();
-
-
-            foreach (var item in collection ?? Enumerable.Empty<T>())
-            {
-                foreach (var property in properties)
-                {
-                    if (property.GetValue(item) != null)
-                    {
-                        string otuput = property.GetValue(item).ToString();
-                        if (otuput.Length > COLUMN_WIDTH)
-                        {
-                            Console.Write($"{otuput.Substring(0, COLUMN_WIDTH).PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
-                        }
-                        else
-                        {
-                            Console.Write($"{otuput.PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
-                        }
-                    }
-                    else
-                    {
-                        Console.Write("-".PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH));
-                    }
-                }
-                Console.WriteLine();
-            }
-        }
+      
 
         static void GetSchedule<T>() where T : IRegistableForSubject, IRegistableForCourse
         {
@@ -886,8 +847,6 @@ namespace YT7G72_HFT_2023241.Client
                 }
             }
 
-            
-
             if (isValid)
             {
                 Console.WriteLine("Teachers with highest average grades given:");
@@ -921,9 +880,72 @@ namespace YT7G72_HFT_2023241.Client
             }
             else
             {
-                var semesterResult = restService.Get<SemesterStatistics>("/Grades/Semester/Statistics", 1);
+                var semesterResult = restService.GetSingle<SemesterStatistics>($"/Grades/Semester/Statistics/{semester}");
                 Console.WriteLine($"Semster: {semesterResult.Semester}\n\tSuccessful subject completions: {semesterResult.NumberOfPasses}" +
                        $"\n\tFailed subject completions: {semesterResult.NumberOfFailures}\n\tWeighted Avrage ammong all studetns: {Math.Round(semesterResult.WeightedAvg, 2)}");
+            }
+        }
+
+        static void GetSubjectStatistics()
+        {
+            Console.Write("Please enter Subject ID: ");
+            int id;
+            if (!int.TryParse( Console.ReadLine(), out id))
+            {
+                Console.WriteLine("Invalid ID provided!");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+            else
+            {
+                var subjectStat = restService.GetSingle<SubjectStatistics>($"/Grades/Subjects/Statistics/{id}");
+                Console.WriteLine($"Subject: {subjectStat.Subject}\n\tNumber of total registrations: {subjectStat.NumberOfRegistrations}\n\tPass per Registration Ratio: {subjectStat.PassPerRegistrationRatio}\n\tAverages grade given: {subjectStat.Avg}");
+                Console.ReadKey();
+                Main(new string[] { });
+            }
+        }
+
+        static void List<T>(IEnumerable<T> collection)
+        {
+            var properties = typeof(T).GetProperties();
+            properties = properties.Where(prop => !prop.GetAccessors()[0].IsVirtual).ToArray();
+
+            foreach (var property in properties)
+            {
+                if (property.Name.Length > COLUMN_WIDTH)
+                {
+                    Console.Write($"{property.Name.Substring(0, COLUMN_WIDTH).PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
+                }
+                else
+                {
+                    Console.Write($"{property.Name.PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
+                }
+            }
+            Console.WriteLine();
+
+
+            foreach (var item in collection ?? Enumerable.Empty<T>())
+            {
+                foreach (var property in properties)
+                {
+                    if (property.GetValue(item) != null)
+                    {
+                        string otuput = property.GetValue(item).ToString();
+                        if (otuput.Length > COLUMN_WIDTH)
+                        {
+                            Console.Write($"{otuput.Substring(0, COLUMN_WIDTH).PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
+                        }
+                        else
+                        {
+                            Console.Write($"{otuput.PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH)}");
+                        }
+                    }
+                    else
+                    {
+                        Console.Write("-".PadRight(COLUMN_WIDTH + SEPARATOR_WIDTH));
+                    }
+                }
+                Console.WriteLine();
             }
         }
     }
