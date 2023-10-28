@@ -45,5 +45,21 @@ namespace YT7G72_HFT_2023241.Models
             return $"{FirstName} {LastName} -- {StudentCode}";
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false ;
+            var student = obj as Student;
+            if (student == null) return false ;
+            return this.StudentId == student.StudentId
+                && this.StudentCode == student.StudentCode
+                && this.FirstName == student.FirstName
+                && this.LastName == student.LastName;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(StudentId, StudentCode, FirstName, LastName);
+        }
+
     }
 }

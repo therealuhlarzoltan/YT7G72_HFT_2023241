@@ -20,8 +20,6 @@ namespace YT7G72_HFT_2023241.Repository
         {
             var old = Read(entity.CurriculumId);
             CopyPropertyValues(entity, old);
-            //old.CurriculumName = entity.CurriculumName;
-            //old.CurriculumCode = entity.CurriculumCode;
             universityDatabaseContext.SaveChanges();
         }
     }

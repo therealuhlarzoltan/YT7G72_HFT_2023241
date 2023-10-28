@@ -46,9 +46,29 @@ namespace YT7G72_HFT_2023241.Models
         [JsonIgnore]
         public virtual ICollection<Grade> Grades { get; set; } = new HashSet<Grade>();
 
+        public override bool Equals(object obj)
+        {
+            return obj is Subject subject &&
+                   SubjectId == subject.SubjectId &&
+                   SubjectName == subject.SubjectName &&
+                   SubjectCode == subject.SubjectCode &&
+                   Credits == subject.Credits &&
+                   Requirement == subject.Requirement &&
+                   EqualityComparer<Subject>.Default.Equals(PreRequirement, subject.PreRequirement) &&
+                   CurriculumId == subject.CurriculumId &&
+                   PreRequirementId == subject.PreRequirementId;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(SubjectId, SubjectName, SubjectCode, Credits, Requirement, PreRequirement, CurriculumId, PreRequirementId);
+        }
+
         public override string ToString()
         {
             return $"{SubjectCode} - {SubjectName}";
         }
+
+
     }
 }
