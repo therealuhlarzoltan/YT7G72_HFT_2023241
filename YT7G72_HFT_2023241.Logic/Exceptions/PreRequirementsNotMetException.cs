@@ -12,15 +12,9 @@ namespace YT7G72_HFT_2023241.Logic
         public Student Student { get; }
         public Subject Subject { get; }
 
-        public PreRequirementsNotMetException(Student student, Subject subject) : base()
+        public PreRequirementsNotMetException(Student student, Subject subject) : base($"Student {student} did not meet the prerequirements for subject {subject}")
         {
-            Student = student;
-            Subject = subject;
-        }
 
-        public override string ToString()
-        {
-            return $"Student {Student} did not meet the prerequirements for subject {Subject}";
         }
     }
 }

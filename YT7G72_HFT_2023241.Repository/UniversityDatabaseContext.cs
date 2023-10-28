@@ -116,14 +116,6 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasForeignKey(g => g.SubjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
-            builder.Entity<Grade>()
-                .HasOne(grade => grade.Teacher)
-                .WithMany(teacher => teacher.GivenGrades)
-                .HasForeignKey(grade => grade.TeacherId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
-
             
             //creating Curriculum entity
             builder.Entity<Curriculum>()

@@ -9,13 +9,8 @@ namespace YT7G72_HFT_2023241.Logic.Exceptions
 {
     public class NotEnrolledInCourseException : Exception
     {
-        public Student Student { get; }
-        public Subject Subject { get; }
-
-        public NotEnrolledInCourseException(Student student, Subject subject) : base()
+        public NotEnrolledInCourseException(Student student, Subject subject) : base($"Coudln't perform operation -- {student} is not enrolled in {subject}")
         {
-            Student = student;
-            Subject = subject;
         }
     }
 }

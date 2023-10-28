@@ -1,11 +1,9 @@
-﻿using Castle.Core.Internal;
-using ConsoleTools;
+﻿using ConsoleTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Client
@@ -33,9 +31,9 @@ namespace YT7G72_HFT_2023241.Client
             var teacherSubmenu = new ConsoleMenu(args, level: 1);
             teacherSubmenu
             .Add("List", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); List<Teacher>(); })
-            .Add("Create", () => Create<Teacher>())
-            .Add("Delete", () => Delete<Teacher>())
-            .Add("Update", () => Update<Teacher>())
+            .Add("Create", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); Create<Teacher>(); })
+            .Add("Delete", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); Delete<Teacher>(); })
+            .Add("Update", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); Update<Teacher>(); })
             .Add("Get Taught Subjects", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); GetSubjects<Teacher>(); })
             .Add("Get Taught Courses", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); GetCourses<Teacher>(); })
             .Add("Get Weekly Schedule", () => { menu.CloseMenu(); teacherSubmenu.CloseMenu(); GetSchedule<Teacher>(); } )
@@ -44,25 +42,25 @@ namespace YT7G72_HFT_2023241.Client
             var subjectSubmenu = new ConsoleMenu(args, level: 1);
             subjectSubmenu
             .Add("List", () => { menu.CloseMenu(); subjectSubmenu.CloseMenu(); List<Subject>(); })
-            .Add("Create", () => Create<Subject>())
-            .Add("Delete", () => Delete<Subject>())
-            .Add("Update", () => Update<Subject>())
+            .Add("Create", () => { menu.CloseMenu(); subjectSubmenu.CloseMenu(); Create<Subject>(); })
+            .Add("Delete", () => { menu.CloseMenu(); subjectSubmenu.CloseMenu(); Delete<Subject>(); })
+            .Add("Update", () => { menu.CloseMenu(); subjectSubmenu.CloseMenu(); Update<Subject>(); })
             .Add("Exit", ConsoleMenu.Close);
 
             var courseSubmenu = new ConsoleMenu(args, level: 1);
             courseSubmenu
             .Add("List", () => { menu.CloseMenu(); courseSubmenu.CloseMenu(); List<Course>(); })
-            .Add("Create", () => Create<Course>())
-            .Add("Delete", () => Delete<Course>())
-            .Add("Update", () => Update<Course>())
+            .Add("Create", () => { menu.CloseMenu(); courseSubmenu.CloseMenu(); Create<Course>(); })
+            .Add("Delete", () => { menu.CloseMenu(); courseSubmenu.CloseMenu(); Delete<Course>(); })
+            .Add("Update", () => { menu.CloseMenu(); courseSubmenu.CloseMenu(); Update<Course>(); })
             .Add("Exit", ConsoleMenu.Close);
 
             var gradeSubmenu = new ConsoleMenu(args, level: 1);
             gradeSubmenu
             .Add("List", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); List<Grade>(); })
-            .Add("Create", () => Create<Grade>())
-            .Add("Delete", () => Delete<Grade>())
-            .Add("Update", () => Update<Grade>())
+            .Add("Create", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Create<Grade>(); })
+            .Add("Delete", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Delete<Grade>(); })
+            .Add("Update", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Update<Grade>(); })
             .Add("Get Best Students", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestStudents(); })
             .Add("Get Best Teachers", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestTeachers(); })
             .Add("Get Best Teachers By Academic Rank", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); GetBestTeachersByAcademicRank(); })
@@ -75,17 +73,20 @@ namespace YT7G72_HFT_2023241.Client
                 .Add("List", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); List<Curriculum>(); })
                 .Add("Create", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Create<Curriculum>(); })
                 .Add("Update", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Update<Curriculum>(); })
-                .Add("Delete", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Delete<Curriculum>(); });
+                .Add("Delete", () => { menu.CloseMenu(); gradeSubmenu.CloseMenu(); Delete<Curriculum>(); })
+                .Add("Exit", ConsoleMenu.Close); ;
 
             var subjectRegistrationSubmenu = new ConsoleMenu(args, level: 1);
             subjectRegistrationSubmenu
-                .Add("Register for Subject", () => RegisterForSubject())
-                .Add("Unregister from Subject", () => UnregisterFromSubject());
+                .Add("Register for Subject", () => { menu.CloseMenu(); subjectRegistrationSubmenu.CloseMenu(); RegisterForSubject(); })
+                .Add("Unregister from Subject", () => { menu.CloseMenu(); subjectRegistrationSubmenu.CloseMenu(); UnregisterFromSubject(); })
+                .Add("Exit", ConsoleMenu.Close);
 
             var courseRegistrationSubmenu = new ConsoleMenu(args, level: 1);
             courseRegistrationSubmenu
-                .Add("Register for Course", () => RegisterForCourse())
-                .Add("Unregister from Course", () => UnregisterFromCourse());
+                .Add("Register for Course", () => { menu.CloseMenu(); courseRegistrationSubmenu.CloseMenu(); RegisterForCourse(); })
+                .Add("Unregister from Course", () => { menu.CloseMenu(); courseRegistrationSubmenu.CloseMenu(); UnregisterFromCourse(); })
+                .Add("Exit", ConsoleMenu.Close);
 
             menu = new ConsoleMenu(args, level: 0);
             menu
@@ -178,6 +179,7 @@ namespace YT7G72_HFT_2023241.Client
 
 
             Console.ReadKey();
+            Console.Clear();
             Main(new string[] { });
         }
 
@@ -217,13 +219,14 @@ namespace YT7G72_HFT_2023241.Client
                 }
                 Console.WriteLine($"New {type.Name} created!");
             }
-            catch (ArgumentException exception)
+            catch (Exception exception)
             {
                 Console.WriteLine($"Failed to create new {type.Name} enitity -- {exception.Message}");
             }
             finally
             {
                 Console.ReadKey();
+                Console.Clear();
                 Main(new string[] { });
             }
 
@@ -239,6 +242,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided!");
                 Console.ReadKey();
+                Console.Clear();
                 Main(new string[] { });
             }
             Console.WriteLine("Updating entity...");
@@ -283,17 +287,14 @@ namespace YT7G72_HFT_2023241.Client
                 
                 Console.WriteLine("Entity updated!");
             }
-            catch (ObjectNotFoundException exception)
+            catch (Exception exception)
             {
-                Console.WriteLine(exception);
-            }
-            catch (ArgumentException exception)
-            {
-                Console.WriteLine($"Failed to update {type.Name} entity -- {exception.Message}");
+                Console.WriteLine (exception.Message);
             }
             finally
             {
                 Console.ReadKey();
+                Console.Clear();
                 Main(new string[] { });
             }
         }
@@ -309,6 +310,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
+                Console.Clear();
                 Main(new string[] { });
             }
 
@@ -336,13 +338,14 @@ namespace YT7G72_HFT_2023241.Client
                 }
                 Console.WriteLine($"{type.Name} with ID of {id} was deleted");
             }
-            catch (ObjectNotFoundException exception)
+            catch (Exception exception)
             {
                 Console.WriteLine(exception);
             } 
             finally
             {
                 Console.ReadKey();
+                Console.Clear();
                 Main(new string[] { }); 
             }
         }
@@ -379,9 +382,9 @@ namespace YT7G72_HFT_2023241.Client
                 }
                 
             }
-            catch (ObjectNotFoundException excpetion)
+            catch (Exception exception)
             {
-                Console.WriteLine(excpetion);
+                Console.WriteLine(exception.Message);
             }
             finally
             {
@@ -418,9 +421,9 @@ namespace YT7G72_HFT_2023241.Client
                 }
 
             }
-            catch (ObjectNotFoundException excpetion)
+            catch (Exception excpetion)
             {
-                Console.WriteLine(excpetion);
+                Console.WriteLine(excpetion.Message);
             }
             finally
             {
@@ -456,13 +459,9 @@ namespace YT7G72_HFT_2023241.Client
                 restService.Post($"/Education/Subjects/{subjectId}/Register/{studentId}");
                 Console.WriteLine($"{student} successfuly registered for subject {subject}");
             }
-            catch (ObjectNotFoundException exception)
+            catch (Exception exception)
             {
-                Console.WriteLine(exception);
-            }
-            catch (PreRequirementsNotMetException exception)
-            {
-                Console.WriteLine($"Couldn't register for subject: {exception}");
+                Console.WriteLine(exception.Message);
             }
             finally
             {
@@ -500,13 +499,9 @@ namespace YT7G72_HFT_2023241.Client
                 restService.Delete($"/Education/Subjects/{subjectId}/Register/{studentId}");
                 Console.WriteLine($"{student} successfuly unregistered from subject {subject}");
             }
-            catch (ObjectNotFoundException exception)
+            catch (Exception exception)
             {
-                Console.WriteLine(exception);
-            }
-            catch (PreRequirementsNotMetException exception)
-            {
-                Console.WriteLine($"Couldn't unregister from subject: {exception}");
+                Console.WriteLine(exception.Message);
             }
             finally
             {
@@ -542,17 +537,9 @@ namespace YT7G72_HFT_2023241.Client
                 restService.Post($"/Education/Courses/{courseId}/Register/{studentId}");
                 Console.WriteLine($"{student} successfuly registered for course {course}");
             }
-            catch (ObjectNotFoundException exception)
+            catch (Exception exception)
             {
-                Console.WriteLine(exception);
-            }
-            catch (CourseIsFullException exception)
-            {
-                Console.WriteLine($"Couldn't register for course: {exception}");
-            }
-            catch (NotRegisteredForSubjectException exception)
-            {
-                Console.WriteLine($"Couldn't register for course: {exception}");
+                Console.WriteLine(exception.Message);
             }
             finally
             {
@@ -588,17 +575,9 @@ namespace YT7G72_HFT_2023241.Client
                 restService.Delete($"/Education/Courses/{courseId}/Register/{studentId}");
                 Console.WriteLine($"{student} successfuly unregistered from course {course}");
             }
-            catch (ObjectNotFoundException exception)
+            catch (Exception exception)
             {
-                Console.WriteLine(exception);
-            }
-            catch (CourseIsFullException exception)
-            {
-                Console.WriteLine($"Couldn't unregister from course: {exception}");
-            }
-            catch (NotRegisteredForSubjectException exception)
-            {
-                Console.WriteLine($"Couldn't unregister from course: {exception}");
+                Console.WriteLine($"Couldn't unregister from course: {exception.Message}");
             }
             finally
             {
@@ -637,9 +616,9 @@ namespace YT7G72_HFT_2023241.Client
                     Console.WriteLine(schedule);
                 }
             }
-            catch (ObjectNotFoundException exception)
+            catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                Console.WriteLine(exception.Message);
             }
             finally
             {
@@ -660,6 +639,7 @@ namespace YT7G72_HFT_2023241.Client
             }
 
             Console.ReadKey();
+            Console.Clear();
             Main(new string[] { });
         }
 
@@ -673,6 +653,7 @@ namespace YT7G72_HFT_2023241.Client
             }
 
             Console.ReadKey();
+            Console.Clear();
             Main(new string[] { });
         }
 
@@ -690,6 +671,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid value!");
                 Console.ReadKey();
+                Console.Clear();
                 Main(new string[] { });
             }
 
@@ -718,6 +700,7 @@ namespace YT7G72_HFT_2023241.Client
             }
 
             Console.ReadKey();
+            Console.Clear();
             Main(new string[] { });
         }
 
@@ -725,7 +708,7 @@ namespace YT7G72_HFT_2023241.Client
         {
             Console.Write("Enter semester (Optional): ");
             string semester = Console.ReadLine();
-            if (semester.IsNullOrEmpty() )
+            if (string.IsNullOrEmpty(semester) )
             {
                 var results = restService.Get<SemesterStatistics>("/Grades/Semester/Statistics");
                 foreach (var semesterResult in results)
@@ -740,6 +723,9 @@ namespace YT7G72_HFT_2023241.Client
                 Console.WriteLine($"Semster: {semesterResult.Semester}\n\tSuccessful subject completions: {semesterResult.NumberOfPasses}" +
                        $"\n\tFailed subject completions: {semesterResult.NumberOfFailures}\n\tWeighted Avrage ammong all studetns: {Math.Round(semesterResult.WeightedAvg, 2)}");
             }
+            Console.ReadKey();
+            Console.Clear();
+            Main(new string[] { });
         }
 
         static void GetSubjectStatistics()
@@ -750,6 +736,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided!");
                 Console.ReadKey();
+                Console.Clear();
                 Main(new string[] { });
             }
             else
@@ -757,6 +744,7 @@ namespace YT7G72_HFT_2023241.Client
                 var subjectStat = restService.GetSingle<SubjectStatistics>($"/Grades/Subjects/Statistics/{id}");
                 Console.WriteLine($"Subject: {subjectStat.Subject}\n\tNumber of total registrations: {subjectStat.NumberOfRegistrations}\n\tPass per Registration Ratio: {subjectStat.PassPerRegistrationRatio}\n\tAverages grade given: {subjectStat.Avg}");
                 Console.ReadKey();
+                Console.Clear();
                 Main(new string[] { });
             }
         }
@@ -779,23 +767,23 @@ namespace YT7G72_HFT_2023241.Client
                         Console.WriteLine($"{(int)value} -- {value}");
                     }
                 }
-                if (property.GetAttribute<RequiredAttribute>() != null)
+                if (property.GetCustomAttribute<RequiredAttribute>() != null)
                 {
-                    if (property.GetAttribute<FormatAttribute>() != null)
-                        Console.Write($"{property.Name} ({property.GetAttribute<FormatAttribute>().FormatDescription}) (Required): ");
+                    if (property.GetCustomAttribute<FormatAttribute>() != null)
+                        Console.Write($"{property.Name} ({property.GetCustomAttribute<FormatAttribute>().FormatDescription}) (Required): ");
                     else
                         Console.Write($"{property.Name} (Required): ");
                 }
                 else
                 {
-                    if (property.GetAttribute<FormatAttribute>() != null)
-                        Console.Write($"{property.Name} ({property.GetAttribute<FormatAttribute>().FormatDescription}): ");
+                    if (property.GetCustomAttribute<FormatAttribute>() != null)
+                        Console.Write($"{property.Name} ({property.GetCustomAttribute<FormatAttribute>().FormatDescription}): ");
                     else
                         Console.Write($"{property.Name}: ");
                 }
 
                 string input = Console.ReadLine();
-                if (!input.IsNullOrEmpty())
+                if (!string.IsNullOrEmpty(input))
                 {
                     if (property.PropertyType == typeof(string))
                     {
@@ -819,22 +807,50 @@ namespace YT7G72_HFT_2023241.Client
                     }
                     else
                     {
-                        var methods = property.PropertyType.GetMethods();
-                        var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
-                        if (converterMethod != null)
+                        if (property.PropertyType == typeof(int?))
                         {
-                            try
-                            {
-                                var convertedValue = converterMethod.Invoke(null, new object[] { input });
-                                property.SetValue(instance, convertedValue);
-                            }
-                            catch (Exception)
+                            int converted;
+                            if (!int.TryParse(input, out converted))
                             {
                                 Console.WriteLine("Invalid input value!");
                                 Console.ReadKey();
                                 Main(new string[] { });
                             }
+                            else
+                            {
+                                property.SetValue(instance, converted);
+                            }
                         }
+                        else
+                        {
+                            var methods = property.PropertyType.GetMethods();
+                            var converterMethod = methods.FirstOrDefault(m => m.Name.Contains("Parse"));
+                            if (converterMethod != null)
+                            {
+                                try
+                                {
+                                    var convertedValue = converterMethod.Invoke(null, new object[] { input });
+                                    property.SetValue(instance, convertedValue);
+                                }
+                                catch (Exception)
+                                {
+                                    Console.WriteLine("Invalid input value!");
+                                    Console.ReadKey();
+                                    Main(new string[] { });
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (Nullable.GetUnderlyingType(property.PropertyType) != null)
+                    {
+                        property.SetValue(instance, null);
+                    }
+                    else
+                    {
+                        property.SetValue(instance, property.PropertyType.IsValueType ? Activator.CreateInstance(property.PropertyType) : null);
                     }
                 }
             }
@@ -856,23 +872,23 @@ namespace YT7G72_HFT_2023241.Client
                         Console.WriteLine($"{(int)value} -- {value}");
                     }
                 }
-                if (property.GetAttribute<RequiredAttribute>() != null)
+                if (property.GetCustomAttribute<RequiredAttribute>() != null)
                 {
-                    if (property.GetAttribute<FormatAttribute>() != null)
-                        Console.Write($"{property.Name} ({property.GetAttribute<FormatAttribute>().FormatDescription}) (Required): ");
+                    if (property.GetCustomAttribute<FormatAttribute>() != null)
+                        Console.Write($"{property.Name} ({property.GetCustomAttribute<FormatAttribute>().FormatDescription}) (Required): ");
                     else
                         Console.Write($"{property.Name} (Required): ");
                 }
                 else
                 {
-                    if ( property.GetAttribute<FormatAttribute>() != null)
-                        Console.Write($"{property.Name} ({property.GetAttribute<FormatAttribute>().FormatDescription}): ");
+                    if ( property.GetCustomAttribute<FormatAttribute>() != null)
+                        Console.Write($"{property.Name} ({property.GetCustomAttribute<FormatAttribute>().FormatDescription}): ");
                     else
                         Console.Write($"{property.Name}: ");
                 }
 
                 string input = Console.ReadLine();
-                if (!input.IsNullOrEmpty())
+                if (!string.IsNullOrEmpty(input))
                 {
                     if (property.PropertyType == typeof(string))
                     {
@@ -925,6 +941,19 @@ namespace YT7G72_HFT_2023241.Client
                         }
                     }
                 }
+                else
+                {
+                    if (Nullable.GetUnderlyingType(property.PropertyType) != null)
+                    {
+                        property.SetValue(instance, null);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input value!");
+                        Console.ReadKey();
+                        Main(new string[] { });
+                    }
+                }
             }
             return (T)instance;
         }
@@ -972,6 +1001,7 @@ namespace YT7G72_HFT_2023241.Client
                 Console.WriteLine();
             }
         }
+
         #endregion
     }
 }

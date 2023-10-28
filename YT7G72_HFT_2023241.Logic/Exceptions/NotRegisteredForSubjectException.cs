@@ -12,15 +12,8 @@ namespace YT7G72_HFT_2023241.Logic
         public Student Student { get; }
         public Subject Subject { get; }
 
-        public NotRegisteredForSubjectException(Student student, Subject subject) : base()
+        public NotRegisteredForSubjectException(Student student, Subject subject) : base($"Student {student} isn't registered for the course's subject: {subject}")
         {
-            Student = student;
-            Subject = subject;
-        }
-
-        public override string ToString()
-        {
-            return $"Student {Student} isn't registered for the course's subject: {Subject}";
         }
     }
 }

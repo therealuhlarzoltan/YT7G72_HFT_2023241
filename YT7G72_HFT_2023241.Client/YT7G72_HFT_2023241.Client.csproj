@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YT7G72_HFT_2023241.Logic\YT7G72_HFT_2023241.Logic.csproj" />
     <ProjectReference Include="..\YT7G72_HFT_2023241.Models\YT7G72_HFT_2023241.Models.csproj" />
   </ItemGroup>
 

@@ -9,16 +9,9 @@ namespace YT7G72_HFT_2023241.Logic
 {
     public class CourseIsFullException : Exception
     {
-        public Course Course { get; }
-
-        public CourseIsFullException(Course course) : base() 
+        public CourseIsFullException(Course course) : base($"Couldn't register for course -- {course} is full") 
         {
-            Course = course;
-        }
 
-        public override string ToString()
-        {
-            return $"Course {Course} is full";
         }
     }
 }

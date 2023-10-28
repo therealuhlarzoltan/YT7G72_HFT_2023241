@@ -8,17 +8,8 @@ namespace YT7G72_HFT_2023241.Logic
 {
     public class ObjectNotFoundException : Exception
     {
-        public int Id { get; }
-        public Type Type {  get; }
-        public ObjectNotFoundException(int id, Type type) : base()
+        public ObjectNotFoundException(int id, Type type) : base($"{type.Name} with ID of {id} was not found")
         { 
-            Id = id;
-            Type = type;
-        }
-
-        public override string ToString()
-        {
-            return $"{Type.Name} with ID of {Id} was not found";
         }
     }
 }

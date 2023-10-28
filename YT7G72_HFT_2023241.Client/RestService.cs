@@ -112,6 +112,10 @@ namespace YT7G72_HFT_2023241.Client
 
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new ArgumentException("Invalid arugment(s) provided!");
+                }
                 var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
                 throw new ArgumentException(error.Msg);
             }
@@ -125,6 +129,10 @@ namespace YT7G72_HFT_2023241.Client
 
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new ArgumentException("Invalid arugment(s) provided!");
+                }
                 var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
                 throw new ArgumentException(error.Msg);
             }
@@ -138,6 +146,10 @@ namespace YT7G72_HFT_2023241.Client
 
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new ArgumentException("Invalid arugment(s) provided!");
+                }
                 var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
                 throw new ArgumentException(error.Msg);
             }
@@ -152,6 +164,10 @@ namespace YT7G72_HFT_2023241.Client
 
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new ArgumentException("Invalid arugment(s) provided!");
+                }
                 var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
                 throw new ArgumentException(error.Msg);
             }
@@ -162,10 +178,17 @@ namespace YT7G72_HFT_2023241.Client
         public void Put<T>(string endpoint, T item)
         {
             HttpResponseMessage response =
-                client.PutAsJsonAsync(endpoint, item).GetAwaiter().GetResult();
+                client
+                .PutAsJsonAsync(endpoint, item)
+                .GetAwaiter()
+                .GetResult();
 
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new ArgumentException("Invalid arugment(s) provided!");
+                }
                 var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
                 throw new ArgumentException(error.Msg);
             }
