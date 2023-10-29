@@ -59,7 +59,7 @@ namespace YT7G72_HFT_2023241.Test
         }
 
         [Test]
-        public void CreateGradeTest()
+        public void GradeCreationTest()
         {
             var grade1 = new Grade() { Semester = "", Mark = 0 };
             try

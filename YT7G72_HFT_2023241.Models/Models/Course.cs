@@ -49,6 +49,35 @@ namespace YT7G72_HFT_2023241.Models
         [JsonIgnore]
         public virtual ICollection<Student> EnrolledStudents { get; set; } = new HashSet<Student>();
 
+        public override bool Equals(object obj)
+        {
+            return obj is Course course &&
+                   CourseId == course.CourseId &&
+                   CourseName == course.CourseName &&
+                   CourseCapacity == course.CourseCapacity &&
+                   CourseType == course.CourseType &&
+                   DayOfWeek == course.DayOfWeek &&
+                   StartTime.Equals(course.StartTime) &&
+                   Room == course.Room &&
+                   TeacherId == course.TeacherId &&
+                   SubjectId == course.SubjectId;
+        }
+
+        public override int GetHashCode()
+        {
+            HashCode hash = new HashCode();
+            hash.Add(CourseId);
+            hash.Add(CourseName);
+            hash.Add(CourseCapacity);
+            hash.Add(CourseType);
+            hash.Add(DayOfWeek);
+            hash.Add(StartTime);
+            hash.Add(Room);
+            hash.Add(TeacherId);
+            hash.Add(SubjectId);
+            return hash.ToHashCode();
+        }
+
         public override string ToString()
         {
             return $"Course: {CourseName}; Teacher: {Teacher}";
@@ -73,5 +102,7 @@ namespace YT7G72_HFT_2023241.Models
                 writer.WriteStringValue(value.ToString());
             }
         }
+
+
     }
 }
