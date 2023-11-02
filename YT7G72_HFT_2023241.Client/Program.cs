@@ -32,7 +32,7 @@ namespace YT7G72_HFT_2023241.Client
             teacherSubmenu
             .Add("List", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  List<Teacher>(); })
             .Add("Create", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  Create<Teacher>(); })
-            .Add("Delete", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  Delete<Teacher>(); })
+            .Add("Delete", (innerMenu) => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  Delete<Teacher>(); innerMenu.Show(); })
             .Add("Update", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  Update<Teacher>(); })
             .Add("Get Taught Subjects", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  GetSubjects<Teacher>(); })
             .Add("Get Taught Courses", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  GetCourses<Teacher>(); })
@@ -70,7 +70,7 @@ namespace YT7G72_HFT_2023241.Client
 
             var curriculumSubmenu = new ConsoleMenu(args, level: 1);
             curriculumSubmenu
-                .Add("List", () => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); List<Curriculum>(); })
+                .Add("List", (innerMenu) => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); List<Curriculum>(); })
                 .Add("Create", () => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); Create<Curriculum>(); })
                 .Add("Update", () => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); Update<Curriculum>(); })
                 .Add("Delete", () => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); Delete<Curriculum>(); })
@@ -343,12 +343,12 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine(exception.Message);
             } 
-            finally
-            {
-                Console.ReadKey();
-                Console.Clear();
-                Main(new string[] { }); 
-            }
+            //finally
+            //{
+            //    Console.ReadKey();
+            //    Console.Clear();
+            //    Main(new string[] { }); 
+            //}
         }
 
         #endregion
