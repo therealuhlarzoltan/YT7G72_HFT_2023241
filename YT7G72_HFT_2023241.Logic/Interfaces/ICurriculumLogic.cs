@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Logic.Interfaces
 {
     public interface ICurriculumLogic
     {
-        //CRUD methods
         IEnumerable<Curriculum> GetCurriculums();
         Curriculum GetCurriculum(int id);
         void RemoveCurriculum(int id);
@@ -57,7 +52,6 @@ namespace YT7G72_HFT_2023241.Logic.Interfaces
                         }
                     }
                 }
-
             }
             return true;
         }

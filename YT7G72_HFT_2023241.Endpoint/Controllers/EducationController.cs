@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Models;
@@ -113,6 +112,13 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void UnregisterFromCourse(int courseId, int studentId)
         {
             educationLogic.RemoveStudentFromCourse(studentId, courseId);
+        }
+
+        [Route("Semester/Reset")]
+        [HttpPost]
+        public void ResetSemester()
+        {
+            educationLogic.ResetSemester();
         }
     }
 }

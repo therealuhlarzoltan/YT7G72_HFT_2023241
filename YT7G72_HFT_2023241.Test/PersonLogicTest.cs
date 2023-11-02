@@ -110,7 +110,7 @@ namespace YT7G72_HFT_2023241.Test
         }
 
         [Test]
-        public void TestStudentCreation()
+        public void StudentCreationTest()
         {
             var student1 = new Student() { FirstName = "", LastName = "", StudentCode = "asd" };
             try
@@ -155,7 +155,7 @@ namespace YT7G72_HFT_2023241.Test
         }
 
         [Test]
-        public void TestTeacherCreation()
+        public void TeacherCreationTest()
         {
             var teacher1 = new Teacher() { FirstName = "", LastName = ""};
             try
@@ -200,7 +200,7 @@ namespace YT7G72_HFT_2023241.Test
         }
 
         [Test]
-        public void TestBestStudents()
+        public void BestStudentsTest()
         {
             var result = personLogic.GetBestStudents();
             var expected = new List<Tuple<Student, double>> {
@@ -222,7 +222,7 @@ namespace YT7G72_HFT_2023241.Test
         }
 
         [Test]
-        public void TestBestTeachers()
+        public void BestTeachersTest()
         {
             var result = personLogic.GetBestTeachers();
             var expected = new List<Tuple<Teacher, double>> {
@@ -244,7 +244,7 @@ namespace YT7G72_HFT_2023241.Test
         }
 
         [Test]
-        public void TestBestTeacherByAcademicRank()
+        public void BestTeachersByAcademicRankTest()
         {
             var result = personLogic.GetBestTeachersByAcademicRank(AcademicRank.Associate_Professor);
             var expected = new List<Tuple<Teacher, double>> {

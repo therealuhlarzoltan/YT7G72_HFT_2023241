@@ -31,24 +31,17 @@ namespace YT7G72_HFT_2023241.Repository
             builder.EnableSensitiveDataLogging();
             if (!builder.IsConfigured)
             {
-                string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\uhlar\source\repos\YT7G72_HFT_2023241\YT7G72_HFT_2023241.Repository\Database\UniversityDatabase.mdf;Integrated Security=True;Initial Catalog=UniversityDatabase;MultipleActiveResultSets=True";
                 builder
-                    .UseLazyLoadingProxies()
-                    .UseSqlServer(connectionString);
-                    //.UseInMemoryDatabase("UniversityDatabase");
+                    .UseInMemoryDatabase("UniversityDatabase")
+                    .UseLazyLoadingProxies();
             }
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //creating Student entity
             builder.Entity<Student>()
                 .HasIndex(student => student.StudentCode)
                 .IsUnique();
-
-            builder.Entity<Student>()
-                .Property(s => s.FinancialStatus)
-                .HasDefaultValue(FinancialStatus.Without_Scholarship);
 
             builder.Entity<Student>()
                 .HasMany(e => e.RegisteredSubjects)
@@ -74,7 +67,6 @@ namespace YT7G72_HFT_2023241.Repository
                 .OnDelete(DeleteBehavior.Cascade);
 
 
-            //creating Teacher entity
             builder.Entity<Teacher>()
                 .Property(t => t.AcademicRank)
                 .HasDefaultValue(AcademicRank.Teachers_Assistant);
@@ -117,7 +109,6 @@ namespace YT7G72_HFT_2023241.Repository
                 .OnDelete(DeleteBehavior.Cascade);
 
             
-            //creating Curriculum entity
             builder.Entity<Curriculum>()
                 .HasMany(c => c.CurriculumSubjects)
                 .WithOne(s => s.Curriculum)
@@ -130,7 +121,7 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasForeignKey(s => s.CurriculumId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            //prepopulating database
+
             builder.Entity<Curriculum>()
                 .HasData(new Curriculum[] {
                     new Curriculum {CurriculumId = 1, CurriculumName = "Computer Engineering BSc E3", 

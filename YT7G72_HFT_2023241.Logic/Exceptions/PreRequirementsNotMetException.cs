@@ -9,9 +9,6 @@ namespace YT7G72_HFT_2023241.Logic
 { 
     public class PreRequirementsNotMetException : Exception
     {
-        public Student Student { get; }
-        public Subject Subject { get; }
-
         public PreRequirementsNotMetException(Student student, Subject subject) : base($"Student {student} did not meet the prerequirements for subject {subject}")
         {
 

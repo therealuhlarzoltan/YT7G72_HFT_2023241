@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using YT7G72_HFT_2023241.Logic;
@@ -109,9 +106,9 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
 
         [Route("Teachers/Best/{academicRank}")]
         [HttpGet]
-        public IEnumerable<AverageByPersonDTO<Teacher>> GetBestTeachersByAcademicRank(AcademicRank academicRank)
+        public IEnumerable<AverageByPersonDTO<Teacher>> GetBestTeachersByAcademicRank(int academicRank)
         {
-            var result = personLogic.GetBestTeachersByAcademicRank(academicRank);
+            var result = personLogic.GetBestTeachersByAcademicRank((AcademicRank)academicRank);
             return result.Select(r => new AverageByPersonDTO<Teacher>(r.Item1, r.Item2));
         }
 

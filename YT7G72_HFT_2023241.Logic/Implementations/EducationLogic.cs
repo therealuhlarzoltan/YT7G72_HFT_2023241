@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.Repository;
 
@@ -143,13 +141,25 @@ namespace YT7G72_HFT_2023241.Logic
 
         public void RemoveCourse(int id)
         {
+            var course = courseRepository.Read(id);
+            if (course == null)
+                throw new ObjectNotFoundException(id, typeof(Course));
+            try
+            {
+                course.EnrolledStudents.Clear();
+                courseRepository.Update(course);
+            }
+            catch 
+            {
+                throw new ArgumentException("Failed to update database");
+            }
             try
             {
                 courseRepository.Delete(id);
             }
-            catch (ArgumentNullException)
+            catch 
             {
-                throw new ObjectNotFoundException(id, typeof(Course));
+                throw new ArgumentException("Failed to update database");
             }
             
         }
@@ -256,10 +266,12 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 foreach (var course in subject.SubjectCourses)
                 {
+                    course.EnrolledStudents.Clear();
                     course.CourseRegistrations.Clear();
                     courseRepository.Update(course);
                 }
                 subject.SubjectRegistrations.Clear();
+                subject.RegisteredStudents.Clear();
                 subjectRepository.Update(subject);
             }
         }

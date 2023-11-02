@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.Models
 {
