@@ -17,91 +17,107 @@ namespace YT7G72_HFT_2023241.Client
         {
             ConsoleMenu menu = null;
 
-            var studentSubmenu = new ConsoleMenu(args, level: 1);
-            studentSubmenu
-            .Add("List", () => { studentSubmenu.CloseMenu(); menu.CloseMenu(); List<Student>(); })
-            .Add("Create", () => { studentSubmenu.CloseMenu(); menu.CloseMenu(); Create<Student>(); })
-            .Add("Delete", () => { studentSubmenu.CloseMenu(); menu.CloseMenu(); Delete<Student>(); })
-            .Add("Update", () => { studentSubmenu.CloseMenu(); menu.CloseMenu();  Update<Student>(); })
-            .Add("Get Registered Subjects", () => { studentSubmenu.CloseMenu(); menu.CloseMenu();  GetSubjects<Student>(); })
-            .Add("Get Enrolled Courses", () => { studentSubmenu.CloseMenu(); menu.CloseMenu();  GetCourses<Student>(); })
-            .Add("Get Weekly Schedule", () => { studentSubmenu.CloseMenu(); menu.CloseMenu(); GetSchedule<Student>(); })
-            .Add("Exit", ConsoleMenu.Close);
-
-            var teacherSubmenu = new ConsoleMenu(args, level: 1);
-            teacherSubmenu
-            .Add("List", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  List<Teacher>(); })
-            .Add("Create", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  Create<Teacher>(); })
-            .Add("Delete", (innerMenu) => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  Delete<Teacher>(); innerMenu.Show(); })
-            .Add("Update", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  Update<Teacher>(); })
-            .Add("Get Taught Subjects", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  GetSubjects<Teacher>(); })
-            .Add("Get Taught Courses", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu();  GetCourses<Teacher>(); })
-            .Add("Get Weekly Schedule", () => { teacherSubmenu.CloseMenu(); menu.CloseMenu(); GetSchedule<Teacher>(); } )
-            .Add("Exit", ConsoleMenu.Close);
-
-            var subjectSubmenu = new ConsoleMenu(args, level: 1);
-            subjectSubmenu
-            .Add("List", () => { subjectSubmenu.CloseMenu(); menu.CloseMenu();  List<Subject>(); })
-            .Add("Create", () => { subjectSubmenu.CloseMenu(); menu.CloseMenu();  Create<Subject>(); })
-            .Add("Delete", () => { subjectSubmenu.CloseMenu(); menu.CloseMenu();  Delete<Subject>(); })
-            .Add("Update", () => { subjectSubmenu.CloseMenu(); menu.CloseMenu();  Update<Subject>(); })
-            .Add("Exit", ConsoleMenu.Close);
-
-            var courseSubmenu = new ConsoleMenu(args, level: 1);
-            courseSubmenu
-            .Add("List", () => { courseSubmenu.CloseMenu(); menu.CloseMenu();  List<Course>(); })
-            .Add("Create", () => { courseSubmenu.CloseMenu(); menu.CloseMenu();  Create<Course>(); })
-            .Add("Delete", () => { courseSubmenu.CloseMenu(); menu.CloseMenu();  Delete<Course>(); })
-            .Add("Update", () => { courseSubmenu.CloseMenu(); menu.CloseMenu();  Update<Course>(); })
-            .Add("Exit", ConsoleMenu.Close);
-
-            var gradeSubmenu = new ConsoleMenu(args, level: 1);
-            gradeSubmenu
-            .Add("List", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu();  List<Grade>(); })
-            .Add("Create", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu();  Create<Grade>(); })
-            .Add("Delete", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu();  Delete<Grade>(); })
-            .Add("Update", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu(); ; Update<Grade>(); })
-            .Add("Get Best Students", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu(); GetBestStudents(); })
-            .Add("Get Best Teachers", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu(); GetBestTeachers(); })
-            .Add("Get Best Teachers By Academic Rank", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu(); GetBestTeachersByAcademicRank(); })
-            .Add("Get Subject Statistics", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu(); GetSubjectStatistics(); })
-            .Add("Get Semester Statistics", () => { gradeSubmenu.CloseMenu(); menu.CloseMenu();  GetSemesterStatistics(); })
-            .Add("Exit", ConsoleMenu.Close);
-
-            var curriculumSubmenu = new ConsoleMenu(args, level: 1);
-            curriculumSubmenu
-                .Add("List", (innerMenu) => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); List<Curriculum>(); })
-                .Add("Create", () => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); Create<Curriculum>(); })
-                .Add("Update", () => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); Update<Curriculum>(); })
-                .Add("Delete", () => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); Delete<Curriculum>(); })
-                .Add("Reset Semester", () => { curriculumSubmenu.CloseMenu(); menu.CloseMenu(); ResetSemester(); })
-                .Add("Exit", ConsoleMenu.Close);
-
-            var subjectRegistrationSubmenu = new ConsoleMenu(args, level: 1);
-            subjectRegistrationSubmenu
-                .Add("Register for Subject", () => { subjectRegistrationSubmenu.CloseMenu(); menu.CloseMenu();  RegisterForSubject(); })
-                .Add("Unregister from Subject", () => { subjectRegistrationSubmenu.CloseMenu(); menu.CloseMenu();  UnregisterFromSubject(); })
-                .Add("Exit", ConsoleMenu.Close);
-
-            var courseRegistrationSubmenu = new ConsoleMenu(args, level: 1);
-            courseRegistrationSubmenu
-                .Add("Register for Course", () => { courseRegistrationSubmenu.CloseMenu(); menu.CloseMenu();  RegisterForCourse(); })
-                .Add("Unregister from Course", () => { courseRegistrationSubmenu.CloseMenu(); menu.CloseMenu(); UnregisterFromCourse(); })
-                .Add("Exit", ConsoleMenu.Close);
-
             menu = new ConsoleMenu(args, level: 0);
             menu
-            .Add("Students", () => studentSubmenu.Show())
-            .Add("Teachers", () => teacherSubmenu.Show())
-            .Add("Subjects", () => subjectSubmenu.Show())
-            .Add("Courses", () => courseSubmenu.Show())
-            .Add("Grades", () => gradeSubmenu.Show())
-            .Add("Curriculums", () => curriculumSubmenu.Show())
-            .Add("Subject Registration", () => subjectRegistrationSubmenu.Show())
-            .Add("Course Registration", () => courseRegistrationSubmenu.Show())
-            .Add("Exit", ConsoleMenu.Close);
+                .Add("Students", () =>
+                {
+                    var studentSubmenu = new ConsoleMenu(args, level: 1);
+                    studentSubmenu
+                        .Add("List", (innerMenu) => { List<Student>(); innerMenu.CloseMenu(); })
+                        .Add("Create", (innerMenu) => { Create<Student>(); innerMenu.CloseMenu(); })
+                        .Add("Delete", (innerMenu) => { Delete<Student>(); innerMenu.CloseMenu(); })
+                        .Add("Update", (innerMenu) => { Update<Student>(); innerMenu.CloseMenu(); })
+                        .Add("Get Registered Subjects", (innerMenu) => { GetSubjects<Student>(); innerMenu.CloseMenu(); })
+                        .Add("Get Enrolled Courses", (innerMenu) => { GetCourses<Student>(); innerMenu.CloseMenu(); })
+                        .Add("Get Weekly Schedule", (innerMenu) => { GetSchedule<Student>(); innerMenu.CloseMenu(); })
+                        .Add("Exit", ConsoleMenu.Close)
+                        .Show();
+                })
+                .Add("Teachers", () =>
+                {
+                    var teacherSubmenu = new ConsoleMenu(args, level: 1);
+                    teacherSubmenu
+                        .Add("List", (innerMenu) => { List<Teacher>(); innerMenu.CloseMenu(); })
+                        .Add("Create", (innerMenu) => { Create<Teacher>(); innerMenu.CloseMenu(); })
+                        .Add("Delete", (innerMenu) => { Delete<Teacher>(); innerMenu.CloseMenu(); })
+                        .Add("Update", (innerMenu) => { Update<Teacher>(); innerMenu.CloseMenu(); })
+                        .Add("Get Taught Subjects", (innerMenu) => { GetSubjects<Teacher>(); innerMenu.CloseMenu(); })
+                        .Add("Get Taught Courses", (innerMenu) => { GetCourses<Teacher>(); innerMenu.CloseMenu(); })
+                        .Add("Get Weekly Schedule", (innerMenu) => { GetSchedule<Teacher>(); innerMenu.CloseMenu(); })
+                        .Add("Exit", ConsoleMenu.Close)
+                        .Show();
+                })
+                .Add("Subjects", () => 
+                { 
+                    var subjectSubmenu = new ConsoleMenu(args, level: 1);
+                    subjectSubmenu
+                        .Add("List", (innerMenu) => { List<Subject>(); innerMenu.CloseMenu(); })
+                        .Add("Create", (innerMenu) => { Create<Subject>(); innerMenu.CloseMenu(); })
+                        .Add("Delete", (innerMenu) => { Delete<Subject>(); innerMenu.CloseMenu(); })
+                        .Add("Update", (innerMenu) => { Update<Subject>(); innerMenu.CloseMenu(); })
+                        .Add("Exit", ConsoleMenu.Close)
+                        .Show();
 
-            menu.Show();
+                })
+                .Add("Courses", () =>
+                {
+                    var courseSubmenu = new ConsoleMenu(args, level: 1);
+                    courseSubmenu
+                    .Add("List", (innerMenu) => { List<Course>(); innerMenu.CloseMenu(); })
+                    .Add("Create", (innerMenu) => { Create<Course>(); innerMenu.CloseMenu(); })
+                    .Add("Delete", (innerMenu) => { Delete<Course>(); innerMenu.CloseMenu(); })
+                    .Add("Update", (innerMenu) => { Update<Course>(); innerMenu.CloseMenu(); })
+                    .Add("Exit", ConsoleMenu.Close)
+                    .Show();
+                })
+                .Add("Grades", () => 
+                {
+                    var gradeSubmenu = new ConsoleMenu(args, level: 1);
+                    gradeSubmenu
+                    .Add("List", (innerMenu) => { List<Grade>(); innerMenu.CloseMenu(); })
+                    .Add("Create", (innerMenu) => {  Create<Grade>(); innerMenu.CloseMenu(); })
+                    .Add("Delete", (innerMenu) => { Delete<Grade>(); innerMenu.CloseMenu(); })
+                    .Add("Update", (innerMenu) => { Update<Grade>(); innerMenu.CloseMenu(); })
+                    .Add("Get Best Students", (innerMenu) => { GetBestStudents(); innerMenu.CloseMenu(); })
+                    .Add("Get Best Teachers", (innerMenu) => { GetBestTeachers(); innerMenu.CloseMenu(); })
+                    .Add("Get Best Teachers By Academic Rank", (innerMenu) => { GetBestTeachersByAcademicRank(); innerMenu.CloseMenu(); })
+                    .Add("Get Subject Statistics", (innerMenu) => { GetSubjectStatistics(); innerMenu.CloseMenu(); })
+                    .Add("Get Semester Statistics", (innerMenu) => { GetSemesterStatistics(); innerMenu.CloseMenu(); })
+                    .Add("Exit", ConsoleMenu.Close)
+                    .Show();
+                })
+                .Add("Curriculums", () => 
+                {
+                    var curriculumSubmenu = new ConsoleMenu(args, level: 1);
+                    curriculumSubmenu
+                        .Add("List", (innerMenu) => { List<Curriculum>(); innerMenu.CloseMenu(); })
+                        .Add("Create", (innerMenu) => { Create<Curriculum>(); innerMenu.CloseMenu(); })
+                        .Add("Update", (innerMenu) => { Update<Curriculum>(); innerMenu.CloseMenu(); })
+                        .Add("Delete", (innerMenu) => { Delete<Curriculum>(); innerMenu.CloseMenu(); })
+                        .Add("Reset Semester", (innerMenu) => {ResetSemester(); innerMenu.CloseMenu(); })
+                        .Add("Exit", ConsoleMenu.Close)
+                        .Show();
+                })
+                .Add("Subject Registration", () => 
+                {
+                    var subjectRegistrationSubmenu = new ConsoleMenu(args, level: 1);
+                    subjectRegistrationSubmenu
+                        .Add("Register for Subject", (innerMenu) => { RegisterForSubject(); innerMenu.CloseMenu(); })
+                        .Add("Unregister from Subject", (innerMenu) => { UnregisterFromSubject(); innerMenu.CloseMenu(); })
+                        .Add("Exit", ConsoleMenu.Close)
+                        .Show();
+                })
+                .Add("Course Registration", () => 
+                {
+                    var courseRegistrationSubmenu = new ConsoleMenu(args, level: 1);
+                    courseRegistrationSubmenu
+                        .Add("Register for Course", (innerMenu) => { RegisterForCourse(); innerMenu.CloseMenu(); })
+                        .Add("Unregister from Course", (innerMenu) => { UnregisterFromCourse(); innerMenu.CloseMenu(); })
+                        .Add("Exit", ConsoleMenu.Close)
+                        .Show();
+                })
+                .Add("Exit", ConsoleMenu.Close)
+                .Show();
         }
 
         #region Generic CRUD Methods
@@ -178,10 +194,7 @@ namespace YT7G72_HFT_2023241.Client
                 Console.WriteLine();
             }
 
-
             Console.ReadKey();
-            Console.Clear();
-            Main(new string[] { });
         }
 
         
@@ -190,10 +203,10 @@ namespace YT7G72_HFT_2023241.Client
         {
             Type type = typeof(T);
             Console.WriteLine($"Creating new {type.Name} entity...");
-            T entity = CreateInstance<T>();
 
             try
             {
+                T entity = CreateInstance<T>();
                 if (type == typeof(Student))
                 {
                     restService.Post<Student>("/People/Students", entity as Student);
@@ -227,8 +240,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Console.Clear();
-                Main(new string[] { });
             }
 
          }
@@ -243,10 +254,9 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided!");
                 Console.ReadKey();
-                Console.Clear();
-                Main(new string[] { });
+                return;
             }
-            Console.WriteLine("Updating entity...");
+            Console.WriteLine($"Updating {type.Name} entity...");
             try
             {
                 if (type == typeof(Student))
@@ -290,13 +300,11 @@ namespace YT7G72_HFT_2023241.Client
             }
             catch (Exception exception)
             {
-                Console.WriteLine (exception.Message);
+                Console.WriteLine($"Failed to update {type.Name} entity -- {exception.Message}");
             }
             finally
             {
                 Console.ReadKey();
-                Console.Clear();
-                Main(new string[] { });
             }
         }
 
@@ -311,8 +319,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Console.Clear();
-                Main(new string[] { });
+                return;
             }
 
             try
@@ -343,12 +350,10 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine(exception.Message);
             } 
-            //finally
-            //{
-            //    Console.ReadKey();
-            //    Console.Clear();
-            //    Main(new string[] { }); 
-            //}
+            finally
+            {
+                Console.ReadKey();
+            }
         }
 
         #endregion
@@ -364,7 +369,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
 
             try
@@ -390,7 +395,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Main(new string[] { });
             }
         }
 
@@ -403,7 +407,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
 
             try
@@ -428,7 +432,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Main(new string[] { });
             }
         }
 
@@ -440,7 +443,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
             Console.Write("Please enter Subject ID: ");
             int subjectId;
@@ -448,7 +451,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
 
             try
@@ -466,7 +469,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Main(new string[] { });
             }
         }
 
@@ -478,7 +480,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
             Console.Write("Please enter Subject ID: ");
             int subjectId;
@@ -486,7 +488,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
 
             try
@@ -504,7 +506,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Main(new string[] { });
             }
         }
 
@@ -516,7 +517,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
             Console.Write("Please enter Course ID: ");
             int courseId;
@@ -524,7 +525,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return; 
             }
 
             try
@@ -542,7 +543,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Main(new string[] { });
             }
         }
 
@@ -554,7 +554,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
             Console.Write("Please enter Course ID: ");
             int courseId;
@@ -562,7 +562,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
 
             try
@@ -580,7 +580,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Main(new string[] { });
             }
         }
 
@@ -594,7 +593,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid ID provided");
                 Console.ReadKey();
-                Main(new string[] { });
+                return;
             }
 
             try
@@ -621,7 +620,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Main(new string[] { });
             }
         }
 
@@ -639,7 +637,6 @@ namespace YT7G72_HFT_2023241.Client
             finally
             {
                 Console.ReadKey();
-                Main(new string[] { });
             }
         }
         #endregion
@@ -655,8 +652,6 @@ namespace YT7G72_HFT_2023241.Client
             }
 
             Console.ReadKey();
-            Console.Clear();
-            Main(new string[] { });
         }
 
         static void GetBestTeachers()
@@ -669,8 +664,6 @@ namespace YT7G72_HFT_2023241.Client
             }
 
             Console.ReadKey();
-            Console.Clear();
-            Main(new string[] { });
         }
 
         static void GetBestTeachersByAcademicRank()
@@ -687,8 +680,7 @@ namespace YT7G72_HFT_2023241.Client
             {
                 Console.WriteLine("Invalid value!");
                 Console.ReadKey();
-                Console.Clear();
-                Main(new string[] { });
+                return;
             }
 
             bool isValid = false;
@@ -717,8 +709,6 @@ namespace YT7G72_HFT_2023241.Client
             }
 
             Console.ReadKey();
-            Console.Clear();
-            Main(new string[] { });
         }
 
         static void GetSemesterStatistics()
@@ -741,8 +731,6 @@ namespace YT7G72_HFT_2023241.Client
                        $"\n\tNumber of failures: {semesterResult.NumberOfFailures}\n\tWeighted Average among all studetns: {Math.Round(semesterResult.WeightedAvg, 2)}");
             }
             Console.ReadKey();
-            Console.Clear();
-            Main(new string[] { });
         }
 
         static void GetSubjectStatistics()
@@ -752,17 +740,14 @@ namespace YT7G72_HFT_2023241.Client
             if (!int.TryParse( Console.ReadLine(), out id))
             {
                 Console.WriteLine("Invalid ID provided!");
-                Console.ReadKey();
-                Console.Clear();
-                Main(new string[] { });
+                Console.ReadKey();;
+                return;
             }
             else
             {
                 var subjectStat = restService.GetSingle<SubjectStatistics>($"/Grades/Subjects/Statistics/{id}");
                 Console.WriteLine($"Subject: {subjectStat.Subject}\n\tNumber of total registrations: {subjectStat.NumberOfRegistrations}\n\tPass per Registration Ratio: {subjectStat.PassPerRegistrationRatio}\n\tAverages grade given: {subjectStat.Avg}");
                 Console.ReadKey();
-                Console.Clear();
-                Main(new string[] { });
             }
         }
         #endregion
@@ -829,9 +814,7 @@ namespace YT7G72_HFT_2023241.Client
                             int converted;
                             if (!int.TryParse(input, out converted))
                             {
-                                Console.WriteLine("Invalid input value!");
-                                Console.ReadKey();
-                                Main(new string[] { });
+                                throw new ArgumentException("Invalid input value!");
                             }
                             else
                             {
@@ -851,9 +834,7 @@ namespace YT7G72_HFT_2023241.Client
                                 }
                                 catch (Exception)
                                 {
-                                    Console.WriteLine("Invalid input value!");
-                                    Console.ReadKey();
-                                    Main(new string[] { });
+                                    throw new ArgumentException("Invalid input value!");
                                 }
                             }
                         }
@@ -950,9 +931,7 @@ namespace YT7G72_HFT_2023241.Client
                                 }
                                 catch (Exception)
                                 {
-                                    Console.WriteLine("Invalid input value!");
-                                    Console.ReadKey();
-                                    Main(new string[] { });
+                                    throw new ArgumentException("Invalid input value!");
                                 }
                             }
                         }
@@ -966,9 +945,7 @@ namespace YT7G72_HFT_2023241.Client
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input value!");
-                        Console.ReadKey();
-                        Main(new string[] { });
+                        throw new ArgumentException("Invalid input value!");
                     }
                 }
             }
