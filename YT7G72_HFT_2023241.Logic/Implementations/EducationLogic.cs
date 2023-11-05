@@ -37,7 +37,7 @@ namespace YT7G72_HFT_2023241.Logic
                 subjectRepository.Create(subject);
             }
             catch (Exception) {
-                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+                throw new ArgumentException("Failed to update database");
             }
         }
 
@@ -235,7 +235,7 @@ namespace YT7G72_HFT_2023241.Logic
             }
             catch (Exception)
             {
-                throw new ArgumentException("Failed to update database, most likely due to foregin key constraint violation");
+                throw new ArgumentException("Failed to update database");
             }
         }
 
@@ -256,7 +256,7 @@ namespace YT7G72_HFT_2023241.Logic
             }
             catch (Exception)
             {
-                throw new ArgumentException("Failed to update database, most likely due to foregin key constraint violation");
+                throw new ArgumentException("Failed to update database");
             }
         }
 

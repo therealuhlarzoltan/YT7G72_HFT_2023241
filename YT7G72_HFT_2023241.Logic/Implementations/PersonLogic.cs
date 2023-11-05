@@ -26,13 +26,18 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 throw new ArgumentException("Invalid argument(s) provided!");
             }
+            var other = GetStudents().Where(s => s.StudentCode == student.StudentCode);
+            if (other.Any())
+            {
+                throw new ArgumentException("Student Code must be unique!");
+            }
             try
             {
                 studentRepository.Create(student);
             }
             catch (Exception)
             {
-                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+                throw new ArgumentException("Failed to update database");
             }
         }
 
@@ -49,7 +54,7 @@ namespace YT7G72_HFT_2023241.Logic
             }
             catch (Exception)
             {
-                throw new ArgumentException("Failed to update database, most likely due to violation of foreign key constraint");
+                throw new ArgumentException("Failed to update database");
             }
         }
 
@@ -152,13 +157,18 @@ namespace YT7G72_HFT_2023241.Logic
             var originalStudent = studentRepository.Read(student.StudentId);
             if (originalStudent == null)
                 throw new ObjectNotFoundException(student.StudentId, typeof(Student));
+            var other = GetStudents().Where(s => s.StudentCode == student.StudentCode);
+            if (other.Any() && student.StudentCode != originalStudent.StudentCode)
+            {
+                throw new ArgumentException("Student Code must be unique!");
+            }
             try
             {
                 studentRepository.Update(student);
             }
             catch (Exception)
             {
-                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+                throw new ArgumentException("Failed to update database");
             }
         }
 
@@ -178,7 +188,7 @@ namespace YT7G72_HFT_2023241.Logic
             }
             catch (Exception)
             {
-                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violtion");
+                throw new ArgumentException("Failed to update database");
             }
         }
 

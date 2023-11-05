@@ -52,6 +52,7 @@ namespace YT7G72_HFT_2023241.Test
 
             gradeRepository = new Mock<IRepository<Grade>>();
             gradeRepository.Setup(r => r.ReadAll()).Returns(grades.AsQueryable());
+            gradeRepository.Setup(r => r.Read(It.IsAny<int>())).Returns((int id) => grades.Where(g => g.GradeId == id).FirstOrDefault());
 
             gradeLogic = new GradeLogic(gradeRepository.Object);
         }

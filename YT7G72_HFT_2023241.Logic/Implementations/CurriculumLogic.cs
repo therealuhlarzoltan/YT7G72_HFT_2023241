@@ -29,7 +29,7 @@ namespace YT7G72_HFT_2023241.Logic.Implementations
             {
                 curriculumRepository.Create(curriculum);
             } catch (Exception) {
-                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+                throw new ArgumentException("Failed to update database");
             }
         }
 
@@ -76,7 +76,7 @@ namespace YT7G72_HFT_2023241.Logic.Implementations
             }
             catch (Exception)
             {
-                throw new ArgumentException("Failed to update database, most likely due to foreign key constraint violation");
+                throw new ArgumentException("Failed to update database");
             }
         }
     }

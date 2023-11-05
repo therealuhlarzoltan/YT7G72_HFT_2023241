@@ -105,6 +105,8 @@ namespace YT7G72_HFT_2023241.Test
             teacherRepository = new Mock<IRepository<Teacher>>();
             studentRepository.Setup(r => r.ReadAll()).Returns(students.AsQueryable());
             teacherRepository.Setup(r => r.ReadAll()).Returns(teachers.AsQueryable());
+            studentRepository.Setup(r => r.Read(It.IsAny<int>())).Returns((int id) => students.Where(s => s.StudentId == id).FirstOrDefault());
+            teacherRepository.Setup(r => r.Read(It.IsAny<int>())).Returns((int id) => teachers.Where(t => t.TeacherId == id).FirstOrDefault());
 
             personLogic = new PersonLogic(studentRepository.Object, teacherRepository.Object);
         }
@@ -142,7 +144,7 @@ namespace YT7G72_HFT_2023241.Test
             Assert.That(() => personLogic.AddStudent(student3), Throws.TypeOf<ArgumentException>());
             studentRepository.Verify(r => r.Create(student3), Times.Never);
 
-            var student4 = new Student() { FirstName = "Zoltán", LastName = "Uhlár", StudentCode = "YT7G72", CurriculumId = 1 };
+            var student4 = new Student() { FirstName = "Zoltán", LastName = "Uhlár", StudentCode = "YT7G71", CurriculumId = 1 };
             try
             {
                 personLogic.AddStudent(student4);
@@ -151,6 +153,16 @@ namespace YT7G72_HFT_2023241.Test
 
             Assert.That(() => personLogic.AddStudent(student4), Throws.Nothing);
             studentRepository.Verify(r => r.Create(student4), Times.Exactly(2));
+
+            var student5 = new Student() { FirstName = "Zoltán", LastName = "Uhlár", StudentCode = "YT7G72", CurriculumId = 1 };
+            try
+            {
+                personLogic.AddStudent(student4);
+            }
+            catch { }
+
+            Assert.That(() => personLogic.AddStudent(student5), Throws.TypeOf<ArgumentException>());
+            studentRepository.Verify(r => r.Create(student5), Times.Never);
 
         }
 

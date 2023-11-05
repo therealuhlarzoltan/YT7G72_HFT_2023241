@@ -209,6 +209,7 @@ namespace YT7G72_HFT_2023241.Client
                 T entity = CreateInstance<T>();
                 if (type == typeof(Student))
                 {
+                    var curriculum = restService.GetSingle<Curriculum>($"/Curriculums/{(entity as Student).CurriculumId}");
                     restService.Post<Student>("/People/Students", entity as Student);
                 }
                 else if (type == typeof(Teacher))
@@ -217,10 +218,24 @@ namespace YT7G72_HFT_2023241.Client
                 }
                 else if (type == typeof(Subject))
                 {
+                    if ((entity as Subject).TeacherId != null)
+                    {
+                        var teacher = restService.GetSingle<Teacher>($"/People/Teachers/{(entity as Subject).TeacherId}");
+                    }
+                    if ((entity as Subject).PreRequirementId != null)
+                    {
+                        var preReq = restService.GetSingle<Subject>($"/Education/Subjects/{(entity as Subject).PreRequirementId}");
+                    }
+                    var curriculum = restService.GetSingle<Curriculum>($"/Curriculums/{(entity as Subject).CurriculumId}");
                     restService.Post<Subject>("/Education/Subjects", entity as Subject);
                 }
                 else if (type == typeof(Course))
                 {
+                    if ((entity as Course).TeacherId != null)
+                    {
+                        var teacher = restService.GetSingle<Teacher>($"/People/Teachers/{(entity as Course).TeacherId}");
+                    }
+                    var subject = restService.GetSingle<Subject>($"/Education/Subjects/{(entity as Course).SubjectId}");
                     restService.Post<Course>("/Education/Courses", entity as Course);
                 }
                 else if (type == typeof(Curriculum))
@@ -229,6 +244,9 @@ namespace YT7G72_HFT_2023241.Client
                 }
                 else if (type == typeof(Grade))
                 {
+                    var student = restService.GetSingle<Subject>($"/People/Students/{(entity as Grade).StudentId}");
+                    var subject = restService.GetSingle<Subject>($"/Education/Subjects/{(entity as Grade).SubjectId}");
+                    var teacher = restService.GetSingle<Teacher>($"/People/Teachers/{(entity as Grade).TeacherId}");
                     restService.Post<Grade>("/Grades", entity as Grade);
                 }
                 Console.WriteLine($"New {type.Name} created!");
@@ -263,6 +281,7 @@ namespace YT7G72_HFT_2023241.Client
                 {
                     instance = restService.Get<Student>("/People/Students", id);
                     UpdateInstance<T>(instance as T);
+                    var curriculum = restService.GetSingle<Curriculum>($"/Curriculums/{(instance as Student).CurriculumId}");
                     restService.Put<Student>("/People/Students", instance as Student);
                 }
                 else if (type == typeof(Teacher))
@@ -275,12 +294,26 @@ namespace YT7G72_HFT_2023241.Client
                 {
                     instance = restService.Get<Subject>("/Education/Subjects", id);
                     UpdateInstance<T>(instance as T);
+                    if ((instance as Subject).TeacherId != null)
+                    {
+                        var teacher = restService.GetSingle<Teacher>($"/People/Teachers/{(instance as Subject).TeacherId}");
+                    }
+                    if ((instance as Subject).PreRequirementId != null)
+                    {
+                        var preReq = restService.GetSingle<Subject>($"/Education/Subjects/{(instance as Subject).PreRequirementId}");
+                    }
+                    var curriculum = restService.GetSingle<Curriculum>($"/Curriculums/{(instance as Subject).CurriculumId}");
                     restService.Put<Subject>("/Education/Subjects", instance as Subject);
                 }
                 else if (type == typeof(Course))
                 {
                     instance = restService.Get<Course>("/Education/Courses", id);
                     UpdateInstance<T>(instance as T);
+                    if ((instance as Course).TeacherId != null)
+                    {
+                        var teacher = restService.GetSingle<Teacher>($"/People/Teachers/{(instance as Course).TeacherId}");
+                    }
+                    var subject = restService.GetSingle<Subject>($"/Education/Subjects/{(instance as Course).SubjectId}");
                     restService.Put<Course>("/Education/Courses", instance as Course);
                 }
                 else if (type == typeof(Curriculum))
@@ -293,6 +326,9 @@ namespace YT7G72_HFT_2023241.Client
                 {
                     instance = restService.Get<Grade>("/Grades", id);
                     UpdateInstance<T>(instance as T);
+                    var student = restService.GetSingle<Subject>($"/People/Students/{(instance as Grade).StudentId}");
+                    var subject = restService.GetSingle<Subject>($"/Education/Subjects/{(instance as Grade).SubjectId}");
+                    var teacher = restService.GetSingle<Teacher>($"/People/Teachers/{(instance as Grade).TeacherId}");
                     restService.Put<Grade>("/Grades", instance as Grade);
                 }
                 
