@@ -18,7 +18,6 @@ namespace YT7G72_HFT_2023241.Repository
         public DbSet<Course> Courses { get; set; }
         public DbSet<Curriculum> Curriculums { get; set; }
         public DbSet<Grade> GradeBook { get; set; }
-        public DbSet<SubjectRegistration> SubjectRegistrations { get; set; }
 
         public UniversityDatabaseContext()
         {

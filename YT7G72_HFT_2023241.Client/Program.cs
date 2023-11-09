@@ -500,7 +500,7 @@ namespace YT7G72_HFT_2023241.Client
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                Console.WriteLine($"Couldn't register for subject: {exception.Message}");
             }
             finally
             {
@@ -537,7 +537,7 @@ namespace YT7G72_HFT_2023241.Client
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                Console.WriteLine($"Couldn't unregister from subject: {exception.Message}");
             }
             finally
             {
@@ -574,7 +574,7 @@ namespace YT7G72_HFT_2023241.Client
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                Console.WriteLine($"Couldn't register for course: {exception.Message}");
             }
             finally
             {

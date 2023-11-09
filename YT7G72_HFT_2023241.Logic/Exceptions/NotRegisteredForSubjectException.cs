@@ -9,7 +9,7 @@ namespace YT7G72_HFT_2023241.Logic
 {
     public class NotRegisteredForSubjectException : Exception
     {
-        public NotRegisteredForSubjectException(Student student, Subject subject) : base($"Student {student} isn't registered for the course's subject: {subject}")
+        public NotRegisteredForSubjectException(Student student, Subject subject) : base($"Student {student} isn't registered for subject {subject}")
         {
         }
     }

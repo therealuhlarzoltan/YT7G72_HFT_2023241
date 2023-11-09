@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Logic.Implementations;
 using YT7G72_HFT_2023241.Logic.Interfaces;
@@ -30,6 +31,11 @@ namespace YT7G72_HFT_2023241.Endpoint
             services.AddTransient<IEducationLogic, EducationLogic>();
             services.AddTransient<ICurriculumLogic, CurriculumLogic>();
             services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "NeptunDbApp.Endpoint", Version = "v1" });
+            });
+            
 
         }
 
@@ -39,6 +45,20 @@ namespace YT7G72_HFT_2023241.Endpoint
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwaggerUI();
+                app.UseSwagger();
+                app.UseSwagger(c =>
+                {
+                    c.SerializeAsV2 = true;
+                });
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Neptun API V1");
+                });
+                
             }
 
             app.UseExceptionHandler(c => c.Run(async context =>
@@ -58,7 +78,7 @@ namespace YT7G72_HFT_2023241.Endpoint
 
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("NEPTUN API v2");
+                    await context.Response.WriteAsync("NEPTUN API v1");
                 });
 
             });
