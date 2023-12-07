@@ -762,6 +762,7 @@ namespace YT7G72_HFT_2023241.Client
             }
             else
             {
+                semester = semester.Replace('/', '-');
                 var semesterResult = restService.GetSingle<SemesterStatistics>($"/Grades/Semester/Statistics/{semester}");
                 Console.WriteLine($"Semster: {semesterResult.Semester}\n\tSuccessful subject completions: {semesterResult.NumberOfPasses}" +
                        $"\n\tNumber of failures: {semesterResult.NumberOfFailures}\n\tWeighted Average among all studetns: {Math.Round(semesterResult.WeightedAvg, 2)}");
