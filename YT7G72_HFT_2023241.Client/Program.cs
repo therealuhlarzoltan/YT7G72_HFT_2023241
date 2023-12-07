@@ -10,7 +10,7 @@ namespace YT7G72_HFT_2023241.Client
 {
     internal class Program
     {
-        private static RestService restService = new RestService("http://localhost:5000");
+        private static RestService restService = new RestService("http://localhost:4180");
         const int COLUMN_WIDTH = 16;
         const int SEPARATOR_WIDTH = 1;
         static void Main(string[] args)
