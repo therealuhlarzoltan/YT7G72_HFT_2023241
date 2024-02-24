@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using YT7G72_HFT_2023241.Models;
@@ -71,7 +72,7 @@ namespace YT7G72_HFT_2023241.Logic
             return subject;
         }
 
-        public void RegisterStudentForCourse(int studentId, int courseId)
+        public void RegisterStudentForCourse(int studentId, int courseId, Action<Student, Course> callBack = null)
         {
             var student = studentRepository.Read(studentId);
             if (student == null)
@@ -94,6 +95,7 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 course.EnrolledStudents.Add(student);
                 courseRepository.Update(course);
+                callBack?.Invoke(student, course);
             } 
             else
             {
@@ -101,7 +103,7 @@ namespace YT7G72_HFT_2023241.Logic
             }
         }
 
-        public void RegisterStudentForSubject(int studentId, int subjectId)
+        public void RegisterStudentForSubject(int studentId, int subjectId, Action<Student, Subject> callBack = null)
         {
             var student = studentRepository.Read(studentId);
             if (student == null)
@@ -131,11 +133,13 @@ namespace YT7G72_HFT_2023241.Logic
                     throw new PreRequirementsNotMetException(student, subject);
                 subject.RegisteredStudents.Add(student);
                 subjectRepository.Update(subject);
+                callBack?.Invoke(student, subject);
             } 
             else
             {
                 subject.RegisteredStudents.Add(student);
                 subjectRepository.Update(subject);
+                callBack?.Invoke(student, subject);
             }
         }
 
@@ -164,7 +168,7 @@ namespace YT7G72_HFT_2023241.Logic
             
         }
 
-        public void RemoveStudentFromCourse(int studentId, int courseId)
+        public void RemoveStudentFromCourse(int studentId, int courseId, Action<Student, Course> callBack = null)
         {
             var student = studentRepository.Read(studentId);
             if (student == null)
@@ -182,10 +186,11 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 course.EnrolledStudents.Remove(student);
                 courseRepository.Update(course);
+                callBack?.Invoke(student, course);
             }
         }
 
-        public void RemoveStudentFromSubject(int studentId, int subjectId)
+        public void RemoveStudentFromSubject(int studentId, int subjectId, Action<Student, Subject> callBack = null)
         {
             var student = studentRepository.Read(studentId);
             var subject = subjectRepository.Read(subjectId);
@@ -205,6 +210,7 @@ namespace YT7G72_HFT_2023241.Logic
             subject.RegisteredStudents.Remove(student);
             subjectRepository.Update(subject);
             studentRepository.Update(student);
+            callBack?.Invoke(student, subject);
         }
 
         public void RemoveSubject(int id)
@@ -260,7 +266,7 @@ namespace YT7G72_HFT_2023241.Logic
             }
         }
 
-        public void ResetSemester()
+        public void ResetSemester(Action<Subject, Course> callBack = null)
         {
             foreach (var subject in subjectRepository.ReadAll())
             {
@@ -269,10 +275,12 @@ namespace YT7G72_HFT_2023241.Logic
                     course.EnrolledStudents.Clear();
                     course.CourseRegistrations.Clear();
                     courseRepository.Update(course);
+                    callBack?.Invoke(null, course);
                 }
                 subject.SubjectRegistrations.Clear();
                 subject.RegisteredStudents.Clear();
                 subjectRepository.Update(subject);
+                callBack?.Invoke(subject, null);
             }
         }
     }

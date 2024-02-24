@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Models;
@@ -10,10 +11,13 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
     public class GradeController : Controller
     {
         private IGradeLogic gradeLogic;
-        
-        public GradeController(IGradeLogic gradeLogic)
+        private readonly IHubContext<SignalRHub> hub;
+
+
+        public GradeController(IGradeLogic gradeLogic, IHubContext<SignalRHub> hub)
         {
             this.gradeLogic = gradeLogic;
+            this.hub = hub;
         }
 
         [HttpGet("{id}")]
@@ -32,19 +36,23 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void Create([FromBody] Grade grade)
         {
             gradeLogic.AddGrade(grade);
+            hub.Clients.All.SendAsync("GradeCreated", grade);
         }
 
         [HttpPut]
         public void Edit([FromBody] Grade grade)
         {
             gradeLogic.UpdateGrade(grade);
+            hub.Clients.All.SendAsync("GradeUpdated", grade);
         }
 
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+           var grade = gradeLogic.GetGrade(id);
            gradeLogic.RemoveGrade(id);
+            hub.Clients.All.SendAsync("GradeDeleted", grade);
         }
 
         [Route("Semester/Statistics/{year}")]

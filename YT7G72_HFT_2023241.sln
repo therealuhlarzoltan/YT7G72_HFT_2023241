@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Others", "Others", "{180916
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YT7G72_HFT_2023241.WpfClient", "YT7G72_HFT_2023241.WpfClient\YT7G72_HFT_2023241.WpfClient.csproj", "{791837DA-1278-4E1B-975E-D49B0F7A9C9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{CCF3DF73-BDB0-445C-867F-7EAB35980B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCF3DF73-BDB0-445C-867F-7EAB35980B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCF3DF73-BDB0-445C-867F-7EAB35980B62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{791837DA-1278-4E1B-975E-D49B0F7A9C9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{791837DA-1278-4E1B-975E-D49B0F7A9C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{791837DA-1278-4E1B-975E-D49B0F7A9C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{791837DA-1278-4E1B-975E-D49B0F7A9C9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{55F4A9CC-41D8-464C-8343-F0A997F2164A} = {D848B0F9-26FA-4556-9597-47FD369EADC8}
 		{66C0B726-86E5-4760-B218-A7DBF588A7B3} = {D848B0F9-26FA-4556-9597-47FD369EADC8}
 		{CCF3DF73-BDB0-445C-867F-7EAB35980B62} = {D848B0F9-26FA-4556-9597-47FD369EADC8}
+		{791837DA-1278-4E1B-975E-D49B0F7A9C9C} = {C0DAEA22-BDFA-4D4E-8038-C96F55416DA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FEC440B1-1606-4C51-BAC9-14DC5A4692C0}

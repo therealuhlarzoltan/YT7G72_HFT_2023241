@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using YT7G72_HFT_2023241.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace YT7G72_HFT_2023241.Logic
 {
@@ -18,11 +19,11 @@ namespace YT7G72_HFT_2023241.Logic
         void UpdateCourse(Course course);
         Course GetCourse(int id);
         IEnumerable<Course> GetAllCourses();
-        void RegisterStudentForSubject(int studentId, int subjectId);
-        void RemoveStudentFromSubject(int studentId, int subjectId);
-        void RegisterStudentForCourse(int studentId, int courseId);
-        void RemoveStudentFromCourse(int studentId, int courseId);
-        void ResetSemester();
+        void RegisterStudentForSubject(int studentId, int subjectId, Action<Student, Subject> callBack = null);
+        void RemoveStudentFromSubject(int studentId, int subjectId, Action<Student, Subject> callBack = null);
+        void RegisterStudentForCourse(int studentId, int courseId, Action<Student, Course> callBack = null);
+        void RemoveStudentFromCourse(int studentId, int courseId, Action<Student, Course> callBack = null);
+        void ResetSemester(Action<Subject, Course> callBack = null);
         static bool ValidateObject<T>(T obj)
         {
             Type type = obj.GetType();

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using System.Diagnostics;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Models;
 
@@ -10,10 +12,12 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
     public class EducationController : Controller
     {
         private IEducationLogic educationLogic;
+        private readonly IHubContext<SignalRHub> hub;
 
-        public EducationController(IEducationLogic educationLogic)
+        public EducationController(IEducationLogic educationLogic, IHubContext<SignalRHub> hub)
         {
             this.educationLogic = educationLogic;
+            this.hub = hub;
         }
 
         [Route("Subjects")]
@@ -35,6 +39,7 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void CreateSubject([FromBody] Subject subject)
         {
             educationLogic.AddSubject(subject);
+            hub.Clients.All.SendAsync("SubjectCreated", subject);
         }
 
         [Route("Subjects")]
@@ -42,13 +47,16 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void UpdateSubject([FromBody] Subject subject)
         {
             educationLogic.UpdateSubject(subject);
+            hub.Clients.All.SendAsync("SubjectUpdated", subject);
         }
 
         [Route("Subjects/{id}")]
         [HttpDelete]
         public void DeleteSubject(int id)
         {
+            var subject = educationLogic.GetSubject(id);
             educationLogic.RemoveSubject(id);
+            hub.Clients.All.SendAsync("SubjectDeleted", subject);
         }
 
         [Route("Courses")]
@@ -70,6 +78,7 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void CreateCourse([FromBody] Course course)
         {
             educationLogic.AddCourse(course);
+            hub.Clients.All.SendAsync("CourseCreated", course);
         }
 
         [Route("Courses")]
@@ -77,13 +86,16 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void UpdateCourse([FromBody] Course course)
         {
             educationLogic.UpdateCourse(course);
+            hub.Clients.All.SendAsync("CourseUpdated", course);
         }
 
         [Route("Courses/{id}")]
         [HttpDelete]
         public void DeleteCourse(int id)
         {
+            var course = educationLogic.GetCourse(id);
             educationLogic.RemoveCourse(id);
+            hub.Clients.All.SendAsync("CourseDeleted", course);
         }
 
         [Route("Subjects/{subjectId}/Register/{studentId}")]

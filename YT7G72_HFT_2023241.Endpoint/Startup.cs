@@ -31,6 +31,7 @@ namespace YT7G72_HFT_2023241.Endpoint
             services.AddTransient<IEducationLogic, EducationLogic>();
             services.AddTransient<ICurriculumLogic, CurriculumLogic>();
             services.AddControllers();
+            services.AddSignalR();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "NeptunDbApp.Endpoint", Version = "v1" });
@@ -80,6 +81,7 @@ namespace YT7G72_HFT_2023241.Endpoint
                 {
                     await context.Response.WriteAsync("NEPTUN API v1");
                 });
+                endpoints.MapHub<SignalRHub>("/hub");
 
             });
 

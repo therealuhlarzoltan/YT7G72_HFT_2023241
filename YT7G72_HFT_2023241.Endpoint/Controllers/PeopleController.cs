@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Linq;
 using YT7G72_HFT_2023241.Logic;
@@ -12,10 +13,12 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
     public class PeopleController : Controller
     {
         private IPersonLogic personLogic;
+        private readonly IHubContext<SignalRHub> hub;
 
-        public PeopleController(IPersonLogic personLogic)
+        public PeopleController(IPersonLogic personLogic, IHubContext<SignalRHub> hub)
         {
             this.personLogic = personLogic;
+            this.hub = hub;
         }
 
         [Route("Teachers")]
@@ -37,6 +40,7 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void AddTeacher([FromBody] Teacher teacher)
         {
             personLogic.AddTeacher(teacher);
+            hub.Clients.All.SendAsync("TeacherCreated", teacher);
         }
 
         [Route("Teachers")]
@@ -44,13 +48,16 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void UpdateTeacher([FromBody] Teacher teacher)
         {
             personLogic.UpdateTeacher(teacher);
+            hub.Clients.All.SendAsync("TeacherUpdated", teacher);
         }
 
         [Route("Teachers/{id}")]
         [HttpDelete]
         public void Delete(int id)
         {
+            var teacher = personLogic.GetTeacher(id);
             personLogic.RemoveTeacher(id);
+            hub.Clients.All.SendAsync("TeacherDeleted", teacher);
         }
 
         [Route("Students")]
@@ -72,6 +79,7 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void AddStudent([FromBody] Student student)
         {
             personLogic.AddStudent(student);
+            hub.Clients.All.SendAsync("StudentCreated", student);
         }
 
         [Route("Students")]
@@ -79,13 +87,16 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void UpdateStudent([FromBody] Student student)
         {
             personLogic.UpdateStudent(student);
+            hub.Clients.All.SendAsync("StudentUpdated", student);
         }
 
         [Route("Students/{id}")]
         [HttpDelete]
         public void DeleteStudent(int id)
         {
+            var student = personLogic.GetStudent(id);
             personLogic.RemoveStudent(id);
+            hub.Clients.All.SendAsync("StudentDeleted", student);
         }
 
         [Route("Students/Best")]
