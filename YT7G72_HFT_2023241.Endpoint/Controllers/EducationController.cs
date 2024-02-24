@@ -102,35 +102,50 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         [HttpPost]
         public void RegisterForSubject(int subjectId, int studentId)
         {
-            educationLogic.RegisterStudentForSubject(studentId, subjectId);
+            educationLogic.RegisterStudentForSubject(studentId, subjectId, (stud, sub) => {
+                hub.Clients.All.SendAsync("StudentUpdated", stud);
+                hub.Clients.All.SendAsync("SubjectUpdated", sub);
+            });
         }
 
         [Route("Subjects/{subjectId}/Register/{studentId}")]
         [HttpDelete]
         public void UnregisterFromSubject(int subjectId, int studentId)
         {
-            educationLogic.RemoveStudentFromSubject(studentId, subjectId);
+            educationLogic.RemoveStudentFromSubject(studentId, subjectId, (stud, sub) => {
+                hub.Clients.All.SendAsync("StudentUpdated", stud);
+                hub.Clients.All.SendAsync("SubjectUpdated", sub);
+            });
         }
 
         [Route("Courses/{courseId}/Register/{studentId}")]
         [HttpPost]
         public void RegisterForCourse(int courseId, int studentId)
         {
-            educationLogic.RegisterStudentForCourse(studentId, courseId);
+            educationLogic.RegisterStudentForCourse(studentId, courseId, (s, c) => {
+                hub.Clients.All.SendAsync("StudentUpdated", s);
+                hub.Clients.All.SendAsync("CourseUpdated", c);
+            });
         }
 
         [Route("Courses/{courseId}/Register/{studentId}")]
         [HttpDelete]
         public void UnregisterFromCourse(int courseId, int studentId)
         {
-            educationLogic.RemoveStudentFromCourse(studentId, courseId);
+            educationLogic.RemoveStudentFromCourse(studentId, courseId, (s, c) => {
+                hub.Clients.All.SendAsync("StudentUpdated", s);
+                hub.Clients.All.SendAsync("CourseUpdated", c);
+            });
         }
 
         [Route("Semester/Reset")]
         [HttpPost]
         public void ResetSemester()
         {
-            educationLogic.ResetSemester();
+            educationLogic.ResetSemester((s, c) => {
+                if (s != null) hub.Clients.All.SendAsync("SubjectUpdated", s);
+                if (c != null) hub.Clients.All.SendAsync("CourseUpdated", c);
+            }); ;
         }
     }
 }

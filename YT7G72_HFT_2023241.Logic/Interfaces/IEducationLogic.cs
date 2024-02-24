@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using YT7G72_HFT_2023241.Models;
-using Microsoft.AspNetCore.SignalR;
 
 namespace YT7G72_HFT_2023241.Logic
 {
