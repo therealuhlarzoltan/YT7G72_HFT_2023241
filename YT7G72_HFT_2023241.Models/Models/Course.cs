@@ -41,6 +41,7 @@ namespace YT7G72_HFT_2023241.Models
         public virtual ICollection<CourseRegistration> CourseRegistrations { get; set; } = new HashSet<CourseRegistration>();
         [JsonIgnore]
         public virtual ICollection<Student> EnrolledStudents { get; set; } = new HashSet<Student>();
+        public int NumberOfRegistrations { get { return EnrolledStudents.Count; } }
 
         public override bool Equals(object obj)
         {
@@ -95,7 +96,6 @@ namespace YT7G72_HFT_2023241.Models
                 writer.WriteStringValue(value.ToString());
             }
         }
-
 
     }
 }

@@ -20,9 +20,9 @@ namespace YT7G72_HFT_2023241.Models
         public int SubjectId { get; set; }
         [Required]
         public int TeacherId { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Student Student { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Subject Subject { get; set; }
         [JsonIgnore]
         public virtual Teacher Teacher { get; set; }

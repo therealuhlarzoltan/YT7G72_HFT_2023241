@@ -17,16 +17,19 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
     {
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
-        NotifyService notify;
-        RestService rest;
-        List<T> items;
-        bool hasSignalR;
-        Type type = typeof(T);
+        private NotifyService notify;
+        private RestService rest;
+        private List<T> items;
+        private bool hasSignalR;
+        private Type type = typeof(T);
+        private string controllerEndpoint;
 
-        public RestCollection(string baseurl, string endpoint, string hub = null)
+
+        public RestCollection(string baseurl, string controllerEndpoint, string hub = null)
         {
             hasSignalR = hub != null;
-            this.rest = new RestService(baseurl, endpoint);
+            this.rest = new RestService(baseurl, controllerEndpoint);
+            this.controllerEndpoint = controllerEndpoint;
             if (hub != null)
             {
                 this.notify = new NotifyService(baseurl + hub);
@@ -61,7 +64,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
 
         private async Task Init()
         {
-            items = await rest.GetAsync<T>(typeof(T).Name);
+            items = await rest.GetAsync<T>(controllerEndpoint);
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -87,7 +90,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
         {
             if (hasSignalR)
             {
-                this.rest.PostAsync(item, typeof(T).Name);
+                this.rest.PostAsync(item, controllerEndpoint);
             }
             else
             {
@@ -109,7 +112,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
         {
             if (hasSignalR)
             {
-                this.rest.PutAsync(item, typeof(T).Name);
+                this.rest.PutAsync(item, controllerEndpoint);
             }
             else
             {
@@ -130,7 +133,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
         {
             if (hasSignalR)
             {
-                this.rest.DeleteAsync(id, typeof(T).Name);
+                this.rest.DeleteAsync(id, controllerEndpoint);
             }
             else
             {

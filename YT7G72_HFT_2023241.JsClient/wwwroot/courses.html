@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css" />
+    <script src="coursesScript.js"></script>
+    <title>Neptun - Courses</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">Neptun</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" aria-current="page" href="index.html">Students</a>
+                    <a class="nav-link" aria-current="page" href="teachers.html">Teachers</a>
+                    <a class="nav-link" aria-current="page" href="subjects.html">Subjects</a>
+                    <a class="nav-link active" aria-current="page" href="courses.html">Courses</a>
+                    <a class="nav-link" aria-current="page" href="grades.html">Grades</a>
+                    <a class="nav-link" aria-current="page" href="curriculums.html">Curriculums</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="courseAlertDiv">
+    </div>
+
+    <div id="courseCreateDiv" class="createDiv">
+        <form>
+            <div class="form-group">
+                <label for="courseCreateCourseName">Course Name</label>
+                <input type="text" class="form-control mx-0" id="courseCreateCourseName">
+            </div>
+            <div class="form-group">
+                <label for="courseCreateCapacity">Capacity</label>
+                <input type="number" class="form-control mx-0" id="courseCreateCapacity">
+            </div>
+            <div class="form-group">
+                <label for="courseCreateCourseType">Course Type</label>
+                <select class="form-control my-2" id="courseCreateCourseType">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="courseCreateDay">Day</label>
+                <select class="form-control my-2" id="courseCreateDay">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="courseCreateStartTime">Start Time</label>
+                <input type="text" class="form-control mx-0" id="courseCreateStartTime">
+            </div>
+            <div class="form-group">
+                <label for="courseCreateRoom">Room</label>
+                <input type="text" class="form-control mx-0" id="courseCreateRoom ">
+            </div>
+            <div class="form-group">
+                <label for="courseCreateLength">Length in Minutes</label>
+                <input type="number" class="form-control mx-0" id="courseCreateLength">
+            </div>
+            <div class="form-group">
+                <label for="courseCreateTeacher">Teacher</label>
+                <select class="form-control my-2" id="courseCreateTeacher">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="courseCreateSubject">Subject</label>
+                <select class="form-control my-2" id="courseCreateSubject">
+                </select>
+            </div>
+            <button type="button" class="btn btn-success mx-0 my-2" id="courseCreateButton" onclick="createCourse()">Create!</button>
+        </form>
+    </div>
+
+
+    <div id="courseUpdateDiv" class="updateDiv">
+        <form>
+            <div class="form-group">
+                <label for="couseUpdateId">ID</label>
+                <input type="number" class="form-control mx-0" id="courseUpdateId" disabled>
+            </div>
+            <div class="form-group">
+                <label for="coursUpdateCourseName">Course Name</label>
+                <input type="text" class="form-control mx-0" id="courseUpdateCourseName">
+            </div>
+            <div class="form-group">
+                <label for="courseUpdateCapacity">Capacity</label>
+                <input type="number" class="form-control mx-0" id="courseUpdateCapacity">
+            </div>
+            <div class="form-group">
+                <label for="coursUpdateCourseType">Course Type</label>
+                <select class="form-control my-2" id="courseUpdateCourseType">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="courseUpdateDay">Day</label>
+                <select class="form-control my-2" id="courseUpdateDay">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="courseUpdateStartTime">Start Time</label>
+                <input type="text" class="form-control mx-0" id="courseUpdateStartTime">
+            </div>
+            <div class="form-group">
+                <label for="courseUpdateRoom">Room</label>
+                <input type="text" class="form-control mx-0" id="courseUpdateRoom">
+            </div>
+            <div class="form-group">
+                <label for="courseUpdateLength">Length in Minutes</label>
+                <input type="number" class="form-control mx-0" id="courseUpdateLength">
+            </div>
+            <div class="form-group">
+                <label for="courseUpdateTeacher">Teacher</label>
+                <select class="form-control my-2" id="courseUpdateTeacher">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="courseUpdateSubject">Subject</label>
+                <select class="form-control my-2" id="courseUpdateSubject">
+                </select>
+            </div>
+            <button type="button" class="btn btn-info my-2 ml-0 mr-2" id="courseUpdateButton">Update!</button>
+            <button type="button" class="btn btn-warning my-2" id="courseUpdateCancelButton" onclick="cancelUpdate()">Cancel</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Course Name</th>
+                <th>Capacity</th>
+                <th>Course Type</th>
+                <th>Day</th>
+                <th>Start Time</th>
+                <th>Room</th>
+                <th>Length in Minutes</th>
+                <th>Teacher</th>
+                <th>Subject</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="courses">
+        </tbody>
+    </table>
+
+</body>
+</html>

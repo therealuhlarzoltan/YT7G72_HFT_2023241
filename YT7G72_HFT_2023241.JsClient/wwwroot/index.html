@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="script.js"></script>
+    <title>Neptun - Students</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">Neptun</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="index.html">Students</a>
+                    <a class="nav-link" aria-current="page" href="teachers.html">Teachers</a>
+                    <a class="nav-link" aria-current="page" href="subjects.html">Subjects</a>
+                    <a class="nav-link" aria-current="page" href="courses.html">Courses</a>
+                    <a class="nav-link" aria-current="page" href="grades.html">Grades</a>
+                    <a class="nav-link" aria-current="page" href="curriculums.html">Curriculums</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="studentAlertDiv">
+    </div>
+
+    <div id="studentCreateDiv" class="createDiv">
+        <form>
+            <div class="form-group">
+                <label for="studentCreateFirstName">First Name</label>
+                <input type="text" class="form-control mx-0" id="studentCreateFirstName">
+            </div>
+            <div class="form-group">
+                <label for="studentCreateLastName">Last Name</label>
+                <input type="text" class="form-control mx-0" id="studentCreateLastName">
+            </div>
+            <div class="form-group">
+                <label for="studentCreateStudentCode">Student Code</label>
+                <input type="text" class="form-control mx-0" id="studentCreateStudentCode">
+            </div>
+            <div class="form-group">
+                <label for="studentCreateFinancialStatus">Financial Status</label>
+                <select class="form-control my-2" id="studentCreateFinancialStatus">
+                    <option value="0">Without Scholarship</option>
+                    <option value="1">Full State Scholarship</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="studentCreateCurriculum">Curriculum</label>
+                <select class="form-control my-2" id="studentCreateCurriculum">
+                </select>
+            </div>
+            <button type="button" class="btn btn-success mt-4 mx-0" id="studentCreateButton" onclick="createStudent()">Create!</button>
+        </form>
+    </div>
+
+
+    <div id="studentUpdateDiv" class="updateDiv">
+        <form>
+            <div class="form-group">
+                <label for="studentUpdateId">ID</label>
+                <input type="number" class="form-control mx-0" id="studentUpdateId" disabled>
+            </div>
+            <div class="form-group">
+                <label for="studentUpdateFirstName">First Name</label>
+                <input type="text" class="form-control mx-0" id="studentUpdateFirstName">
+            </div>
+            <div class="form-group">
+                <label for="studentUpdateLastName">Last Name</label>
+                <input type="text" class="form-control mx-0" id="studentUpdateLastName">
+            </div>
+            <div class="form-group">
+                <label for="studentUpdateStudentCode">Student Code</label>
+                <input type="text" class="form-control mx-0" id="studentUpdateStudentCode">
+            </div>
+            <div class="form-group">
+                <label for="studentUpdateFinancialStatus">Financial Status</label>
+                <select class="form-control my-2" id="studentUpdateFinancialStatus">
+                    <option value="0">Without Scholarship</option>
+                    <option value="1">Full State Scholarship</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="studentUpdateCurriculum">Curriculum</label>
+                <select class="form-control my-2" id="studentUpdateCurriculum">
+                </select>
+            </div>
+            <button type="button" class="btn btn-info my-4 mr-2 ml-0" id="studentUpdateButton" onclick="updateStudent()">Update!</button>
+            <button type="button" class="btn btn-warning my-4" id="studentUpdateCancelButton" onclick="cancelUpdate()">Cancel</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Student Code</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Financial Status</th>
+                <th>Curriculum</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="students">
+        </tbody>
+    </table>
+
+</body>
+</html>

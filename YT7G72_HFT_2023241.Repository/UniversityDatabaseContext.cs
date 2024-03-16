@@ -21,7 +21,7 @@ namespace YT7G72_HFT_2023241.Repository
 
         public UniversityDatabaseContext()
         {
-            this.Database.EnsureDeleted();
+            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
         }
 

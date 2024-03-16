@@ -12,7 +12,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
     {
         HttpClient client;
 
-        public RestService(string baseurl, string pingableEndpoint = "swagger")
+        public RestService(string baseurl, string endpoint, string pingableEndpoint = "swagger")
         {
             bool isOk = false;
             do
@@ -212,7 +212,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
 
             if (!response.IsSuccessStatusCode)
             {
-                var error = await response.Content.ReadAsAsync<RestExceptionInfo>();
+                 var error = await response.Content.ReadAsAsync<RestExceptionInfo>();
                 throw new ArgumentException(error.Msg);
             }
 

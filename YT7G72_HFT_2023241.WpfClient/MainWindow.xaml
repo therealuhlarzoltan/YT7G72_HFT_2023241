@@ -4,9 +4,169 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient"
+        xmlns:vms="clr-namespace:YT7G72_HFT_2023241.WpfClient.ViewModels"
+        xmlns:services="clr-namespace:YT7G72_HFT_2023241.WpfClient.Services"
         mc:Ignorable="d"
-        Title="Neptun v1 Desktop App" Height="450" Width="800">
+        Title="Neptun v1 Desktop App" Height="450" Width="800" WindowState="Maximized">
+    <Window.DataContext>
+        <vms:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <services:MarkToGradeConverter x:Key="MarkToGradeConverter"/>
+    </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
 
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        
+        <Label Content="Students" FontSize="20" FontWeight="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Content="List" FontSize="20" FontWeight="DemiBold" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <Label Content="Actions" FontSize="20" FontWeight="DemiBold" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <ListBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,80,0,20" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FirstName}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding LastName}" Margin="0,0,0,0"/>
+                        <TextBlock Text=" - " Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding StudentCode}"/>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Margin="0,80,0,20" HorizontalAlignment="Stretch">
+            <Button Content="Create Student!" Margin="10, 10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Update Student!" Command="{Binding UpdateStudentCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Delete Student!" Command="{Binding DeleteStudentCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Get Schedule!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+        <Label Content="Teachers" FontSize="20" FontWeight="Bold" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Content="List" FontSize="20" FontWeight="DemiBold" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <Label Content="Actions" FontSize="20" FontWeight="DemiBold" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <ListBox Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,80,0,20" ItemsSource="{Binding Teachers}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FirstName}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding LastName}" Margin="0,0,0,0"/>
+                        <TextBlock Text=" - " Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding AcademicRank}"/>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="3" Margin="0,80,0,20" HorizontalAlignment="Stretch">
+            <Button Content="Create Teacher!" Margin="10, 10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Update Teacher!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Delete Teacher!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Get Schedule!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="To Teacher Statistics" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+        <Label Content="Subjects" FontSize="20" FontWeight="Bold" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Content="List" FontSize="20" FontWeight="DemiBold" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <Label Content="Actions" FontSize="20" FontWeight="DemiBold" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <ListBox Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,80,0,20" ItemsSource="{Binding Subjects}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding SubjectCode}" Margin="0,0,0,0"/>
+                        <TextBlock Text=" - " Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding SubjectName}"/>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="5" Margin="0,80,0,20" HorizontalAlignment="Stretch">
+            <Button Content="Create Subject!" Margin="10, 10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Update Subject!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Delete Subject!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Get Subject statistics!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="To Subject Registration" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+
+        <Label Content="Courses" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Content="List" FontSize="20" FontWeight="DemiBold" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <Label Content="Actions" FontSize="20" FontWeight="DemiBold" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <ListBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,80,0,20" ItemsSource="{Binding Courses}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding CourseName}" Margin="0,0,5,0"/>
+                        <TextBlock Text=" - " Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding Teacher.FirstName}"  Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Teacher.LastName}" Margin="0,0,5,0"/>
+                        <TextBlock Text="(" Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding CourseRegistrations.Count}" Margin="0,0,0,0"/>
+                        <TextBlock Text="/" Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding CourseCapacity}" Margin="0,0,0,0"/>
+                        <TextBlock Text=")" Margin="0,0,0,0"/>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Margin="0,80,0,20" HorizontalAlignment="Stretch">
+            <Button Content="Create Course!" Margin="10, 10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Update Course!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Delete Course!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="To Course Registration" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+        <Label Content="Grades" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Content="List" FontSize="20" FontWeight="DemiBold" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <Label Content="Actions" FontSize="20" FontWeight="DemiBold" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <ListBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,80,0,20" ItemsSource="{Binding Grades}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Student.FirstName}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Student.LastName}" Margin="0,0,0,0"/>
+                        <TextBlock Text=" - " Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding Subject.SubjectName}"  Margin="0,0,0,0"/>
+                        <TextBlock Text=" - " Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding Mark, Converter={StaticResource MarkToGradeConverter}}" Margin="0,0,0,0"/>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="3" Margin="0,80,0,20" HorizontalAlignment="Stretch">
+            <Button Content="Create Grade!" Margin="10, 10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Update Grade!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Delete Grade!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="To Semester Statistics" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+        <Label Content="Curriculums" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Content="List" FontSize="20" FontWeight="DemiBold" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <Label Content="Actions" FontSize="20" FontWeight="DemiBold" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Stretch" Margin="0,40,0,40" HorizontalContentAlignment="Center" />
+        <ListBox Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,80,0,20" ItemsSource="{Binding Curriculums}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurriculumCode}" Margin="0,0,0,0"/>
+                        <TextBlock Text=" - " Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding CurriculumName}"  Margin="0,0,5,0"/>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="5" Margin="0,80,0,20" HorizontalAlignment="Stretch">
+            <Button Content="Create Curriculum!" Margin="10, 10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Update Curriculum!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Delete Curriculum!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Reset Semester!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -1,0 +1,59 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+}
+
+table {
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+}
+
+th {
+    background-color: lightblue;
+}
+
+#formdiv {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+    #formdiv label, button, input {
+        margin: 10px;
+        padding: 7px;
+    }
+
+    #formdiv label {
+        font-weight: bolder;
+    }
+
+table button {
+    padding: 2px;
+}
+
+.updateDiv {
+    display: none;
+    padding: 50px;
+    margin: 20px;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+
+.createDiv {
+    padding: 50px;
+    margin: 20px;
+    border: 2px solid black;
+    border-radius: 20px;
+}

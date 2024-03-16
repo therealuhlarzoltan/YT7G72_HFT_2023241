@@ -42,7 +42,7 @@ namespace YT7G72_HFT_2023241.Repository
             var properties = type.GetProperties();
             foreach (var property in properties)
             {
-                if (!property.GetAccessors()[0].IsVirtual)
+                if (!property.GetAccessors()[0].IsVirtual && property.CanWrite)
                     property.SetValue(target, property.GetValue(source));
             }
         }

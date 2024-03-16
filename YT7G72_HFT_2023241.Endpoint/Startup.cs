@@ -19,7 +19,7 @@ namespace YT7G72_HFT_2023241.Endpoint
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<UniversityDatabaseContext>();
+            services.AddTransient<UniversityDatabaseContext>();
             services.AddTransient<IRepository<Student>, StudentRepository>();
             services.AddTransient<IRepository<Teacher>, TeacherRepository>();
             services.AddTransient<IRepository<Curriculum>, CurriculumRepository>();
@@ -62,6 +62,8 @@ namespace YT7G72_HFT_2023241.Endpoint
                 
             }
 
+            app.UseDeveloperExceptionPage();
+
             app.UseExceptionHandler(c => c.Run(async context =>
             {
                 var exception = context.Features
@@ -70,6 +72,14 @@ namespace YT7G72_HFT_2023241.Endpoint
                 var response = new { Msg = exception.Message };
                 await context.Response.WriteAsJsonAsync(response);
             }));
+
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("http://localhost:12466")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials();
+            });
 
             app.UseRouting();
 
@@ -85,7 +95,7 @@ namespace YT7G72_HFT_2023241.Endpoint
 
             });
 
-            
+
         }
     }
 }
