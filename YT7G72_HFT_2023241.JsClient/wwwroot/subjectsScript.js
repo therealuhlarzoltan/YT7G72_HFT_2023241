@@ -309,7 +309,7 @@ function generateRequirementOptions(selectId) {
 
 function generateTeacherOptions(selectId) {
     let option = document.getElementById(selectId)
-    options.innerHTML = '';
+    option.innerHTML = '';
     teachers.forEach((t) => {
         var newChild = document.createElement("option");
         newChild.setAttribute("value", t.teacherId);

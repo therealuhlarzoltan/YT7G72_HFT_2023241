@@ -82,12 +82,96 @@ function displayStudents() {
             <td>${s.lastName}</td>
             <td>${financialStatusToString(s.financialStatus)}</td>
             <td>${curriculumToString(s.curriculumId)}</td>
-             <td><button type="button" class="btn btn-info" onclick="displayUpdateStudent(${s.studentId})">Update</button><button type="button" class="btn btn-danger" onclick="removeStudent(${s.studentId})">Delete</button></td>
-        </tr>`
-    );
+             <td><button type="button" class="btn btn-info" onclick="displayUpdateStudent(${s.studentId})">Update</button>
+             <button type="button" class="btn btn-danger" onclick="removeStudent(${s.studentId})">Delete</button>
+             <button type="button" class="btn btn-success" onclick="getSchedule(${s.studentId})">Display Schedule</button></td>
+        </tr>`);
     document.getElementById('students').innerHTML = studentRows.join('');
 }
 
+
+async function getSchedule(studentId) {
+    await fetch('http://localhost:4180/People/Students/Schedule/' + studentId)
+        .then(response => response.text())
+        .then(data => displaySchedule(data));
+}
+
+function convertOrdinalToDay(ordinal) {
+    switch (ordinal) {
+        case 0:
+            return 'Monday:';
+        case 1:
+            return 'Tuesday:';
+        case 2:
+            return 'Wednesday:';
+        case 3:
+            return 'Thursday:';
+        case 4:
+            return 'Friday:';
+        case 5:
+            return 'Saturday:';
+        case 6:
+            return 'Sunday:';
+        default:
+            return 'Monday:';
+    }
+}
+
+function displaySchedule(schedule) {
+    const tbody = document.getElementById("schedule");
+    tbody.innerHTML = '';
+    document.getElementById("scheduleDisplayDiv").style.display = 'block';
+    const classes = {};
+    const lines = schedule.split('\n');
+    let currentDay = '';
+
+    for (const line of lines) {
+        if (line.trim() !== '') {
+            if (line.endsWith(':')) {
+                currentDay = line.trim();
+                classes[currentDay] = [];
+            } else {
+                classes[currentDay].push(line.trim());
+            }
+        }
+    }
+
+    numberOfIterations = 0;
+    maxLengthOfDays = 0;
+    for (let key of Object.keys(classes)) {
+        let classArray = classes[key];
+        if (classArray.length > maxLengthOfDays)
+            maxLengthOfDays = classArray.length;
+    }
+    console.log(classes);
+
+    let classRows = [];
+    for (let i = 0; i < maxLengthOfDays / 6; ++i) {
+        let row = '<tr>';
+        for (let j = 0; j < 7; ++j) {
+            let day = classes[convertOrdinalToDay(j)];
+            let td = '';
+            if (day.length == 0 || classes.length / 6 < numberOfIterations)
+                td = '<td></td>';
+            else {
+                td += '<td >';
+                for (let k = numberOfIterations * 6; (k < classes[convertOrdinalToDay(j)].length) && (k < numberOfIterations * 6 + 6); ++k) {
+                    td += day[k];
+                    td += ' ';
+                }
+                td += '</td>';
+            }
+            row += td;
+        }
+        row += '</tr>';
+        classRows[classRows.length] = row;
+        numberOfIterations += 1;
+    }
+    classRows.forEach(r => tbody.innerHTML += r);
+
+    window.scrollTo(0, document.body.scrollHeight);
+
+}
 
 async function removeStudent(studentId) {
     const deleteUrl = 'http://localhost:4180/People/Students/' + studentId;
@@ -164,6 +248,7 @@ function displayErrorMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 function displaySuccessMessage(message) {
@@ -176,6 +261,7 @@ function displaySuccessMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 

@@ -229,3 +229,119 @@ async function removeCurriculum(curriculumId) {
     }
 
 }
+
+
+async function resetSemester() {
+    const resetUrl = 'http://localhost:4180/Education/Semester/Reset'
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    };
+
+
+    try {
+        const response = await fetch(resetUrl, options);
+        if (!response.ok) {
+            displayErrorMessage("Failed to reset semester!");
+        } else {
+            displaySuccessMessage("Course and subject registrations cleared!");
+        }
+    } catch (error) {
+        displayErrorMessage("Something went wrong...");
+        console.error('Error:', error);
+    }
+
+}
+
+async function getAllSemesterStatistics() {
+    const statisticstUrl = 'http://localhost:4180/Grades/Semester/Statistics'
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    };
+
+
+    try {
+        const response = await fetch(statisticstUrl, options);
+        if (!response.ok) {
+            displayErrorMessage("Failed to get statistics!");
+        } else {
+            data = await response.json();
+            displaySemesterStatistics(data, true);
+        }
+    } catch (error) {
+        displayErrorMessage("Something went wrong...");
+        console.error('Error:', error);
+    }
+}
+
+async function getSemesterStatistics() {
+
+    semester = document.getElementById("semester").value;
+    if (semester == '') {
+        displayErrorMessage("Semester required!");
+        return;
+    }
+
+
+    semester = semester.trim().split('/').join('-');
+
+
+    const statisticstUrl = 'http://localhost:4180/Grades/Semester/Statistics/' + semester
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    };
+
+
+    try {
+        const response = await fetch(statisticstUrl, options);
+        if (!response.ok) {
+            displayErrorMessage("Failed to get statistics!");
+        } else {
+            data = await response.json();
+            displaySemesterStatistics(data);
+        }
+    } catch (error) {
+        displayErrorMessage("Something went wrong...");
+        console.error('Error:', error);
+    }
+}
+
+function displaySemesterStatistics(data, isMultiple = false) {
+    if (!isMultiple) {
+        var element = document.createElement("div");
+        element.innerHTML = `<div class="col-md-6">
+            <div class="statistics-card">
+                <h4>Semester: ${data.semester}</h4>
+                <p>Weighted Average: ${data.weightedAvg}</p>
+                <p>Number of Failures: ${data.numberOfFailures}</p>
+                <p>Number of Passes: ${data.numberOfPasses}</p>
+            </div>
+        </div>`
+        document.getElementById("semesterStatisticsDiv").innerHTML = '';
+        document.getElementById("semesterStatisticsDiv").appendChild(element);
+    } else {
+        document.getElementById("allSemesterStatisticsDiv").innerHTML = '';
+        data.forEach((ss) => {
+            var element = document.createElement("div");
+            element.innerHTML = `<div class="col-md-6">
+            <div class="statistics-card">
+                <h4>Semester: ${ss.semester}</h4>
+                <p>Weighted Average: ${ss.weightedAvg}</p>
+                <p>Number of Failures: ${ss.numberOfFailures}</p>
+                <p>Number of Passes: ${ss.numberOfPasses}</p>
+            </div>
+        </div>`
+            document.getElementById("allSemesterStatisticsDiv").appendChild(element);
+        });
+    }
+}
+
+
