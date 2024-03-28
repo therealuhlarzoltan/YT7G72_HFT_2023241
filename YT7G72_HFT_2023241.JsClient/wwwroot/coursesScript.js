@@ -18,6 +18,7 @@ let courseTypes = [
 let teachers = [];
 let subjects = [];
 let courses = [];
+let students = [];
 
 initialize();
 
@@ -183,6 +184,28 @@ function generateSubjectOptions(selectId) {
     
 }
 
+function generateCourseOptions(selectId) {
+    let option = document.getElementById(selectId)
+    option.innerHTML = '';
+    courses.forEach((c) => {
+        var newChild = document.createElement("option");
+        newChild.setAttribute("value", c.courseId);
+        newChild.innerText = c.courseName;
+        option.appendChild(newChild);
+    });
+}
+
+function generateStudentOptions(selectId) {
+    let option = document.getElementById(selectId)
+    option.innerHTML = '';
+    students.forEach((s) => {
+        var newChild = document.createElement("option");
+        newChild.setAttribute("value", s.studentId);
+        newChild.innerText = s.firstName + ' ' + s.lastName;
+        option.appendChild(newChild);
+    });
+}
+
 function generateTeacherOptions(selectId) {
     let option = document.getElementById(selectId)
     option.innerHTML = '<option value="null">None</option>';
@@ -259,6 +282,7 @@ async function getCourses() {
             generateDayOfWeekOptions("courseUpdateDay");
             generateCourseTypeOptions("courseCreateCourseType");
             generateCourseTypeOptions("courseUpdateCourseType");
+            generateCourseOptions('registrationCourse');
         });
 }
 
@@ -270,6 +294,8 @@ async function getSubjects() {
             subjects = data;
             generateSubjectOptions('courseCreateSubject');
             generateSubjectOptions('courseUpdateSubject');
+            generateSubjectOptions('registrationSubject');
+
         });
 }
 
@@ -281,6 +307,18 @@ async function getTeachers() {
             teachers = data;
             generateTeacherOptions("courseCreateTeacher");
             generateTeacherOptions("courseUpdateTeacher");
+        });
+}
+
+
+async function getStudents() {
+    await fetch('http://localhost:4180/People/Students')
+        .then(response => response.json())
+        .then(data => {
+            students = data;
+            generateStudentOptions("registrationSubjectStudent");
+            generateStudentOptions("registrationCourseStudent");
+            
         });
 }
 
@@ -303,6 +341,26 @@ function setupSignalR() {
         getCourses();
     });
 
+    connection.on("SubjectUpdated", async (user, message) => {
+        await getSubjects();
+        getCourses();
+    });
+
+    connection.on("SubjectDeleted", async (user, message) => {
+        await getSubjects();
+        getCourses();
+    });
+
+    connection.on("TeacherUpdated", async (user, message) => {
+        await getTeachers();
+        getCourses();
+    });
+
+    connection.on("TeacherDeleted", async (user, message) => {
+        await getTeachers();
+        getCourses();
+    });
+
     connection.onclose(async () => {
         await start();
     });
@@ -310,9 +368,20 @@ function setupSignalR() {
 
 }
 
+async function start() {
+    try {
+        await connection.start();
+        console.log("SignalR Connected.");
+    } catch (err) {
+        console.log(err);
+        setTimeout(start, 5000);
+    }
+};
+
 async function initialize() {
     await getTeachers();
     await getSubjects();
+    await getStudents();
     getCourses();
     setupSignalR();
 }
@@ -333,6 +402,7 @@ function displayErrorMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 function displaySuccessMessage(message) {
@@ -345,4 +415,59 @@ function displaySuccessMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
+
+
+
+
+async function registerForCourse() {
+
+    const courseId = document.getElementById("registrationCourse").value;
+    const studentId = document.getElementById("registrationCourseStudent").value;;
+    const registrationUrl = `http://localhost:4180/Education/Courses/${courseId}/Register/${studentId}`;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    try {
+        const response = await fetch(registrationUrl, options);
+        if (!response.ok) {
+            const data = await response.json();
+            displayErrorMessage(data.msg != null ? data.msg : data['errors'][Object.keys(data['errors'])[0]][0]);
+        } else {
+            displaySuccessMessage("Successfully registered for course!");
+        }
+    } catch (error) {
+        displayErrorMessage("Something went wrong...");
+        console.error('Error:', error);
+    }
+}
+
+async function registerForSubject() {
+
+    const subjectId = document.getElementById("registrationSubject").value;
+    const studentId = document.getElementById("registrationSubjectStudent").value;;
+    const registrationUrl = `http://localhost:4180/Education/Subjects/${subjectId}/Register/${studentId}`;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    try {
+        const response = await fetch(registrationUrl, options);
+        if (!response.ok) {
+            const data = await response.json();
+            displayErrorMessage(data.msg != null ? data.msg : data['errors'][Object.keys(data['errors'])[0]][0]);
+        } else {
+            displaySuccessMessage("Successfully registered for subject!");
+        }
+    } catch (error) {
+        displayErrorMessage("Something went wrong...");
+        console.error('Error:', error);
+    }
+}
+

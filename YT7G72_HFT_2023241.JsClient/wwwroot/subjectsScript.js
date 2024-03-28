@@ -32,6 +32,27 @@ function setupSignalR() {
         getSubjects();
     });
 
+    connection.on("TeacherUpdated", async (user, message) => {
+        await getTeachers();
+        getSubjects();
+    });
+
+    connection.on("TeacherDeleted", async (user, message) => {
+        await getTeachers();
+        getSubjects();
+    });
+
+    connection.on("CurriculumUpdated", async (user, message) => {
+        await getCurriculums();
+        getSubjects();
+    });
+
+    connection.on("CurriculumDeleted", async (user, message) => {
+        await getCurriculums();
+        getSubjects();
+    });
+
+
     connection.onclose(async () => {
         await start();
     });
@@ -194,7 +215,6 @@ function displayUpdateSubject(subjectId) {
     document.getElementById("subjectUpdateSubjectCode").value = subject?.subjectCode;
     document.getElementById("subjectUpdateCredits").value = subject?.credits;
     document.getElementById("subjectUpdateTeacher").value = subject?.teacherId != null ? subject.teacherId : null;
-    document.getElementById("subjectUpdatePreRequirement").innerHTML = document.getElementById("subjectUpdatePreRequirement").children[0];
     generatePreRequirementOptions("subjectUpdatePreRequirement", true);
     document.getElementById("subjectUpdateRequirement").value = subject?.requirement;
     document.getElementById("subjectUpdatePreRequirement").value = subject?.preRequirement != null ? subject.preRequirement : null;
@@ -220,6 +240,7 @@ function displayErrorMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 function displaySuccessMessage(message) {
@@ -232,6 +253,7 @@ function displaySuccessMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 async function initialize() {
@@ -257,8 +279,6 @@ async function getSubjects() {
         .then(data => {
             subjects = data;
             displaySubjects();
-            console.log("subjects:", subjects);
-            console.log("curriculums:", curriculums);
             generatePreRequirementOptions("subjectCreatePreRequirement");
             generateRequirementOptions("subjectCreateRequirement");
             generateRequirementOptions("subjectUpdateRequirement");
@@ -310,6 +330,10 @@ function generateRequirementOptions(selectId) {
 function generateTeacherOptions(selectId) {
     let option = document.getElementById(selectId)
     option.innerHTML = '';
+    let noTeacher = document.createElement("option");
+    noTeacher.setAttribute("value", null);
+    noTeacher.innerText = 'None';
+    option.appendChild(noTeacher);
     teachers.forEach((t) => {
         var newChild = document.createElement("option");
         newChild.setAttribute("value", t.teacherId);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,6 @@ namespace YT7G72_HFT_2023241.Repository
         {
             var old = Read(entity.SubjectId);
             CopyPropertyValues(entity, old);
-            old.RegisteredStudents = entity.RegisteredStudents;
             universityDatabaseContext.SaveChanges();
         }
     }

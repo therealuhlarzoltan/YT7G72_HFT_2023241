@@ -103,8 +103,8 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void RegisterForSubject(int subjectId, int studentId)
         {
             educationLogic.RegisterStudentForSubject(studentId, subjectId, (stud, sub) => {
-                hub.Clients.All.SendAsync("StudentUpdated", stud);
-                hub.Clients.All.SendAsync("SubjectUpdated", sub);
+                //hub.Clients.All.SendAsync("StudentUpdated", stud);
+                hub.Clients.All.SendAsync("SubjectUpdated", "");
             });
         }
 
@@ -113,8 +113,8 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void UnregisterFromSubject(int subjectId, int studentId)
         {
             educationLogic.RemoveStudentFromSubject(studentId, subjectId, (stud, sub) => {
-                hub.Clients.All.SendAsync("StudentUpdated", stud);
-                hub.Clients.All.SendAsync("SubjectUpdated", sub);
+                //hub.Clients.All.SendAsync("StudentUpdated", stud);
+                hub.Clients.All.SendAsync("SubjectUpdated", "");
             });
         }
 
@@ -123,8 +123,8 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void RegisterForCourse(int courseId, int studentId)
         {
             educationLogic.RegisterStudentForCourse(studentId, courseId, (s, c) => {
-                hub.Clients.All.SendAsync("StudentUpdated", s);
-                hub.Clients.All.SendAsync("CourseUpdated", c);
+                //hub.Clients.All.SendAsync("StudentUpdated", s);
+                hub.Clients.All.SendAsync("CourseUpdated", "");
             });
         }
 
@@ -133,8 +133,8 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void UnregisterFromCourse(int courseId, int studentId)
         {
             educationLogic.RemoveStudentFromCourse(studentId, courseId, (s, c) => {
-                hub.Clients.All.SendAsync("StudentUpdated", s);
-                hub.Clients.All.SendAsync("CourseUpdated", c);
+                //hub.Clients.All.SendAsync("StudentUpdated", s);
+                hub.Clients.All.SendAsync("CourseUpdated", "");
             });
         }
 

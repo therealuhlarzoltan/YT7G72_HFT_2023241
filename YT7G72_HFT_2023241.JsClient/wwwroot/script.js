@@ -26,6 +26,16 @@ function setupSignalR() {
         getStudents();
     });
 
+    connection.on("CurriculumUpdated", async (user, message) => {
+        await getCurriculums();
+        getStudents();
+    });
+
+    connection.on("CurriculumDeleted", async (user, message) => {
+        await getCurriculums();
+        getStudents();
+    });
+
     connection.onclose(async () => {
         await start();
     });
@@ -143,7 +153,6 @@ function displaySchedule(schedule) {
         if (classArray.length > maxLengthOfDays)
             maxLengthOfDays = classArray.length;
     }
-    console.log(classes);
 
     let classRows = [];
     for (let i = 0; i < maxLengthOfDays / 6; ++i) {
@@ -285,7 +294,6 @@ async function createStudent() {
         const response = await fetch(createUrl, options);
         if (!response.ok) {
             const data = await response.json();
-            console.log("Response data: ", data);
             displayErrorMessage(data.msg != null ? data.msg : data['errors'][Object.keys(data['errors'])[0]][0]);
         } else {
             displaySuccessMessage("Student created!");

@@ -130,13 +130,17 @@ namespace YT7G72_HFT_2023241.Logic
                     .FirstOrDefault();
                 if (newestGrade == null || newestGrade.Mark == 1)
                     throw new PreRequirementsNotMetException(student, subject);
+                student.RegisteredSubjects.Add(subject);
                 subject.RegisteredStudents.Add(student);
+                studentRepository.Update(student);
                 subjectRepository.Update(subject);
                 callBack?.Invoke(student, subject);
             } 
             else
             {
+                student.RegisteredSubjects.Add(subject);
                 subject.RegisteredStudents.Add(student);
+                studentRepository.Update(student);
                 subjectRepository.Update(subject);
                 callBack?.Invoke(student, subject);
             }

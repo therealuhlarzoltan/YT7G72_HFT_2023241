@@ -3,6 +3,14 @@ let subjects = [];
 let grades = [];
 let students = [];
 
+let academicRanks = [
+    { ordinal: 0, value: "Teacher's Assistant" },
+    { ordinal: 1, value: 'Teachnical Assistant' },
+    { ordinal: 2, value: 'Senior Lecturer' },
+    { ordinal: 3, value: 'Associate Professor' },
+    { ordinal: 4, value: 'Professor' },
+]
+
 initialize();
 
 async function updateGrade(gradeId) {
@@ -185,9 +193,9 @@ async function getGrades() {
     await fetch('http://localhost:4180/Grades')
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             grades = data;
             displayGrades();
+            generateAcademicRankOptions("academicRankSelect");
         });
 }
 
@@ -199,6 +207,7 @@ async function getSubjects() {
             subjects = data;
             generateSubjectOptions('gradeCreateSubject');
             generateSubjectOptions('gradeUpdateSubject');
+            generateSubjectOptions('subjectSelect');
         });
 }
 
@@ -241,12 +250,57 @@ function setupSignalR() {
         getgrades();
     });
 
+    connection.on("GradeCreated", async (user, message) => {
+        getgrades();
+    });
+
+    connection.on("SubjectUpdated", async (user, message) => {
+        await getSubjects();
+        getgrades();
+    });
+
+    connection.on("SubjectDeleted", async (user, message) => {
+        await getSubjects();
+        getgrades();
+    });
+
+    connection.on("StudentUpdated", async (user, message) => {
+        await getStudents();
+        getgrades();
+    });
+
+    connection.on("StudentDeleted", async (user, message) => {
+        await getStudents();
+        getgrades();
+    });
+
+    connection.on("TeacherUpdated", async (user, message) => {
+        await getTeachers();
+        getgrades();
+    });
+
+    connection.on("TeacherDeleted", async (user, message) => {
+        await getTeachers();
+        getgrades();
+    });
+
     connection.onclose(async () => {
         await start();
     });
     start();
 
 }
+
+async function start() {
+    try {
+        await connection.start();
+        console.log("SignalR Connected.");
+    } catch (err) {
+        console.log(err);
+        setTimeout(start, 5000);
+    }
+};
+
 
 async function initialize() {
     await getStudents();
@@ -284,4 +338,167 @@ function displaySuccessMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+}
+
+
+async function getBestStudents() {
+    await fetch('http://localhost:4180/People/Students/Best')
+        .then(response => response.json())
+        .then(data => {
+            displayBestStudents(data);
+        });
+}
+
+function displayBestStudents(data) {
+    const div = document.getElementById("bestStudentsDiv");
+    div.innerHTML = '';
+    data.forEach((ss) => {
+        var element = document.createElement("div");
+        element.innerHTML = `<div class="col-md-6">
+            <div class="statistics-card">
+                <h4>Student</h4>
+                <p>Name: ${ss.person.firstName} ${ss.person.lastName}</p>
+                <p>Average: ${Math.round((Number(ss.average) + Number.EPSILON) * 100) / 100}</p>
+            </div>
+        </div>`
+        div.appendChild(element);
+    });
+    const button = document.createElement("button");
+    button.innerText = "Hide best students";
+    button.classList.add("btn");
+    button.classList.add("btn-warning");
+    button.classList.add("my-4");
+    button.classList.add("mx-0");
+    button.onclick = () => hideBestStudents();
+    div.appendChild(button);
+}
+
+function hideBestTeachers() {
+    document.getElementById("bestTeachersDiv").innerHTML = ` <button onclick="getBestTeachers()" class="btn btn-success mt-4 mx-0">Display best teachers</button>`;
+}
+
+async function getBestTeachers() {
+    await fetch('http://localhost:4180/People/Teachers/Best')
+        .then(response => response.json())
+        .then(data => {
+            displayBestTeachers(data);
+        });
+}
+
+function hideBestStudents() {
+    document.getElementById("bestStudentsDiv").innerHTML = ` <button onclick="getBestStudents()" class="btn btn-success mt-4 mx-0">Display best students</button>`;
+}
+
+function displayBestTeachers(data) {
+    const div = document.getElementById("bestTeachersDiv");
+    div.innerHTML = '';
+    data.forEach((ts) => {
+        var element = document.createElement("div");
+        element.innerHTML = `<div class="col-md-6">
+            <div class="statistics-card">
+                <h4>Teacher</h4>
+                <p>Name: ${ts.person.firstName} ${ts.person.lastName}</p>
+                <p>Average: ${Math.round((Number(ts.average) + Number.EPSILON) * 100) / 100}</p>
+            </div>
+        </div>`
+        div.appendChild(element);
+    });
+    const button = document.createElement("button");
+    button.innerText = "Hide best teachers";
+    button.classList.add("btn");
+    button.classList.add("btn-warning");
+    button.classList.add("my-4");
+    button.classList.add("mx-0");
+    button.onclick = () => hideBestTeachers();
+    div.appendChild(button);
+}
+
+async function getSubjectStatistics() {
+    const id = document.getElementById("subjectSelect").value;
+    await fetch('http://localhost:4180/Grades/Subjects/Statistics/' + id)
+        .then(response => response.json())
+        .then(data => {
+            displaySubjectStatistics(data);
+        });
+}
+
+function displaySubjectStatistics(data) {
+    const div = document.getElementById("subjectStatistics");
+    div.innerHTML = '';
+        var element = document.createElement("div");
+        element.innerHTML = `<div class="col-md-6">
+            <div class="statistics-card">
+                <h4>${data.subject.subjectName}</h4>
+                <p>Number of Registrations: ${data.numberOfRegistrations}</p>
+                <p>Pass/Registration Ratio: ${Math.round((Number(data.passPerRegistrationRatio) + Number.EPSILON) * 100) / 100}</p>
+                <p>Average: ${Math.round((Number(data.avg) + Number.EPSILON) * 100) / 100}</p>
+            </div>
+        </div>`
+        div.appendChild(element);
+    const button = document.createElement("button");
+    button.innerText = "Hide subject statistics";
+    button.classList.add("btn");
+    button.classList.add("btn-warning");
+    button.classList.add("my-4");
+    button.classList.add("mx-0");
+    button.onclick = () => hideSubjectStatistics();
+    div.appendChild(button);
+
+}
+
+function hideSubjectStatistics() {
+    document.getElementById("subjectStatistics").innerHTML = '';
+}
+
+async function getBestTeachersByAcademicRank() {
+    const academicRank = document.getElementById("academicRankSelect").value;
+    await fetch('http://localhost:4180/People/Teachers/Best/' + academicRank)
+        .then(response => response.json())
+        .then(data => {
+            displayTeachersByAcademicRank(data);
+        });
+}
+
+function displayTeachersByAcademicRank(data) {
+    const div = document.getElementById("academicRankStatistics");
+    div.innerHTML = '';
+    if (data.length == 0) {
+        div.innerHTML = "<p>No statistics were found</p>";
+    } else {
+        data.forEach((ts) => {
+            var element = document.createElement("div");
+            element.innerHTML = `<div class="col-md-6">
+            <div class="statistics-card">
+                <h4>Teacher</h4>
+                <p>Name: ${ts.person.firstName} ${ts.person.lastName}</p>
+                <p>Average: ${Math.round((Number(ts.average) + Number.EPSILON) * 100) / 100}</p>
+            </div>
+        </div>`
+            div.appendChild(element);
+        });
+    }
+    const button = document.createElement("button");
+    button.innerText = "Hide best teachers by academic rank";
+    button.classList.add("btn");
+    button.classList.add("btn-warning");
+    button.classList.add("my-4");
+    button.classList.add("mx-0");
+    button.onclick = () => hideTeachersByAcademicRank();
+    div.appendChild(button);
+
+}
+
+function hideTeachersByAcademicRank() {
+    document.getElementById("academicRankStatistics").innerHTML = '';
+}
+
+function generateAcademicRankOptions(selectId) {
+    let option = document.getElementById(selectId)
+    option.innerHTML = '';
+    academicRanks.forEach((obj) => {
+        var newChild = document.createElement("option");
+        newChild.setAttribute("value", obj.ordinal);
+        newChild.innerText = obj.value;
+        option.appendChild(newChild);
+    });
 }
