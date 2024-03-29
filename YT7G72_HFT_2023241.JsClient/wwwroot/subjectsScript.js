@@ -42,7 +42,17 @@ function setupSignalR() {
         getSubjects();
     });
 
+    connection.on("TeacherCreated", async (user, message) => {
+        await getTeachers();
+        getSubjects();
+    });
+
     connection.on("CurriculumUpdated", async (user, message) => {
+        await getCurriculums();
+        getSubjects();
+    });
+
+    connection.on("CurriculumCreated", async (user, message) => {
         await getCurriculums();
         getSubjects();
     });
