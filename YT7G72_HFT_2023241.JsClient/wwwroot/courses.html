@@ -38,7 +38,7 @@
         <form>
             <div class="form-group">
                 <label for="courseCreateCourseName">Course Name</label>
-                <input type="text" class="form-control mx-0" id="courseCreateCourseName">
+                <input type="text" class="form-control mx-0" id="courseCreateCourseName" placeholder="Text between 4 and 50 characters">
             </div>
             <div class="form-group">
                 <label for="courseCreateCapacity">Capacity</label>
@@ -56,11 +56,11 @@
             </div>
             <div class="form-group">
                 <label for="courseCreateStartTime">Start Time</label>
-                <input type="text" class="form-control mx-0" id="courseCreateStartTime">
+                <input type="text" class="form-control mx-0" id="courseCreateStartTime" placeholder="Format: HH:MM">
             </div>
             <div class="form-group">
                 <label for="courseCreateRoom">Room</label>
-                <input type="text" class="form-control mx-0" id="courseCreateRoom ">
+                <input type="text" class="form-control mx-0" id="courseCreateRoom" placeholder="Text between 4 and 50 characters">
             </div>
             <div class="form-group">
                 <label for="courseCreateLength">Length in Minutes</label>
@@ -77,7 +77,7 @@
                 <select class="form-control my-2" id="courseCreateSubject">
                 </select>
             </div>
-            <button type="button" class="btn btn-success mx-0 my-2" id="courseCreateButton" onclick="createCourse()">Create!</button>
+            <button type="button" class="btn btn-success mx-0 my-2" id="courseCreateButton" onclick="createCourse()">Create</button>
         </form>
     </div>
 
@@ -90,7 +90,7 @@
             </div>
             <div class="form-group">
                 <label for="coursUpdateCourseName">Course Name</label>
-                <input type="text" class="form-control mx-0" id="courseUpdateCourseName">
+                <input type="text" class="form-control mx-0" id="courseUpdateCourseName" placeholder="Text between 4 and 50 characters">
             </div>
             <div class="form-group">
                 <label for="courseUpdateCapacity">Capacity</label>
@@ -108,11 +108,11 @@
             </div>
             <div class="form-group">
                 <label for="courseUpdateStartTime">Start Time</label>
-                <input type="text" class="form-control mx-0" id="courseUpdateStartTime">
+                <input type="text" class="form-control mx-0" id="courseUpdateStartTime" placeholder="Format: HH:MM">
             </div>
             <div class="form-group">
                 <label for="courseUpdateRoom">Room</label>
-                <input type="text" class="form-control mx-0" id="courseUpdateRoom">
+                <input type="text" class="form-control mx-0" id="courseUpdateRoom" placeholder="Text between 4 and 50 characters">
             </div>
             <div class="form-group">
                 <label for="courseUpdateLength">Length in Minutes</label>
@@ -128,7 +128,7 @@
                 <select class="form-control my-2" id="courseUpdateSubject">
                 </select>
             </div>
-            <button type="button" class="btn btn-info my-2 ml-0 mr-2" id="courseUpdateButton">Update!</button>
+            <button type="button" class="btn btn-info my-2 ml-0 mr-2" id="courseUpdateButton">Update</button>
             <button type="button" class="btn btn-warning my-2" id="courseUpdateCancelButton" onclick="cancelUpdate()">Cancel</button>
         </form>
     </div>
@@ -166,8 +166,8 @@
                 <select class="form-control my-2" id="registrationSubject">
                 </select>
             </div>
-            <button type="button" class="btn btn-success mx-0 my-2" id="subjectRegistrationButton" onclick="registerForSubject()">Register For Subject!</button>
-            <button type="button" class="btn btn-danger mx-0 my-2" id="subjectCancelRegistrationButton" onclick="unRegisterFromSubject()">Unregister From Subject!</button>
+            <button type="button" class="btn btn-success mx-0 my-2" id="subjectRegistrationButton" onclick="registerForSubject()">Register For Subject</button>
+            <button type="button" class="btn btn-danger mx-0 my-2" id="subjectCancelRegistrationButton" onclick="unregisterFromSubject()">Unregister From Subject</button>
             <div class="form-group">
                 <label for="registrationCourseStudent">Student</label>
                 <select class="form-control my-2" id="registrationCourseStudent">
@@ -178,8 +178,8 @@
                 <select class="form-control my-2" id="registrationCourse">
                 </select>
             </div>
-            <button type="button" class="btn btn-success mx-0 my-2" id="courseRegistrationButton" onclick="registerForCourse()">Register For Course!</button>
-            <button type="button" class="btn btn-danger mx-0 my-2" id="courseCancelRegistrationButton" onclick="unRegisterFromCourse()">Unregister From Course!</button>
+            <button type="button" class="btn btn-success mx-0 my-2" id="courseRegistrationButton" onclick="registerForCourse()">Register For Course</button>
+            <button type="button" class="btn btn-danger mx-0 my-2" id="courseCancelRegistrationButton" onclick="unregisterFromCourse()">Unregister From Course</button>
         </form>
     </div>
 

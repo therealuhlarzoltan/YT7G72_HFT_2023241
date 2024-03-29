@@ -169,7 +169,6 @@ function displayCourses() {
         </tr>`
     );
     document.getElementById('courses').innerHTML = courseRows.join('');
-    console.log(courses);
 }
 
 function generateSubjectOptions(selectId) {
@@ -356,8 +355,28 @@ function setupSignalR() {
         getCourses();
     });
 
+    connection.on("TeacherCreated", async (user, message) => {
+        await getTeachers();
+        getCourses();
+    });
+
     connection.on("TeacherDeleted", async (user, message) => {
         await getTeachers();
+        getCourses();
+    });
+
+    connection.on("StudentUpdated", async (user, message) => {
+        await getStudents();
+        getCourses();
+    });
+
+    connection.on("StudentDeleted", async (user, message) => {
+        await getStudents();
+        getCourses();
+    });
+
+    connection.on("StudentCreated", async (user, message) => {
+        await getStudents();
         getCourses();
     });
 
@@ -417,10 +436,6 @@ function displaySuccessMessage(message) {
         </div>`
     window.scrollTo(0, 0);
 }
-
-
-
-
 async function registerForCourse() {
 
     const courseId = document.getElementById("registrationCourse").value;
@@ -464,6 +479,54 @@ async function registerForSubject() {
             displayErrorMessage(data.msg != null ? data.msg : data['errors'][Object.keys(data['errors'])[0]][0]);
         } else {
             displaySuccessMessage("Successfully registered for subject!");
+        }
+    } catch (error) {
+        displayErrorMessage("Something went wrong...");
+        console.error('Error:', error);
+    }
+}
+
+async function unregisterFromSubject() {
+    const subjectId = document.getElementById("registrationSubject").value;
+    const studentId = document.getElementById("registrationSubjectStudent").value;;
+    const registrationUrl = `http://localhost:4180/Education/Subjects/${subjectId}/Register/${studentId}`;
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    try {
+        const response = await fetch(registrationUrl, options);
+        if (!response.ok) {
+            const data = await response.json();
+            displayErrorMessage(data.msg != null ? data.msg : data['errors'][Object.keys(data['errors'])[0]][0]);
+        } else {
+            displaySuccessMessage("Successfully unregistered from subject!");
+        }
+    } catch (error) {
+        displayErrorMessage("Something went wrong...");
+        console.error('Error:', error);
+    }
+}
+
+async function unregisterFromCourse() {
+    const courseId = document.getElementById("registrationCourse").value;
+    const studentId = document.getElementById("registrationCourseStudent").value;;
+    const registrationUrl = `http://localhost:4180/Education/Courses/${courseId}/Register/${studentId}`;
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    try {
+        const response = await fetch(registrationUrl, options);
+        if (!response.ok) {
+            const data = await response.json();
+            displayErrorMessage(data.msg != null ? data.msg : data['errors'][Object.keys(data['errors'])[0]][0]);
+        } else {
+            displaySuccessMessage("Successfully unregistered from course!");
         }
     } catch (error) {
         displayErrorMessage("Something went wrong...");

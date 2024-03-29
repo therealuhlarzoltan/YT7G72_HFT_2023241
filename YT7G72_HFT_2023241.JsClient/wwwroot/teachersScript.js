@@ -278,7 +278,6 @@ function displaySchedule(schedule) {
         if (classArray.length > maxLengthOfDays)
             maxLengthOfDays = classArray.length;
     }
-    console.log(classes);
 
     let classRows = [];
     for (let i = 0; i < maxLengthOfDays / 5; ++i) {

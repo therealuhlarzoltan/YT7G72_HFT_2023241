@@ -120,6 +120,7 @@ function displayErrorMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 function displaySuccessMessage(message) {
@@ -132,6 +133,7 @@ function displaySuccessMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 
@@ -152,7 +154,6 @@ async function createCurriculum() {
         const response = await fetch(createUrl, options);
         if (!response.ok) {
             const data = await response.json();
-            console.log("Response data: ", data);
             displayErrorMessage(data.msg != null ? data.msg : data['errors'][Object.keys(data['errors'])[0]][0]);
         } else {
             displaySuccessMessage("Curriculum created!");

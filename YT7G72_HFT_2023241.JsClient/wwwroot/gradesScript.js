@@ -326,6 +326,7 @@ function displayErrorMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 function displaySuccessMessage(message) {
@@ -338,6 +339,7 @@ function displaySuccessMessage(message) {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`
+    window.scrollTo(0, 0);
 }
 
 
