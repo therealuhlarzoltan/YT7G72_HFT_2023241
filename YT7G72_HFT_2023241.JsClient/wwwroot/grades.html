@@ -37,7 +37,7 @@
         <form>
             <div class="form-group">
                 <label for="gradeCreateSemester">Semester</label>
-                <input type="text" class="form-control mx-0" id="gradeCreateSemester">
+                <input type="text" class="form-control mx-0" id="gradeCreateSemester" placeholder="e.g. 2023/24/1">
             </div>
             <div class="form-group">
                 <label for="gradeCreateStudent">Student</label>
@@ -56,9 +56,9 @@
             </div>
             <div class="form-group">
                 <label for="gradeCreateMark">Mark</label>
-                <input type="number" class="form-control mx-0" id="gradeCreateMark">
+                <input type="number" class="form-control mx-0" id="gradeCreateMark" placeholder="Number between 1 and 5">
             </div>
-            <button type="button" class="btn btn-success mx-0 my-2" id="gradeCreateButton" onclick="createGrade()">Create!</button>
+            <button type="button" class="btn btn-success mx-0 my-2" id="gradeCreateButton" onclick="createGrade()">Create</button>
         </form>
     </div>
 
@@ -71,7 +71,7 @@
             </div>
             <div class="form-group">
                 <label for="gradeUpdateSemester">Semester</label>
-                <input type="text" class="form-control mx-0" id="gradeUpdateSemester">
+                <input type="text" class="form-control mx-0" id="gradeUpdateSemester" placeholder="e.g. 2023/24/1">
             </div>
             <div class="form-group">
                 <label for="gradeUpdateStudent">Student</label>
@@ -90,9 +90,9 @@
             </div>
             <div class="form-group">
                 <label for="gradeUpdateMark">Mark</label>
-                <input type="number" class="form-control mx-0" id="gradeUpdateMark">
+                <input type="number" class="form-control mx-0" id="gradeUpdateMark" placeholder="Number between 1 and 5">
             </div>
-            <button type="button" class="btn btn-info my-2 ml-0 mr-2" id="gradeUpdateButton">Update!</button>
+            <button type="button" class="btn btn-info my-2 ml-0 mr-2" id="gradeUpdateButton">Update</button>
             <button type="button" class="btn btn-warning my-2" id="gradeUpdateCancelButton" onclick="cancelUpdate()">Cancel</button>
         </form>
     </div>

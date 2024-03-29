@@ -239,49 +239,61 @@ function setupSignalR() {
         .build();
 
     connection.on("GradeCreated", (user, message) => {
-        getgrades();
+        getGrades();
     });
 
     connection.on("GradeUpdated", (user, message) => {
-        getgrades();
+        getGrades();
     });
 
     connection.on("GradeDeleted", (user, message) => {
-        getgrades();
+        getGrades();
     });
 
-    connection.on("GradeCreated", async (user, message) => {
-        getgrades();
+    connection.on("SubjectCreated", async (user, message) => {
+        await getSubjects();
+        getGrades();
     });
 
     connection.on("SubjectUpdated", async (user, message) => {
         await getSubjects();
-        getgrades();
+        getGrades();
     });
 
     connection.on("SubjectDeleted", async (user, message) => {
         await getSubjects();
-        getgrades();
+        getGrades();
     });
 
     connection.on("StudentUpdated", async (user, message) => {
         await getStudents();
-        getgrades();
+        getGrades();
     });
 
     connection.on("StudentDeleted", async (user, message) => {
         await getStudents();
-        getgrades();
+        getGrades();
     });
+
+    connection.on("StudentCreated", async (user, message) => {
+        await getStudents();
+        getGrades();
+    });
+
 
     connection.on("TeacherUpdated", async (user, message) => {
         await getTeachers();
-        getgrades();
+        getGrades();
     });
 
     connection.on("TeacherDeleted", async (user, message) => {
         await getTeachers();
-        getgrades();
+        getGrades();
+    });
+
+    connection.on("TeacherCreated", async (user, message) => {
+        await getTeachers();
+        getGrades();
     });
 
     connection.onclose(async () => {

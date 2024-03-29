@@ -37,11 +37,11 @@
         <form>
             <div class="form-group">
                 <label for="curriculumCreateCurriculumName">Curriculum Name</label>
-                <input type="text" class="form-control mx-0" id="curriculumCreateCurriculumName">
+                <input type="text" class="form-control mx-0" id="curriculumCreateCurriculumName" placeholder="Text between 4 and 50 characters">
             </div>
             <div class="form-group">
                 <label for="curriculumCreateCurriculumCode">Curriculum Code</label>
-                <input type="text" class="form-control mx-0" id="curriculumCreateCurriculumCode">
+                <input type="text" class="form-control mx-0" id="curriculumCreateCurriculumCode" placeholder="Text between 4 and 50 characters">
             </div>
             <button type="button" class="btn btn-success mx-0 my-2" id="curriculumCreateButton" onclick="createCurriculum()">Create</button>
         </form>
@@ -56,11 +56,11 @@
             </div>
             <div class="form-group">
                 <label for="curriculumUpdateCurriculumName">Curriculum Name</label>
-                <input type="text" class="form-control mx-0" id="curriculumUpdateCurriculumName">
+                <input type="text" class="form-control mx-0" id="curriculumUpdateCurriculumName" placeholder="Text between 4 and 50 characters">
             </div>
             <div class="form-group">
                 <label for="curriculumUpdateCurriculumCode">Curriculum Code</label>
-                <input type="text" class="form-control mx-0" id="curriculumUpdateCurriculumCode">
+                <input type="text" class="form-control mx-0" id="curriculumUpdateCurriculumCode" placeholder="Text between 4 and 50 characters">
             </div>
             <button type="button" class="btn btn-info my-2 ml-0 mr-2" id="curriculumUpdateButton">Update</button>
             <button type="button" class="btn btn-warning my-2" id="curriculumUpdateCancelButton" onclick="cancelUpdate()">Cancel</button>
@@ -89,7 +89,7 @@
             <div id="allSemesterStatisticsDiv" class="d-flex flex-column"></div>
             <div class="form-group">
                 <label for="semester">Semester</label>
-                <input type="text" class="form-control mx-0" id="semester">
+                <input type="text" class="form-control mx-0" id="semester" placeholder="e.g. 2023/24/1">
             </div>
             <button type="button" class="btn btn-success mx-0 my-2" id="semesterStatisticsButton" onclick="getSemesterStatistics()">Get Selected Semester Statistics</button>
             <div id="semesterStatisticsDiv"></div>

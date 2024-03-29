@@ -44,7 +44,6 @@ namespace YT7G72_HFT_2023241.Models
 
         public override bool Equals(object obj)
         {
-            var t = obj.GetType();
             return obj is Subject subject &&
                    SubjectId == subject.SubjectId &&
                    SubjectName == subject.SubjectName &&

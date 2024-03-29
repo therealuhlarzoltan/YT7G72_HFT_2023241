@@ -345,6 +345,12 @@ function setupSignalR() {
         getCourses();
     });
 
+    connection.on("SubjectCreated", async (user, message) => {
+        await getSubjects();
+        getCourses();
+    });
+
+
     connection.on("SubjectDeleted", async (user, message) => {
         await getSubjects();
         getCourses();

@@ -31,6 +31,11 @@ function setupSignalR() {
         getStudents();
     });
 
+    connection.on("CurriculumDeCreated", async (user, message) => {
+        await getCurriculums();
+        getStudents();
+    });
+
     connection.on("CurriculumDeleted", async (user, message) => {
         await getCurriculums();
         getStudents();
