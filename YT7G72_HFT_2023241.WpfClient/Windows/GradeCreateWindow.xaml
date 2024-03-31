@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient.Windows"
+        xmlns:vms="clr-namespace:YT7G72_HFT_2023241.WpfClient.ViewModels"
         mc:Ignorable="d"
-        Title="GradeCreateWindow" Height="450" Width="800">
+        Title="Grade Creation" Height="450" Width="800">
+    <Window.DataContext>
+        <vms:GradeCreateWindowViewModel/>
+    </Window.DataContext>
     <Grid>
         
     </Grid>

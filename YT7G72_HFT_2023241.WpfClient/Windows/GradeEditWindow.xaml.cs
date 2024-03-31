@@ -25,9 +25,15 @@ namespace YT7G72_HFT_2023241.WpfClient.Windows
             InitializeComponent();
         }
 
-        public GradeEditWindow(GradeCreateWindowViewModel viewModel) : this()
+        public GradeEditWindow(GradeEditWindowViewModel viewModel) : this()
         {
             this.DataContext = viewModel;
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            (this.DataContext as GradeEditWindowViewModel)?.Dispose();
+            base.OnClosed(e);
         }
     }
 }

@@ -7,14 +7,15 @@ using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.ViewModels;
 using YT7G72_HFT_2023241.WpfClient.Windows;
 using YT7G72_HFT_2023241.WpfClient.Logic;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
-namespace YT7G72_HFT_2023241.WpfClient.Services
+namespace YT7G72_HFT_2023241.WpfClient.Services.Implementations
 {
-    public class StudentEditorService
+    public class StudentEditorService : IStudentEditor
     {
-        public void Edit(RestCollection<Student> students, Student student)
+        public void Edit(Student student)
         {
-            StudentEditWindowViewModel viewModel = new StudentEditWindowViewModel(students, student);
+            StudentEditWindowViewModel viewModel = new StudentEditWindowViewModel(student);
             StudentEditWindow window = new StudentEditWindow(viewModel);
             window.Show();
         }

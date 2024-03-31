@@ -4,9 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient.Windows"
+        xmlns:vms="clr-namespace:YT7G72_HFT_2023241.WpfClient.ViewModels"
         mc:Ignorable="d"
-        Title="SubjectCreateWindow" Height="450" Width="800">
+        Title="Subject Creation" Height="450" Width="800">
+    <Window.DataContext>
+        <vms:SubjectCreateWindowViewModel />
+    </Window.DataContext>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Subject Code" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Subject.SubjectCode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="0" Grid.Column="1" Content="Subject Name" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Subject.SubjectName,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <Label Grid.Row="2" Grid.Column="0" Content="Credits" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding Subject.Credits, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="2" Grid.Column="1" Content="Teacher Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Subject.TeacherId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="PreRequirement Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="5" Grid.Column="0" Text="{Binding Subject.PreRequirementId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="4" Grid.Column="1" Content="Curriculum Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Subject.CurriculumId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Requirement" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
+        <ListBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Requirements}" SelectedItem="{Binding Subject.Requirement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <Button Content="Create Subject!" Grid.Column="0" HorizontalAlignment="Center" Grid.Row="8" Grid.ColumnSpan="2" MinWidth="300" Margin="10" Command="{Binding CreateSubjectCommand}"/>
     </Grid>
 </Window>

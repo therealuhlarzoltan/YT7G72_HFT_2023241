@@ -29,5 +29,11 @@ namespace YT7G72_HFT_2023241.WpfClient.Windows
         {
             this.DataContext = viewModel;
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            (this.DataContext as TeacherEditWindowViewModel)?.Dispose();
+            base.OnClosed(e);
+        }
     }
 }

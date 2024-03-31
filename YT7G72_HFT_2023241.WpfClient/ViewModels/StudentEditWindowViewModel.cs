@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,15 @@ using YT7G72_HFT_2023241.WpfClient.Logic;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
-    public class StudentEditWindowViewModel : ObservableRecipient
+    public class StudentEditWindowViewModel : ObservableRecipient, IDisposable
     {
         private Student student;
-        private string errorMessage;
-        public RestCollection<Student> Students { get; set; }
-        public Student Student { get { return student; } set { SetProperty(ref student, value); } }
-        public string ErrorMessage { get { return errorMessage; } set { SetProperty(ref errorMessage, value); MessageBox.Show(errorMessage); } }
+        public Student Student { get { return student; } set { SetProperty(ref student, value); } } 
         public FinancialStatus[] FinancialStatuses { get; set; } = (FinancialStatus[])Enum.GetValues(typeof(FinancialStatus));
         public ICommand SaveChangesCommand { get; set; }
 
-        public StudentEditWindowViewModel(RestCollection<Student> students,Student student)
+        public StudentEditWindowViewModel(Student student)
         {
-            Students = students;
             Student = new Student()
             {
                 StudentId = student.StudentId,
@@ -35,16 +32,31 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 FinancialStatus = student.FinancialStatus,
             };
             SaveChangesCommand = new RelayCommand(
-                () => {
-                    try
-                    {
-                        students.Update(Student);
-                    } catch (Exception e)
-                    {
-                        ErrorMessage = e.Message;
-                    }
+                () =>
+                {
+                    this.Messenger.Send(Student, "StudentUpdateRequested");
                 }
             );
+
+            RegisterMessengers();
+        }
+
+        private void RegisterMessengers()
+        {
+            this.Messenger.Register<StudentEditWindowViewModel, string, string>(this, "FailedToUpdateStudent", (recipient, msg) =>
+            {
+                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            });
+            this.Messenger.Register<StudentEditWindowViewModel, string, string>(this, "StudentUpdated", (recipient, msg) =>
+            {
+                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            });
+        }
+
+        public void Dispose()
+        {
+            this.Messenger.Send<string, string>("Finished", "StudentUpdateFinished");
+            this.Messenger.UnregisterAll(this);
         }
     }
 }

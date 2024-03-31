@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace YT7G72_HFT_2023241.WpfClient.Logic
 {
@@ -158,8 +159,18 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
 
             if (!response.IsSuccessStatusCode)
             {
-                var error = await response.Content.ReadAsAsync<RestExceptionInfo>();
-                throw new ArgumentException(error.Msg);
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var error = JsonConvert.DeserializeObject<ValidationErrorResponse>(responseContent);
+                    throw new ArgumentException($"{error?.Errors.First().Value[0]}");
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsAsync<RestExceptionInfo>();
+                    throw new ArgumentException(error.Msg);
+                }
+
             }
             response.EnsureSuccessStatusCode();
         }
@@ -212,8 +223,18 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
 
             if (!response.IsSuccessStatusCode)
             {
-                 var error = await response.Content.ReadAsAsync<RestExceptionInfo>();
-                throw new ArgumentException(error.Msg);
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();  
+                    var error = JsonConvert.DeserializeObject<ValidationErrorResponse>(responseContent);
+                    throw new ArgumentException($"{error?.Errors.First().Value[0]}");
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsAsync<RestExceptionInfo>();
+                    throw new ArgumentException(error.Msg);
+                }
+               
             }
 
             response.EnsureSuccessStatusCode();

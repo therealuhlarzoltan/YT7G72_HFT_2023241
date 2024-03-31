@@ -20,18 +20,18 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Content="Student Id" VerticalAlignment="Center" Background="AliceBlue" />
+        <Label Grid.Row="0" Grid.Column="0" Content="Student Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
         <TextBox Grid.Row="1" Grid.Column="0" IsReadOnly="True" Text="{Binding Student.StudentId}" Background="LightGray"/>
-        <Label Grid.Row="0" Grid.Column="1" Content="Student Code" VerticalAlignment="Center" Background="AliceBlue"  />
+        <Label Grid.Row="0" Grid.Column="1" Content="Student Code" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Student.StudentCode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <Label Grid.Row="2" Grid.Column="0" Content="First Name" VerticalAlignment="Center" Background="AliceBlue" />
+        <Label Grid.Row="2" Grid.Column="0" Content="First Name" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
         <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding Student.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <Label Grid.Row="2" Grid.Column="1" Content="Last Name" VerticalAlignment="Center" Background="AliceBlue" />
+        <Label Grid.Row="2" Grid.Column="1" Content="Last Name" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Student.LastName,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <Label Grid.Row="4" Grid.Column="0" Content="Curriculum Id" VerticalAlignment="Center" Background="AliceBlue"  />
+        <Label Grid.Row="4" Grid.Column="0" Content="Curriculum Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
         <TextBox Grid.Row="5" Grid.Column="0"  Text="{Binding Student.CurriculumId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <Label Grid.Row="4" Grid.Column="1" Content="Financial Status" VerticalAlignment="Center" Background="AliceBlue"  />
-        <ListBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding FinancialStatuses, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding Student.FinancialStatus}" />
+        <Label Grid.Row="4" Grid.Column="1" Content="Financial Status" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
+        <ListBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding FinancialStatuses}" SelectedItem="{Binding Student.FinancialStatus, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <Button Content="Save Changes!" Grid.Column="0" HorizontalAlignment="Center" Grid.Row="6" Grid.ColumnSpan="2" MinWidth="300" Margin="10" Command="{Binding SaveChangesCommand}"/>
     </Grid>
 </Window>

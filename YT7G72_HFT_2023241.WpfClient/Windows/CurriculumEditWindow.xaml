@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient.Windows"
         mc:Ignorable="d"
-        Title="CurriculumEditWindow" Height="450" Width="800">
+        Title="Curriculum Editor" Height="250" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Curriculum Code" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Curriculum.CurriculumCode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MinHeight="50"/>
+        <Label Grid.Row="0" Grid.Column="1" Content="Curriculum Name" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Curriculum.CurriculumName,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MinHeight="50" />
+        <Button Content="Save Changes!" Grid.Column="0" HorizontalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="2" MinWidth="300" Margin="10" Command="{Binding SaveChangesCommand}" MinHeight="50"  VerticalAlignment="Center"/>
     </Grid>
 </Window>

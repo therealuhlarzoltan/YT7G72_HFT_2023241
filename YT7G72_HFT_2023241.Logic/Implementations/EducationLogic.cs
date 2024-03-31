@@ -36,7 +36,8 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 subjectRepository.Create(subject);
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 throw new ArgumentException("Failed to update database");
             }
         }
@@ -95,7 +96,7 @@ namespace YT7G72_HFT_2023241.Logic
                 course.EnrolledStudents.Add(student);
                 courseRepository.Update(course);
                 callBack?.Invoke(student, course);
-            } 
+            }
             else
             {
                 throw new CourseIsFullException(course);
@@ -123,7 +124,7 @@ namespace YT7G72_HFT_2023241.Logic
 
             if (subject.PreRequirement != null)
             {
-                var newestGrade = student.Grades.Where(grade => grade.SubjectId ==  subject.PreRequirementId)
+                var newestGrade = student.Grades.Where(grade => grade.SubjectId == subject.PreRequirementId)
                     .OrderByDescending(grade => int.Parse(grade.Semester.Split('/')[0]))
                     .ThenByDescending(grade => int.Parse(grade.Semester.Split('/')[1]))
                     .ThenByDescending(grade => int.Parse(grade.Semester.Split('/')[2]))
@@ -135,7 +136,7 @@ namespace YT7G72_HFT_2023241.Logic
                 studentRepository.Update(student);
                 subjectRepository.Update(subject);
                 callBack?.Invoke(student, subject);
-            } 
+            }
             else
             {
                 student.RegisteredSubjects.Add(subject);
@@ -156,7 +157,7 @@ namespace YT7G72_HFT_2023241.Logic
                 course.EnrolledStudents.Clear();
                 courseRepository.Update(course);
             }
-            catch 
+            catch
             {
                 throw new ArgumentException("Failed to update database");
             }
@@ -164,11 +165,11 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 courseRepository.Delete(id);
             }
-            catch 
+            catch
             {
                 throw new ArgumentException("Failed to update database");
             }
-            
+
         }
 
         public void RemoveStudentFromCourse(int studentId, int courseId, Action<Student, Course> callBack = null)

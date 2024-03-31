@@ -4,9 +4,30 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient.Windows"
+        xmlns:vms="clr-namespace:YT7G72_HFT_2023241.WpfClient.ViewModels"
         mc:Ignorable="d"
-        Title="TeacherCreateWindow" Height="450" Width="800">
+        Title="Teacher Creation" Height="450" Width="800">
+    <Window.DataContext>
+        <vms:TeacherCreateWindowViewModel/>
+    </Window.DataContext>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="First Name" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Teacher.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="0" Grid.Column="1" Content="Last Name" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Teacher.LastName,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Academic Rank" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
+        <ListBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding AcademicRanks}" SelectedItem="{Binding Teacher.AcademicRank, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <Button Content="Create Teacher!" Grid.Column="0" HorizontalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="2" MinWidth="300" Margin="10" Command="{Binding CreateTeacherCommand}"/>
     </Grid>
 </Window>

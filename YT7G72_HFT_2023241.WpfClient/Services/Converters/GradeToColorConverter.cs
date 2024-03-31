@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace YT7G72_HFT_2023241.WpfClient.Services
+namespace YT7G72_HFT_2023241.WpfClient.Services.Converters
 {
     public class GradeToColorConverter : IValueConverter
     {

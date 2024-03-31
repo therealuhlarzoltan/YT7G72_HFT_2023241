@@ -25,9 +25,10 @@ namespace YT7G72_HFT_2023241.WpfClient.Windows
             InitializeComponent();
         }
 
-        public CurriculumCreateWindow(CurriculumCreateWindowViewModel viewModel) : this()
+        protected override void OnClosed(EventArgs e)
         {
-            this.DataContext = viewModel;
+            (this.DataContext as CurriculumCreateWindowViewModel)?.Dispose();
+            base.OnClosed(e);
         }
     }
 }

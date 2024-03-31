@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace YT7G72_HFT_2023241.WpfClient.Services
+namespace YT7G72_HFT_2023241.WpfClient.Services.Converters
 {
     public class MarkToGradeConverter : IValueConverter
     {
@@ -27,7 +27,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Services
                     default:
                         return "Insufficient";
                 }
-            } 
+            }
             else
             {
                 return "Insufficient";

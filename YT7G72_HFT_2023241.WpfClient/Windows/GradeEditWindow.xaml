@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient.Windows"
         mc:Ignorable="d"
-        Title="GradeEditWindow" Height="450" Width="800">
+        Title="Grade Editor" Height="450" Width="800">
     <Grid>
         
     </Grid>
