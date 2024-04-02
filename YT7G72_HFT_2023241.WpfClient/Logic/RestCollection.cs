@@ -10,6 +10,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using YT7G72_HFT_2023241.Models;
 
 namespace YT7G72_HFT_2023241.WpfClient.Logic
 {
@@ -160,6 +161,21 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
 
         }
 
+        public async Task AddDirectly(T item)
+        {
+            await this.rest.PostAsync(item, controllerEndpoint);
+        }
+
+        public async Task UpdateDirectly(T item)
+        {
+            await this.rest.PutAsync(item, controllerEndpoint);
+        }
+
+        public async Task TriggerReset()
+        {
+            items = await rest.GetAsync<T>(controllerEndpoint);
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
 
     }
 }

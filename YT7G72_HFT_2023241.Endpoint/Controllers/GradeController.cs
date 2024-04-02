@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Models;
 
@@ -36,14 +38,16 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void Create([FromBody] Grade grade)
         {
             gradeLogic.AddGrade(grade);
-            hub.Clients.All.SendAsync("GradeCreated", grade);
+            var newGrade = gradeLogic.GetAllGrades().OrderByDescending(g => g.GradeId).First();
+            hub.Clients.All.SendAsync("GradeCreated", newGrade);
         }
 
         [HttpPut]
         public void Edit([FromBody] Grade grade)
         {
             gradeLogic.UpdateGrade(grade);
-            hub.Clients.All.SendAsync("GradeUpdated", grade);
+            var newGrade = gradeLogic.GetGrade(grade.GradeId);
+            hub.Clients.All.SendAsync("GradeUpdated", newGrade);
         }
 
 

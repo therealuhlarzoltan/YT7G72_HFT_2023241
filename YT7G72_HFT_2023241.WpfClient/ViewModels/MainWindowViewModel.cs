@@ -383,6 +383,22 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 () => SelectedCurriculum != null
              );
 
+            CreateGradeCommand = new RelayCommand(
+                () => { IsGradeCreating = true; gradeCreator?.Create(); },
+                () => !IsGradeCreating
+             );
+
+
+            UpdateGradeCommand = new RelayCommand(
+                () => { IsGradeUpdating = true; gradeEditor?.Edit(SelectedGrade); },
+                () => SelectedGrade != null && !IsGradeUpdating
+            );
+
+            DeleteGradeCommand = new RelayCommand(
+                () => Grades?.Delete(SelectedGrade.GradeId),
+                () => SelectedGrade != null
+             );
+
             #endregion Command Initializations
 
 
@@ -496,6 +512,32 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 }
             });
 
+            this.Messenger.Register<MainWindowViewModel, Grade, string>(this, "GradeUpdateRequested", async (recipient, msg) =>
+            {
+                try
+                {
+                    await Grades?.UpdateDirectly (msg);
+                    this.Messenger.Send("Grade updated!", "GradeUpdated");
+                }
+                catch (Exception ex)
+                {
+                    this.Messenger.Send(ex.Message, "FailedToUpdateGrade");
+                }
+            });
+
+            this.Messenger.Register<MainWindowViewModel, Grade, string>(this, "GradeCreationRequested", async (recipient, msg) =>
+            {
+                try
+                {
+                    await Grades?.AddDirectly(msg);
+                    this.Messenger.Send("Grade created!", "GradeCreated");
+                }
+                catch (Exception ex)
+                {
+                    this.Messenger.Send(ex.Message, "FailedToCreateGrade");
+                }
+            });
+
             this.Messenger.Register<MainWindowViewModel, string, string>(this, "StudentUpdateFinished", (recipient, msg) =>
             {
                 IsStudentUpdating = false;
@@ -534,6 +576,16 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             this.Messenger.Register<MainWindowViewModel, string, string>(this, "CurriculumCreationFinished", (recipient, msg) =>
             {
                 IsCurriculumCreating = false;
+            });
+
+            this.Messenger.Register<MainWindowViewModel, string, string>(this, "GradeUpdateFinished", (recipient, msg) =>
+            {
+                IsGradeUpdating = false;
+            });
+
+            this.Messenger.Register<MainWindowViewModel, string, string>(this, "GradeCreationFinished", (recipient, msg) =>
+            {
+                IsGradeCreating = false;
             });
 
             #endregion Messenger Registrations

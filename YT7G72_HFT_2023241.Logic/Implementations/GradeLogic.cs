@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using YT7G72_HFT_2023241.Models;
@@ -17,7 +18,7 @@ namespace YT7G72_HFT_2023241.Logic
 
         public IEnumerable<Grade> GetAllGrades()
         {
-            return gradeRepository.ReadAll();
+            return gradeRepository.ReadAll().Include(g => g.Subject).Include(g => g.Student).Include(g => g.Teacher);
         }
 
         public Grade GetGrade(int id)

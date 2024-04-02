@@ -7,6 +7,32 @@
         mc:Ignorable="d"
         Title="Grade Editor" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Grade Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="1" Grid.Column="0" IsReadOnly="True" Text="{Binding Grade.GradeId}" Background="LightGray"/>
+        <Label Grid.Row="0" Grid.Column="1" Content="Semester" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Grade.Semester, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Student Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding Grade.StudentId,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <Label Grid.Row="2" Grid.Column="1" Content="Subject Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Grade.SubjectId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Teacher Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="5" Grid.Column="0" Text="{Binding Grade.TeacherId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="1" Content="Mark" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="1" Text="{Binding Grade.Mark, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Button Content="Save Changes!" Grid.Column="0" HorizontalAlignment="Center" Grid.Row="6" Grid.ColumnSpan="2" MinWidth="300" Margin="10" Command="{Binding SaveChangesCommand}"/>
     </Grid>
 </Window>
