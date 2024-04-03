@@ -15,6 +15,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography.Pkcs;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
+using YT7G72_HFT_2023241.WpfClient.Windows;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
@@ -109,6 +110,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 (DeleteSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 (RegisterForSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 (UnregisterFromSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (GetSubjectStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
 
             }
         }
@@ -304,6 +306,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public ICommand GetTeacherScheduleCommand { get; set; }
         public ICommand GetStudentScheduleCommand { get; set; }
         public ICommand ResetSemesterCommand { get; set; }
+        public ICommand GetSubjectStatisticsCommand { get; set; }
 
         #endregion Command Declarations
 
@@ -551,6 +554,15 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                },
                () => SelectedTeacher != null
            );
+
+            GetSubjectStatisticsCommand = new RelayCommand(
+                () =>
+                {
+                    var vm = new SubjectStatisticsWindowViewModel(this.restService, SelectedSubject.SubjectId);
+                    new SubjectStatisticsWindow(vm).Show();
+                },
+                () => SelectedSubject != null
+            );
 
             #endregion Command Initializations
 

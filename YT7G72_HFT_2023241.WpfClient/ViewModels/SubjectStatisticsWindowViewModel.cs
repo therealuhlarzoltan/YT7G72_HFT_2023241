@@ -28,15 +28,27 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.restService = restService;
             this.subjectId = subjectId;
+            SubjectStatistics = this.restService.GetSingle<SubjectStatistics>($"Grades/Subjects/Statistics/{subjectId}");
+
+            RegisterMessengers();
         }
 
         private void RegisterMessengers()
         {
+            this.Messenger.Register<SubjectStatisticsWindowViewModel, string, string>(this, "GradeCreated", (recipient, msg) =>
+            {
+                SubjectStatistics = this.restService.GetSingle<SubjectStatistics>($"Grades/Subjects/Statistics/{subjectId}");
+            });
 
+            this.Messenger.Register<SubjectStatisticsWindowViewModel, string, string>(this, "GradeUpdated", (recipient, msg) =>
+            {
+                SubjectStatistics = this.restService.GetSingle<SubjectStatistics>($"Grades/Subjects/Statistics/{subjectId}");
+            });
         }
         public void Dispose()
         {
-            throw new NotImplementedException();
+            this.Messenger.UnregisterAll(this);
+            
         }
     }
 }

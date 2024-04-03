@@ -4,9 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient.Windows"
+        xmlns:converters="clr-namespace:YT7G72_HFT_2023241.WpfClient.Services.Converters"
         mc:Ignorable="d"
         Title="Subject Statistics" Height="450" Width="800">
+    <Window.Resources>
+        <converters:GradeToColorConverter x:Key="GradeToColorConverter"/>
+        <converters:PassPerRegistrationRatioToColorConverter x:Key="PassPerRegistrationRatioToColorConverter"/>
+    </Window.Resources>
     <Grid>
-        
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Background="WhiteSmoke">
+            <Label ContentStringFormat="Subject Name: {0}" Content="{Binding SubjectStatistics.Subject.SubjectName}" FontSize="20" FontWeight="Bold" />
+            <Label ContentStringFormat="Number of Registrations: {0}" Content="{Binding SubjectStatistics.NumberOfRegistrations}" FontSize="15" FontWeight="DemiBold"/>
+            <Label ContentStringFormat="Pass per Rgistration Ratio: {0}" Content="{Binding SubjectStatistics.PassPerRegistrationRatio}" FontSize="15" FontWeight="DemiBold"/>
+            <ProgressBar Value="{Binding SubjectStatistics.PassPerRegistrationRatio}" Foreground="{Binding SubjectStatistics.PassPerRegistrationRatio, Converter={StaticResource PassPerRegistrationRatioToColorConverter}}" Maximum="1" Minimum="0" Height="20"  MaxWidth="350"/>
+            <Label ContentStringFormat="Average Grade: {0}" Content="{Binding SubjectStatistics.Avg}" FontSize="15" FontWeight="DemiBold"/>
+            <ProgressBar Value="{Binding SubjectStatistics.Avg}" Foreground="{Binding SubjectStatistics.Avg, Converter={StaticResource GradeToColorConverter}}" Maximum="5" Minimum="0" Height="20" MaxWidth="350"/>
+        </StackPanel>
     </Grid>
 </Window>

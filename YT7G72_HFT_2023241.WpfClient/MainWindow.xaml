@@ -145,7 +145,7 @@
             <Button Content="Create Grade!" Command="{Binding CreateGradeCommand}" Margin="10, 10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button Content="Update Grade!" Command="{Binding UpdateGradeCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button Content="Delete Grade!" Command="{Binding DeleteGradeCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button Content="Get Subject statistics!" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Get Subject statistics!" Command="{Binding GetSubjectStatisticsCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button Content="To Semester Statistics" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         </StackPanel>
 

@@ -25,7 +25,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Windows
             InitializeComponent();
         }
 
-        public SubjectStatisticsWindow(SubjectCreateWindowViewModel vm) : this()
+        public SubjectStatisticsWindow(SubjectStatisticsWindowViewModel vm) : this()
         {
             this.DataContext = vm;
         }
