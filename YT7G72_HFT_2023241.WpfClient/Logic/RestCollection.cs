@@ -177,5 +177,10 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
+        public void SendPostRequest(string endpoint)
+        {
+            this.rest?.Post(endpoint);
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using YT7G72_HFT_2023241.Models;
@@ -44,7 +45,7 @@ namespace YT7G72_HFT_2023241.Logic
 
         public IEnumerable<Course> GetAllCourses()
         {
-            return courseRepository.ReadAll();
+            return courseRepository.ReadAll().Include(c => c.Teacher).Include(c => c.Subject);
         }
 
         public IEnumerable<Subject> GetAllSubjects()

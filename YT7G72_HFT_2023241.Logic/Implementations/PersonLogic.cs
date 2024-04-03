@@ -200,6 +200,8 @@ namespace YT7G72_HFT_2023241.Logic
             if (type == typeof(Student))
             {
                 var student = studentRepository.Read(id);
+                if (student == null)
+                    throw new ObjectNotFoundException(id, typeof(Student));
                 var coursesGroupedbyDay = student.RegisteredCourses.GroupBy(course => course.DayOfWeek);
                 foreach (var day in Enum.GetNames(typeof(DayOfWeek)))
                 {
@@ -223,6 +225,8 @@ namespace YT7G72_HFT_2023241.Logic
             else if (type == typeof(Teacher))
             {
                 var teacher = teacherRepository.Read(id);
+                if (teacher == null)
+                    throw new ObjectNotFoundException(id, typeof(Teacher));
                 var coursesGroupedbyDay = teacher.RegisteredCourses.GroupBy(course => course.DayOfWeek);
                 foreach (var day in Enum.GetNames(typeof(DayOfWeek)))
                 {

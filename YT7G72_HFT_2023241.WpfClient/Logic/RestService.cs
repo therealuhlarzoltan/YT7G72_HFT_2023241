@@ -188,6 +188,20 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
             response.EnsureSuccessStatusCode();
         }
 
+        public void Post(string endpoint)
+        {
+            HttpResponseMessage response =
+                client.PostAsync(endpoint, null).GetAwaiter().GetResult();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
+                throw new ArgumentException(error.Msg);
+            }
+            response.EnsureSuccessStatusCode();
+        }
+
+
         public async Task DeleteAsync(int id, string endpoint)
         {
             HttpResponseMessage response =
@@ -209,6 +223,24 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
 
             if (!response.IsSuccessStatusCode)
             {
+                var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
+                throw new ArgumentException(error.Msg);
+            }
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public void Delete(string endpoint)
+        {
+            HttpResponseMessage response =
+                client.DeleteAsync(endpoint).GetAwaiter().GetResult();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new ArgumentException("Invalid arugment(s) provided!");
+                }
                 var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
                 throw new ArgumentException(error.Msg);
             }
@@ -252,6 +284,23 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
             }
 
             response.EnsureSuccessStatusCode();
+        }
+
+        public string GetAsString(string endpoint)
+        {
+            HttpResponseMessage response =
+                client.GetAsync(endpoint).GetAwaiter().GetResult();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var error = JsonConvert.DeserializeObject<RestExceptionInfo>(responseContent);
+                throw new ArgumentException(error.Msg);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         }
 
     }

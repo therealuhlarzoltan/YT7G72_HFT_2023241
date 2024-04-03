@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Models;
 
@@ -78,7 +79,8 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void CreateCourse([FromBody] Course course)
         {
             educationLogic.AddCourse(course);
-            hub.Clients.All.SendAsync("CourseCreated", course);
+            var newCourse = educationLogic.GetAllCourses().OrderByDescending(c => c.CourseId).First();
+            hub.Clients.All.SendAsync("CourseCreated", newCourse);
         }
 
         [Route("Courses")]
@@ -86,7 +88,8 @@ namespace YT7G72_HFT_2023241.Endpoint.Controllers
         public void UpdateCourse([FromBody] Course course)
         {
             educationLogic.UpdateCourse(course);
-            hub.Clients.All.SendAsync("CourseUpdated", course);
+            var newCourse = educationLogic.GetCourse(course.CourseId);
+            hub.Clients.All.SendAsync("CourseUpdated", newCourse);
         }
 
         [Route("Courses/{id}")]

@@ -25,6 +25,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         private IStudentEditor studentEditor;
         private ITeacherCreator teacherCreator;
         private ITeacherEditor teacherEditor;
+        private RestService restService = new RestService("http://localhost:4180/", "");
         private bool isStudentCreating;
         private bool isStudentUpdating;
         private bool isTeacherUpdating;
@@ -65,6 +66,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 SetProperty(ref selectedStudent, value);
                 (UpdateStudentCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 (DeleteStudentCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (RegisterForSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (UnregisterFromSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (RegisterForCourseCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (UnregisterFromCourseCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (GetStudentScheduleCommand as RelayCommand)?.NotifyCanExecuteChanged();
             }
         }
 
@@ -75,6 +81,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 SetProperty(ref selectedTeacher, value);
                 (UpdateTeacherCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 (DeleteTeacherCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (GetTeacherScheduleCommand as RelayCommand)?.NotifyCanExecuteChanged();
             }
         }
 
@@ -87,6 +94,8 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 SetProperty(ref selectedCourse, value);
                 (UpdateCourseCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 (DeleteCourseCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (RegisterForCourseCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (UnregisterFromCourseCommand as RelayCommand)?.NotifyCanExecuteChanged();
             }
         }
 
@@ -98,6 +107,8 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 SetProperty(ref selectedSubject, value);
                 (UpdateSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 (DeleteSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (RegisterForSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (UnregisterFromSubjectCommand as RelayCommand)?.NotifyCanExecuteChanged();
 
             }
         }
@@ -286,6 +297,13 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public ICommand UpdateCurriculumCommand { get; set; }
 
         public ICommand DeleteCurriculumCommand { get; set; }
+        public ICommand RegisterForCourseCommand { get; set; }
+        public ICommand RegisterForSubjectCommand { get; set; }
+        public ICommand UnregisterFromCourseCommand { get; set; }
+        public ICommand UnregisterFromSubjectCommand { get; set; }
+        public ICommand GetTeacherScheduleCommand { get; set; }
+        public ICommand GetStudentScheduleCommand { get; set; }
+        public ICommand ResetSemesterCommand { get; set; }
 
         #endregion Command Declarations
 
@@ -316,6 +334,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             Courses = new RestCollection<Course>("http://localhost:4180/", "education/courses", "hub");
             Grades = new RestCollection<Grade>("http://localhost:4180/", "grades", "hub");
             Curriculums = new RestCollection<Curriculum>("http://localhost:4180/", "curriculums", "hub");
+
 
             #endregion Property Initialization
 
@@ -398,6 +417,140 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 () => Grades?.Delete(SelectedGrade.GradeId),
                 () => SelectedGrade != null
              );
+
+            CreateCourseCommand = new RelayCommand(
+                () => { IsCourseCreating = true; courseCreator?.Create(); },
+                () => !IsCourseCreating
+             );
+
+
+            UpdateCourseCommand = new RelayCommand(
+                () => { IsCourseUpdating = true; courseEditor?.Edit(SelectedCourse); },
+                () => !IsCourseUpdating && SelectedCourse != null
+             );
+
+            DeleteCourseCommand = new RelayCommand(
+                () => Courses?.Delete(SelectedCourse.CourseId),
+                () => SelectedCourse != null
+            );
+
+            RegisterForSubjectCommand = new RelayCommand(
+                () =>
+                {
+                    try
+                    {
+                        restService.Post($"Education/Subjects/{SelectedSubject.SubjectId}/Register/{SelectedStudent.StudentId}");
+                        MessageBox.Show("Successfully registered for subject!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex) 
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                },
+                () => SelectedStudent != null && SelectedSubject != null
+            );
+
+            UnregisterFromSubjectCommand = new RelayCommand(
+                () =>
+                {
+                    try
+                    {
+                        restService.Delete($"Education/Subjects/{SelectedSubject.SubjectId}/Register/{SelectedStudent.StudentId}");
+                        MessageBox.Show("Successfully unregistered from subject!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                },
+                () => SelectedStudent != null && SelectedSubject != null
+            );
+
+            RegisterForCourseCommand = new RelayCommand(
+                () =>
+                {
+                    try
+                    {
+                        restService.Post($"Education/Courses/{SelectedCourse.CourseId}/Register/{SelectedStudent.StudentId}");
+                        MessageBox.Show("Successfully registered for course!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                },
+                () => SelectedStudent != null && SelectedCourse != null
+             );
+
+            UnregisterFromCourseCommand = new RelayCommand(
+                () =>
+                {
+                    try
+                    {
+                        restService.Delete($"Education/Courses/{SelectedCourse.CourseId}/Register/{SelectedStudent.StudentId}");
+                        MessageBox.Show("Successfully unregistered from course!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                },
+                () => SelectedStudent != null && SelectedCourse != null
+            );
+
+            ResetSemesterCommand = new RelayCommand(
+                () =>
+                {
+                    try
+                    {
+                        restService.Post("Education/Semester/Reset");
+                        MessageBox.Show("Subject and Course Resgistrations have been cleared!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+            );
+
+            GetStudentScheduleCommand = new RelayCommand(
+                () =>
+                {
+                    try
+                    {
+                        string schedule = restService.GetAsString($"People/Students/Schedule/{SelectedStudent.StudentId}");
+                        schedule = schedule.Replace("\"", "");
+                        schedule = schedule.Replace("\\n", Environment.NewLine);
+                        schedule = schedule.Replace("\\t", "    ");
+                        MessageBox.Show(schedule, "Schedule", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                },
+                () => SelectedStudent != null
+            );
+
+            GetTeacherScheduleCommand = new RelayCommand(
+               () =>
+               {
+                   try
+                   {
+                       string schedule = restService.GetAsString($"People/Teachers/Schedule/{SelectedTeacher.TeacherId}");
+                       schedule = schedule.Replace("\"", "");
+                       schedule = schedule.Replace("\\n", Environment.NewLine);
+                       schedule = schedule.Replace("\\t", "    ");
+                       MessageBox.Show(schedule, "Schedule", MessageBoxButton.OK, MessageBoxImage.Information);
+                   }
+                   catch (Exception ex)
+                   {
+                       MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                   }
+               },
+               () => SelectedTeacher != null
+           );
 
             #endregion Command Initializations
 
@@ -538,6 +691,32 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 }
             });
 
+            this.Messenger.Register<MainWindowViewModel, Course, string>(this, "CourseUpdateRequested", async (recipient, msg) =>
+            {
+                try
+                {
+                    await Courses?.UpdateDirectly(msg);
+                    this.Messenger.Send("Course updated!", "CourseUpdated");
+                }
+                catch (Exception ex)
+                {
+                    this.Messenger.Send(ex.Message, "FailedToUpdateCourse");
+                }
+            });
+
+            this.Messenger.Register<MainWindowViewModel, Course, string>(this, "CourseCreationRequested", async (recipient, msg) =>
+            {
+                try
+                {
+                    await Courses?.AddDirectly(msg);
+                    this.Messenger.Send("Course created!", "CourseCreated");
+                }
+                catch (Exception ex)
+                {
+                    this.Messenger.Send(ex.Message, "FailedToCreateGrade");
+                }
+            });
+
             this.Messenger.Register<MainWindowViewModel, string, string>(this, "StudentUpdateFinished", (recipient, msg) =>
             {
                 IsStudentUpdating = false;
@@ -587,6 +766,18 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             {
                 IsGradeCreating = false;
             });
+
+
+            this.Messenger.Register<MainWindowViewModel, string, string>(this, "CourseUpdateFinished", (recipient, msg) =>
+            {
+                IsCourseUpdating = false;
+            });
+
+            this.Messenger.Register<MainWindowViewModel, string, string>(this, "CourseCreationFinished", (recipient, msg) =>
+            {
+                IsCourseCreating = false;
+            });
+
 
             #endregion Messenger Registrations
         }
