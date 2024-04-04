@@ -139,15 +139,15 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
             }
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             if (hasSignalR)
             {
-                this.rest.DeleteAsync(id, controllerEndpoint);
+                await this.rest.DeleteAsync(id, controllerEndpoint);
             }
             else
             {
-                this.rest.DeleteAsync(id, typeof(T).Name).ContinueWith((t) =>
+                await this.rest.DeleteAsync(id, typeof(T).Name).ContinueWith((t) =>
                 {
                     Init().ContinueWith(z =>
                     {
@@ -174,7 +174,10 @@ namespace YT7G72_HFT_2023241.WpfClient.Logic
         public async Task TriggerReset()
         {
             items = await rest.GetAsync<T>(controllerEndpoint);
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            });
         }
 
         public void SendPostRequest(string endpoint)

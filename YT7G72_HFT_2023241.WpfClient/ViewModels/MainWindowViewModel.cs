@@ -369,7 +369,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 
 
             DeleteStudentCommand = new RelayCommand(
-                () => Students?.Delete(SelectedStudent.StudentId),
+                async () => { await Students?.Delete(SelectedStudent.StudentId); Grades?.TriggerReset(); },
                 () => SelectedStudent != null
             );
 
@@ -384,7 +384,12 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             );
 
             DeleteTeacherCommand = new RelayCommand(
-                () => Teachers?.Delete(SelectedTeacher.TeacherId),
+                async () => {
+                    await Teachers?.Delete(SelectedTeacher.TeacherId);
+                    Subjects?.TriggerReset();
+                    Courses?.TriggerReset();
+                    Grades?.TriggerReset();
+                        },
                 () => SelectedTeacher != null
             );
 
@@ -399,7 +404,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             );
 
             DeleteSubjectCommand = new RelayCommand(
-                () => Subjects?.Delete(SelectedSubject.SubjectId),
+                async () => { await Subjects?.Delete(SelectedSubject.SubjectId); Courses?.TriggerReset(); Grades?.TriggerReset(); },
                 () => SelectedSubject != null
             );
 
@@ -414,7 +419,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
              );
 
             DeleteCurriculumCommand = new RelayCommand(
-                () => Curriculums?.Delete(SelectedCurriculum.CurriculumId),
+                async () => { await Curriculums?.Delete(SelectedCurriculum.CurriculumId); Students?.TriggerReset(); Subjects?.TriggerReset(); },
                 () => SelectedCurriculum != null
              );
 
@@ -609,6 +614,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 {
                     await Students?.Update(msg);
                     this.Messenger.Send("Student updated!", "StudentUpdated");
+                    Grades?.TriggerReset();
                 } 
                 catch (Exception ex)
                 {
@@ -637,6 +643,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 {
                     await Teachers?.Update(msg);
                     this.Messenger.Send("Teacher updated!", "TeacherUpdated");
+                    Courses?.TriggerReset();
+                    Grades?.TriggerReset();
+                    Subjects?.TriggerReset();
                 }
                 catch (Exception ex)
                 {
@@ -664,6 +673,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 {
                     await Subjects?.Update(msg);
                     this.Messenger.Send("Subject updated!", "SubjectUpdated");
+                    Grades?.TriggerReset();
                 }
                 catch (Exception ex)
                 {
@@ -729,6 +739,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 {
                     await Grades?.AddDirectly(msg);
                     this.Messenger.Send("Grade created!", "GradeCreated");
+                    Grades?.TriggerReset();
                 }
                 catch (Exception ex)
                 {

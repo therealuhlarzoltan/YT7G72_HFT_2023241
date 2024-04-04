@@ -54,7 +54,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public void Dispose()
         {
             this.Messenger.Send<string, string>("Finished", "TeacherUpdateFinished");
-            this.Messenger.RegisterAll(this);
+            this.Messenger.UnregisterAll(this);
         }
     }
 }

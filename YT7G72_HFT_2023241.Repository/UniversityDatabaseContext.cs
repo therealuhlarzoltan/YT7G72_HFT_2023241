@@ -73,13 +73,13 @@ namespace YT7G72_HFT_2023241.Repository
             builder.Entity<Teacher>()
                 .HasMany(t => t.RegisteredCourses)
                 .WithOne(c => c.Teacher)
-                .HasForeignKey(t => t.TeacherId)
+                .HasForeignKey(c => c.TeacherId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Teacher>()
                 .HasMany(t => t.RegisteredSubjects)
                 .WithOne(s => s.Teacher)
-                .HasForeignKey(t => t.TeacherId)
+                .HasForeignKey(s => s.TeacherId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Teacher>()

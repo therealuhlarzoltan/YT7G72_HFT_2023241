@@ -30,7 +30,8 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 Credits = subject.Credits,
                 PreRequirementId = subject.PreRequirementId,
                 Requirement = subject.Requirement,
-                CurriculumId = subject.CurriculumId
+                CurriculumId = subject.CurriculumId,
+                TeacherId = subject.TeacherId,
             };
 
             SaveChangesCommand = new RelayCommand(
