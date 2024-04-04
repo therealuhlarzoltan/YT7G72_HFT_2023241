@@ -16,9 +16,9 @@
             <Label ContentStringFormat="Subject Name: {0}" Content="{Binding SubjectStatistics.Subject.SubjectName}" FontSize="20" FontWeight="Bold" />
             <Label ContentStringFormat="Number of Registrations: {0}" Content="{Binding SubjectStatistics.NumberOfRegistrations}" FontSize="15" FontWeight="DemiBold"/>
             <Label ContentStringFormat="Pass per Rgistration Ratio: {0}" Content="{Binding SubjectStatistics.PassPerRegistrationRatio}" FontSize="15" FontWeight="DemiBold"/>
-            <ProgressBar Value="{Binding SubjectStatistics.PassPerRegistrationRatio}" Foreground="{Binding SubjectStatistics.PassPerRegistrationRatio, Converter={StaticResource PassPerRegistrationRatioToColorConverter}}" Maximum="1" Minimum="0" Height="20"  MaxWidth="350"/>
+            <ProgressBar Value="{Binding SubjectStatistics.PassPerRegistrationRatio}" Foreground="{Binding SubjectStatistics.PassPerRegistrationRatio, Converter={StaticResource PassPerRegistrationRatioToColorConverter}}" Maximum="1" Minimum="0" Height="20"  Width="350" HorizontalAlignment="Left" />
             <Label ContentStringFormat="Average Grade: {0}" Content="{Binding SubjectStatistics.Avg}" FontSize="15" FontWeight="DemiBold"/>
-            <ProgressBar Value="{Binding SubjectStatistics.Avg}" Foreground="{Binding SubjectStatistics.Avg, Converter={StaticResource GradeToColorConverter}}" Maximum="5" Minimum="0" Height="20" MaxWidth="350"/>
+            <ProgressBar Value="{Binding SubjectStatistics.Avg}" Foreground="{Binding SubjectStatistics.Avg, Converter={StaticResource GradeToColorConverter}}" Maximum="5" Minimum="0" Height="20" Width="350" HorizontalAlignment="Left"/>
         </StackPanel>
     </Grid>
 </Window>

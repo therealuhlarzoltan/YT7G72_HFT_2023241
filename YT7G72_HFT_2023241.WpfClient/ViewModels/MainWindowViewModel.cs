@@ -307,6 +307,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public ICommand GetStudentScheduleCommand { get; set; }
         public ICommand ResetSemesterCommand { get; set; }
         public ICommand GetSubjectStatisticsCommand { get; set; }
+        public ICommand ToSemesterStatisticsCommand { get; set; }
+        public ICommand ToTeacherStatisticsCommand { get; set; }
+        public ICommand ShowBestStudentsCommand { get; set; }
 
         #endregion Command Declarations
 
@@ -563,6 +566,22 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 },
                 () => SelectedSubject != null
             );
+
+            ShowBestStudentsCommand = new RelayCommand(
+                () =>
+                {
+                    var vm = new BestStudentsWindowViewModel(this.restService);
+                    new BestStudentsWindow(vm).Show();
+                }
+            );
+
+            ToSemesterStatisticsCommand = new RelayCommand(
+                () =>
+                {
+                    var vm = new SemesterStatisticsWindowViewModel(this.restService);
+                    new SemesterStatisticsWindow(vm).Show();
+                }
+             );
 
             #endregion Command Initializations
 

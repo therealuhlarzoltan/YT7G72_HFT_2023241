@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using YT7G72_HFT_2023241.WpfClient.Services.Implementations;
 using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
+using YT7G72_HFT_2023241.WpfClient.ViewModels;
 
 namespace YT7G72_HFT_2023241.WpfClient
 {
@@ -34,6 +35,9 @@ namespace YT7G72_HFT_2023241.WpfClient
                     .AddSingleton<IGradeCreator, GradeCreatorService>()
                     .AddSingleton<ICurriculumCreator, CurriculumCreatorService>()
                     .AddSingleton<ICurriculumEditor, CurriculumEditorService>()
+                    .AddSingleton<ISemesterStatisticsDisplay, SemesterStatisticsDisplay>()
+                    .AddSingleton<ITeacherStatisticsDisplay, TeacherStatisticsDisplay>()
+                    .AddSingleton<IStudentStatisticsDisplay, StudentStatisticsDisplay>()
                     .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
                     .BuildServiceProvider()
              );
