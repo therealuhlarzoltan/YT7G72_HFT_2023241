@@ -48,6 +48,7 @@
             <Button Content="Update Student!" Command="{Binding UpdateStudentCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button Content="Delete Student!" Command="{Binding DeleteStudentCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button Content="Get Schedule!" Command="{Binding GetStudentScheduleCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Show Best Students!" Command="{Binding ShowBestStudentsCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         </StackPanel>
 
         <Label Content="Teachers" FontSize="20" FontWeight="Bold" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>

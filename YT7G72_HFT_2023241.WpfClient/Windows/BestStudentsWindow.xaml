@@ -5,8 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient.Windows"
         mc:Ignorable="d"
-        Title="BestStudentsWindow" Height="450" Width="800">
+        Title="Best Students" Height="450" Width="800"
+        xmlns:converters="clr-namespace:YT7G72_HFT_2023241.WpfClient.Services.Converters">
+    <Window.Resources>
+        <converters:GradeToColorConverter x:Key="GradeToColorConverter"/>
+    </Window.Resources>
     <Grid>
-        
+        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding BestStudents}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="2" BorderBrush="Black" Padding="10" Background="WhiteSmoke">
+                        <WrapPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical">
+                            <TextBlock FontWeight="Bold" FontSize="16">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="Name: {0} {1}">
+                                        <Binding Path="Person.FirstName"/>
+                                        <Binding Path="Person.LastName"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Label ContentStringFormat="Average: {0}" Content="{Binding Average}" FontSize="12" FontWeight="DemiBold" />
+                            <ProgressBar Value="{Binding Average}" Foreground="{Binding Average, Converter={StaticResource GradeToColorConverter}}" Maximum="5" Minimum="0" Height="20" Width="350" Margin="0,5,0,5" HorizontalAlignment="Left"/>
+                        </WrapPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
