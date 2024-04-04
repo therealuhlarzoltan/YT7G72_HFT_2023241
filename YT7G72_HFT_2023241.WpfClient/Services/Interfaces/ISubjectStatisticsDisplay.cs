@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using YT7G72_HFT_2023241.WpfClient.Logic;
 
-namespace YT7G72_HFT_2023241.WpfClient.ViewModels
+namespace YT7G72_HFT_2023241.WpfClient.Services.Interfaces
 {
-    public interface IStudentStatisticsDisplay
+    public interface ISubjectStatisticsDisplay
     {
-        void Display(RestService restService);
+        void Display(RestService restService, int subjectId);
     }
 }

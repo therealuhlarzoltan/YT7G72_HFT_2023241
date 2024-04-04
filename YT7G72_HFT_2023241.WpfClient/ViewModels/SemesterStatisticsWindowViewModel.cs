@@ -83,6 +83,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 {
                     SemesterStatistics = null;
                     SemesterStatisticsVisibility = Visibility.Collapsed;
+                    (HideSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 },
                 () => SemesterStatistics != null);
 
@@ -90,7 +91,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 () =>
                 {
                     AllSemesterStatistics.Clear();
-                });
+                    (HideAllSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                },
+                () => AllSemesterStatistics.Count >  0);
 
             RegisterMessengers();
         }

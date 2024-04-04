@@ -5,8 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YT7G72_HFT_2023241.WpfClient.Windows"
         mc:Ignorable="d"
+        xmlns:converters="clr-namespace:YT7G72_HFT_2023241.WpfClient.Services.Converters"
+        WindowState="Maximized"
         Title="Teacher Statistics" Height="450" Width="800">
+    <Window.Resources>
+        <converters:GradeToColorConverter x:Key="GradeToColorConverter"/>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding BestTeachers}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="2" BorderBrush="Black" Padding="10" Background="WhiteSmoke">
+                        <WrapPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical">
+                            <TextBlock FontWeight="Bold" FontSize="16">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="Name: {0} {1}">
+                                        <Binding Path="Person.FirstName"/>
+                                        <Binding Path="Person.LastName"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Label ContentStringFormat="Average: {0}" Content="{Binding Average}" FontSize="12" FontWeight="DemiBold" />
+                            <ProgressBar Value="{Binding Average}" Foreground="{Binding Average, Converter={StaticResource GradeToColorConverter}}" Maximum="5" Minimum="0" Height="20" Width="350" Margin="0,5,0,5" HorizontalAlignment="Left"/>
+                        </WrapPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Academic Rank" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
+        <ListBox Grid.Row="2" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" ItemsSource="{Binding AcademicRanks}" SelectedItem="{Binding SelectedAcademicRank}"></ListBox>
+        <Button Grid.Row="3" Grid.Column="0" Content="Get Best Teachers by Academic Rank!" Command="{Binding ShowBestTeachersCommand}" Margin="10" VerticalAlignment="Top" MinHeight="45" />
+        <Button Grid.Row="3" Grid.Column="1" Content="Hide Best Teachers by Academic Rank!" Command="{Binding HideBestTeachersCommand}" Margin="10" VerticalAlignment="Top" MinHeight="45" />
+        <ListBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding TeacherStatistics}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="2" BorderBrush="Black" Padding="10" Background="WhiteSmoke">
+                        <WrapPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical">
+                            <TextBlock FontWeight="Bold" FontSize="16">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="Name: {0} {1}">
+                                        <Binding Path="Person.FirstName"/>
+                                        <Binding Path="Person.LastName"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Label ContentStringFormat="Average: {0}" Content="{Binding Average}" FontSize="12" FontWeight="DemiBold" />
+                            <ProgressBar Value="{Binding Average}" Foreground="{Binding Average, Converter={StaticResource GradeToColorConverter}}" Maximum="5" Minimum="0" Height="20" Width="350" Margin="0,5,0,5" HorizontalAlignment="Left"/>
+                        </WrapPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Grid.Row="5" Grid.Column="0" Content="Get Best Teachers!" Command="{Binding GetTeacherStatisticsCommand }" Margin="10" VerticalAlignment="Bottom" MinHeight="45" />
+        <Button Grid.Row="5" Grid.Column="1" Content="Hide Best Teachers!" Command="{Binding HideTeacherStatisticsCommand }" Margin="10" VerticalAlignment="Bottom" MinHeight="45" />
     </Grid>
 </Window>

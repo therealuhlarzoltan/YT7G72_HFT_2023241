@@ -26,6 +26,10 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         private IStudentEditor studentEditor;
         private ITeacherCreator teacherCreator;
         private ITeacherEditor teacherEditor;
+        private ISemesterStatisticsDisplay semesterStatisticsDisplay;
+        private ITeacherStatisticsDisplay teacherStatisticsDisplay;
+        private IStudentStatisticsDisplay studentStatisticsDisplay;
+        private ISubjectStatisticsDisplay subjectStatisticsDisplay;
         private RestService restService = new RestService("http://localhost:4180/", "");
         private bool isStudentCreating;
         private bool isStudentUpdating;
@@ -326,11 +330,17 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
              IsInDesignMode ? null : Ioc.Default.GetService<IGradeCreator>(),
              IsInDesignMode ? null : Ioc.Default.GetService<IGradeEditor>(),
              IsInDesignMode ? null : Ioc.Default.GetService<ICurriculumCreator>(),
-             IsInDesignMode ? null : Ioc.Default.GetService<ICurriculumEditor>()) { }
+             IsInDesignMode ? null : Ioc.Default.GetService<ICurriculumEditor>(),
+             IsInDesignMode ? null : Ioc.Default.GetService<ISemesterStatisticsDisplay>(),
+             IsInDesignMode ? null : Ioc.Default.GetService<ITeacherStatisticsDisplay>(),
+             IsInDesignMode ? null : Ioc.Default.GetService<IStudentStatisticsDisplay>(),
+             IsInDesignMode ? null : Ioc.Default.GetService<ISubjectStatisticsDisplay>()) { }
 
         public MainWindowViewModel(IStudentCreator studentCreator, IStudentEditor studentEditor, ITeacherCreator teacherCreator, ITeacherEditor teacherEditor,
             ISubjectCreator subjectCreator, ISubjectEditor subjectEditor, ICourseCreator courseCreator, ICourseEditor courseEditor,
-            IGradeCreator gradeCreator, IGradeEditor gradeEditor, ICurriculumCreator curriculumCreator, ICurriculumEditor curriculumEditor)
+            IGradeCreator gradeCreator, IGradeEditor gradeEditor, ICurriculumCreator curriculumCreator, ICurriculumEditor curriculumEditor,
+            ISemesterStatisticsDisplay semesterStatisticsDisplay, ITeacherStatisticsDisplay teacherStatisticsDisplay, IStudentStatisticsDisplay studentStatisticsDisplay,
+            ISubjectStatisticsDisplay subjectStatisticsDisplay)
         {
             #region Property Inititalizations
 
@@ -561,8 +571,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             GetSubjectStatisticsCommand = new RelayCommand(
                 () =>
                 {
-                    var vm = new SubjectStatisticsWindowViewModel(this.restService, SelectedSubject.SubjectId);
-                    new SubjectStatisticsWindow(vm).Show();
+                    subjectStatisticsDisplay.Display(restService, SelectedSubject.SubjectId);
                 },
                 () => SelectedSubject != null
             );
@@ -570,18 +579,23 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             ShowBestStudentsCommand = new RelayCommand(
                 () =>
                 {
-                    var vm = new BestStudentsWindowViewModel(this.restService);
-                    new BestStudentsWindow(vm).Show();
+                    studentStatisticsDisplay.Display(restService);
                 }
             );
 
             ToSemesterStatisticsCommand = new RelayCommand(
                 () =>
                 {
-                    var vm = new SemesterStatisticsWindowViewModel(this.restService);
-                    new SemesterStatisticsWindow(vm).Show();
+                    semesterStatisticsDisplay.Display(restService);
                 }
              );
+
+            ToTeacherStatisticsCommand = new RelayCommand(
+                () => {
+                    teacherStatisticsDisplay.Display(restService);
+                    }
+            );
+
 
             #endregion Command Initializations
 

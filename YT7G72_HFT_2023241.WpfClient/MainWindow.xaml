@@ -70,7 +70,7 @@
             <Button Content="Update Teacher!" Command="{Binding UpdateTeacherCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button Content="Delete Teacher!" Command="{Binding DeleteTeacherCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button Content="Get Schedule!" Command="{Binding GetTeacherScheduleCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button Content="To Teacher Statistics" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="To Teacher Statistics" Command="{Binding ToTeacherStatisticsCommand}" Margin="10,10,10,10" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         </StackPanel>
 
         <Label Content="Subjects" FontSize="20" FontWeight="Bold" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
