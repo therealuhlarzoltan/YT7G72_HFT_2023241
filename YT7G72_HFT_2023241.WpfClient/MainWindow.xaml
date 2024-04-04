@@ -108,11 +108,6 @@
                         <TextBlock Text=" - " Margin="0,0,0,0"/>
                         <TextBlock Text="{Binding Teacher.FirstName}"  Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding Teacher.LastName}" Margin="0,0,5,0"/>
-                        <TextBlock Text="(" Margin="0,0,0,0"/>
-                        <TextBlock Text="{Binding NumberOfRegistrations, Mode=OneWay}" Margin="0,0,0,0"/>
-                        <TextBlock Text="/" Margin="0,0,0,0"/>
-                        <TextBlock Text="{Binding CourseCapacity}" Margin="0,0,0,0"/>
-                        <TextBlock Text=")" Margin="0,0,0,0"/>
                     </WrapPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
