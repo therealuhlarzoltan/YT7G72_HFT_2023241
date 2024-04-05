@@ -16,6 +16,19 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 
 
         private Subject subject;
+        private string preReqFKString;
+        public string PreReqFKString
+        {
+            get { return preReqFKString; }
+            set { SetProperty(ref preReqFKString, value); }
+        }
+
+        private string teacherIdFKString;
+        public string TeacherIdFKString
+        {
+            get { return teacherIdFKString; }
+            set { SetProperty(ref teacherIdFKString, value); }
+        }
         public Subject Subject { get { return subject; } set { SetProperty(ref subject, value); } }
         public Requirement[] Requirements { get; set; } = (Requirement[])Enum.GetValues(typeof(Requirement));
         public ICommand SaveChangesCommand { get; set; }
@@ -33,11 +46,31 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 CurriculumId = subject.CurriculumId,
                 TeacherId = subject.TeacherId,
             };
+            PreReqFKString = subject?.PreRequirementId != null ? subject.PreRequirementId.ToString() : string.Empty;
+            TeacherIdFKString = subject?.TeacherId != null ? subject.TeacherId.ToString() : string.Empty;
 
             SaveChangesCommand = new RelayCommand(
                 () =>
                 {
-                    this.Messenger.Send(Subject, "SubjectUpdateRequested");
+                    int? preId = null;
+                    int? tId = null;
+
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(PreReqFKString))
+                            preId = int.Parse(PreReqFKString);
+                        if (!string.IsNullOrWhiteSpace(TeacherIdFKString))
+                            tId = int.Parse(TeacherIdFKString);
+
+                        Subject.PreRequirementId = preId;
+                        Subject.TeacherId = tId;
+                        this.Messenger.Send(Subject, "SubjectUpdateRequested");
+
+                    }
+                    catch (Exception e) when (e is FormatException || e is OverflowException)
+                    {
+                        MessageBox.Show("Invalid argument(s) provided!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
             );
 

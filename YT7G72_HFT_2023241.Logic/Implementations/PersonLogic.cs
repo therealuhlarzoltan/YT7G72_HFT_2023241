@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -133,6 +134,10 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 throw new ObjectNotFoundException(id, typeof(Student));
             }
+            catch (DbUpdateException)
+            {
+                throw new Exception("Failed to update database!");
+            }
         }
 
         public void RemoveTeacher(int id)
@@ -144,6 +149,10 @@ namespace YT7G72_HFT_2023241.Logic
             catch(ArgumentNullException)
             {
                 throw new ObjectNotFoundException(id, typeof(Teacher));
+            }
+            catch (DbUpdateException)
+            {
+                throw new Exception("Failed to update database!");
             }
         }
 

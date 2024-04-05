@@ -229,6 +229,10 @@ namespace YT7G72_HFT_2023241.Logic
             {
                 throw new ObjectNotFoundException(id, typeof(Subject));
             }
+            catch (DbUpdateException)
+            {
+                throw new Exception("Failed to update database!");
+            }
         }
 
         public void UpdateCourse(Course course)

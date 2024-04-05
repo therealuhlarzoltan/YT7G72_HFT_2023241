@@ -15,6 +15,12 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
     {
         private Course course;
         private string timeSpanString;
+        private string teacherIdFKString;
+        public string TeacherIdFKString
+        {
+            get { return teacherIdFKString; }
+            set { SetProperty(ref teacherIdFKString, value); }
+        }
         public string TimeSpanString { get { return timeSpanString; } set { SetProperty(ref timeSpanString, value); } }
         public Course Course { get { return course; } set { SetProperty(ref course, value); } }
         public DayOfWeek[] Days { get; set; } = (DayOfWeek[])Enum.GetValues(typeof(DayOfWeek));
@@ -38,10 +44,26 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             };
 
             TimeSpanString = course.StartTime.ToString(@"hh\:mm");
+            TeacherIdFKString = course?.TeacherId != null ? course?.TeacherId.ToString() : string.Empty;
 
             SaveChangesCommand = new RelayCommand(
                 () =>
                 {
+                    int? tId = null;
+
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(TeacherIdFKString))
+                            tId = int.Parse(TeacherIdFKString);
+                        Course.TeacherId = tId;
+                    }
+                    catch (Exception e) when (e is FormatException || e is OverflowException)
+                    {
+                        MessageBox.Show("Invalid TeacherId provided!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+
                     try
                     {
                         Course.StartTime = TimeSpan.Parse(TimeSpanString);

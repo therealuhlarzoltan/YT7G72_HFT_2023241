@@ -13,6 +13,19 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class SubjectCreateWindowViewModel : ObservableRecipient, IDisposable
     {
+        private string preReqFKString;
+        public string PreReqFKString
+        {
+            get { return preReqFKString; }
+            set { SetProperty(ref preReqFKString, value); }
+        }
+
+        private string teacherIdFKString;
+        public string TeacherIdFKString
+        {
+            get { return teacherIdFKString; }
+            set { SetProperty(ref teacherIdFKString, value); }
+        }
         private Subject subject;
         public Subject Subject { get { return subject; } set { SetProperty(ref subject, value); } }
         public Requirement[] Requirements { get; set; } = (Requirement[])Enum.GetValues(typeof(Requirement));
@@ -22,10 +35,30 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             Subject = new Subject();
 
+            TeacherIdFKString = string.Empty;
+            PreReqFKString = string.Empty;
+
             CreateSubjectCommand = new RelayCommand(
                 () =>
                 {
-                    this.Messenger.Send(Subject, "SubjectCreationRequested");
+                    int? preId = null;
+                    int? tId = null;
+
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(PreReqFKString))
+                            preId = int.Parse(PreReqFKString);
+                        if (!string.IsNullOrWhiteSpace(TeacherIdFKString))
+                            tId = int.Parse(TeacherIdFKString);
+
+                        Subject.PreRequirementId = preId;
+                        Subject.TeacherId = tId;
+                        this.Messenger.Send(Subject, "SubjectCreationRequested");
+                    }
+                    catch (Exception e) when (e is FormatException || e is OverflowException)
+                    {
+                        MessageBox.Show("Invalid argument(s) provided!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
             );
 

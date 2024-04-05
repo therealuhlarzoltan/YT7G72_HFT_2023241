@@ -41,7 +41,7 @@
         <Label Grid.Row="6" Grid.Column="1" Content="Room" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
         <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Course.Room, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label Grid.Row="8" Grid.Column="0" Content="Teacher Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
-        <TextBox Grid.Row="9" Grid.Column="0" Text="{Binding Course.TeacherId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBox Grid.Row="9" Grid.Column="0" Text="{Binding TeacherIdFKString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label Grid.Row="8" Grid.Column="1"  Content="Subject Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
         <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Course.SubjectId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Button Content="Save Changes!" Grid.Column="0" HorizontalAlignment="Center" Grid.Row="10" Grid.ColumnSpan="2" MinWidth="300" Margin="10" Command="{Binding SaveChangesCommand}"/>

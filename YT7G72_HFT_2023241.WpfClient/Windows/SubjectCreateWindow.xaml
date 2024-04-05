@@ -34,9 +34,9 @@
         <Label Grid.Row="2" Grid.Column="0" Content="Credits" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
         <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding Subject.Credits, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label Grid.Row="2" Grid.Column="1" Content="Teacher Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Subject.TeacherId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding TeacherIdFKString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label Grid.Row="4" Grid.Column="0" Content="PreRequirement Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
-        <TextBox Grid.Row="5" Grid.Column="0" Text="{Binding Subject.PreRequirementId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBox Grid.Row="5" Grid.Column="0" Text="{Binding PreReqFKString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label Grid.Row="4" Grid.Column="1" Content="Curriculum Id" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue" />
         <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Subject.CurriculumId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Requirement" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Background="AliceBlue"  />
