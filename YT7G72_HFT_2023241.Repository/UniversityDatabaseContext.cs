@@ -21,7 +21,6 @@ namespace YT7G72_HFT_2023241.Repository
 
         public UniversityDatabaseContext()
         {
-            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
         }
 
@@ -30,8 +29,10 @@ namespace YT7G72_HFT_2023241.Repository
             builder.EnableSensitiveDataLogging();
             if (!builder.IsConfigured)
             {
+                string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\Database\UniversityDatabase.mdf;Integrated Security=True;Initial Catalog=UniversityDatabase;MultipleActiveResultSets=True";
                 builder
-                    .UseInMemoryDatabase("UniversityDatabase")
+                    //.UseInMemoryDatabase("UniversityDatabase")
+                    .UseSqlServer(connectionString)
                     .UseLazyLoadingProxies();
             }
         }
@@ -99,7 +100,8 @@ namespace YT7G72_HFT_2023241.Repository
                 .HasOne(s => s.PreRequirement)
                 .WithOne()
                 .HasForeignKey<Subject>(s => s.PreRequirementId)
-                .IsRequired(false);
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Subject>()
                 .HasMany(s => s.Grades)
@@ -294,9 +296,6 @@ namespace YT7G72_HFT_2023241.Repository
 
                         }
                 );
-
-
-
         }
     }
 }

@@ -119,6 +119,156 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 }
             });
 
+            this.Messenger.Register<TeacherStatisticsWindowViewModel, string, string>(this, "GradeDeleted", (recipient, msg) =>
+            {
+                if (BestTeachers.Count > 0 || SelectedAcademicRank != null)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best/{(int)SelectedAcademicRank}");
+                    BestTeachers.Clear();
+                    foreach (var e in collection)
+                        BestTeachers.Add(e);
+                    (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (BestTeachers.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+                if (TeacherStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best");
+                    TeacherStatistics.Clear();
+                    foreach (var e in collection)
+                        TeacherStatistics.Add(e);
+                    (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (TeacherStatistics.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            });
+
+            this.Messenger.Register<TeacherStatisticsWindowViewModel, string, string>(this, "SubjectDeleted", (recipient, msg) =>
+            {
+                if (BestTeachers.Count > 0 || SelectedAcademicRank != null)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best/{(int)SelectedAcademicRank}");
+                    BestTeachers.Clear();
+                    foreach (var e in collection)
+                        BestTeachers.Add(e);
+                    (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (BestTeachers.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+                if (TeacherStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best");
+                    TeacherStatistics.Clear();
+                    foreach (var e in collection)
+                        TeacherStatistics.Add(e);
+                    (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (TeacherStatistics.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            });
+
+            this.Messenger.Register<TeacherStatisticsWindowViewModel, string, string>(this, "CurriculumDeleted", (recipient, msg) =>
+            {
+                if (BestTeachers.Count > 0 || SelectedAcademicRank != null)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best/{(int)SelectedAcademicRank}");
+                    BestTeachers.Clear();
+                    foreach (var e in collection)
+                        BestTeachers.Add(e);
+                    (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (BestTeachers.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+                if (TeacherStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best");
+                    TeacherStatistics.Clear();
+                    foreach (var e in collection)
+                        TeacherStatistics.Add(e);
+                    (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (TeacherStatistics.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            });
+
+            this.Messenger.Register<TeacherStatisticsWindowViewModel, string, string>(this, "TeacherDeleted", (recipient, msg) =>
+            {
+                if (BestTeachers.Count > 0 || SelectedAcademicRank != null)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best/{(int)SelectedAcademicRank}");
+                    BestTeachers.Clear();
+                    foreach (var e in collection)
+                        BestTeachers.Add(e);
+                    (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (BestTeachers.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+                if (TeacherStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best");
+                    TeacherStatistics.Clear();
+                    foreach (var e in collection)
+                        TeacherStatistics.Add(e);
+                    (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (TeacherStatistics.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            });
+
+            this.Messenger.Register<TeacherStatisticsWindowViewModel, string, string>(this, "TeacherUpdated", (recipient, msg) =>
+            {
+                if (BestTeachers.Count > 0 || SelectedAcademicRank != null)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best/{(int)SelectedAcademicRank}");
+                    BestTeachers.Clear();
+                    foreach (var e in collection)
+                        BestTeachers.Add(e);
+                    (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (BestTeachers.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+                if (TeacherStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best");
+                    TeacherStatistics.Clear();
+                    foreach (var e in collection)
+                        TeacherStatistics.Add(e);
+                    (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (TeacherStatistics.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            });
+
+            this.Messenger.Register<TeacherStatisticsWindowViewModel, string, string>(this, "StudentDeleted", (recipient, msg) =>
+            {
+                if (BestTeachers.Count > 0 || SelectedAcademicRank != null)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best/{(int)SelectedAcademicRank}");
+                    BestTeachers.Clear();
+                    foreach (var e in collection)
+                        BestTeachers.Add(e);
+                    (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (BestTeachers.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+                if (TeacherStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<AverageByPersonDTO<Teacher>>($"People/Teachers/Best");
+                    TeacherStatistics.Clear();
+                    foreach (var e in collection)
+                        TeacherStatistics.Add(e);
+                    (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    if (TeacherStatistics.Count == 0)
+                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            });
+
             this.Messenger.Register<TeacherStatisticsWindowViewModel, string, string>(this, "GradeUpdated", (recipient, msg) =>
             {
                 if (BestTeachers.Count > 0 || SelectedAcademicRank != null)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using YT7G72_HFT_2023241.Logic;
 using YT7G72_HFT_2023241.Logic.Implementations;
 using YT7G72_HFT_2023241.Logic.Interfaces;
@@ -15,6 +16,7 @@ namespace YT7G72_HFT_2023241.Endpoint
 {
     public class Startup
     {
+        IServiceProvider _serviceProvider;
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -43,6 +45,7 @@ namespace YT7G72_HFT_2023241.Endpoint
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -92,10 +95,7 @@ namespace YT7G72_HFT_2023241.Endpoint
                     await context.Response.WriteAsync("NEPTUN API v1");
                 });
                 endpoints.MapHub<SignalRHub>("/hub");
-
             });
-
-
         }
     }
 }

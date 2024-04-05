@@ -40,6 +40,46 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     BestStudents.Add(e);
             });
 
+            this.Messenger.Register<BestStudentsWindowViewModel, string, string>(this, "GradeDeleted", (recipient, msg) =>
+            {
+                var collection = restService.Get<AverageByPersonDTO<Student>>("People/Students/Best");
+                BestStudents.Clear();
+                foreach (var e in collection)
+                    BestStudents.Add(e);
+            });
+
+            this.Messenger.Register<BestStudentsWindowViewModel, string, string>(this, "StudentDeleted", (recipient, msg) =>
+            {
+                var collection = restService.Get<AverageByPersonDTO<Student>>("People/Students/Best");
+                BestStudents.Clear();
+                foreach (var e in collection)
+                    BestStudents.Add(e);
+            });
+
+            this.Messenger.Register<BestStudentsWindowViewModel, string, string>(this, "StudentUpdated", (recipient, msg) =>
+            {
+                var collection = restService.Get<AverageByPersonDTO<Student>>("People/Students/Best");
+                BestStudents.Clear();
+                foreach (var e in collection)
+                    BestStudents.Add(e);
+            });
+
+            this.Messenger.Register<BestStudentsWindowViewModel, string, string>(this, "SubjectDeleted", (recipient, msg) =>
+            {
+                var collection = restService.Get<AverageByPersonDTO<Student>>("People/Students/Best");
+                BestStudents.Clear();
+                foreach (var e in collection)
+                    BestStudents.Add(e);
+            });
+
+            this.Messenger.Register<BestStudentsWindowViewModel, string, string>(this, "CurriculumDeleted", (recipient, msg) =>
+            {
+                var collection = restService.Get<AverageByPersonDTO<Student>>("People/Students/Best");
+                BestStudents.Clear();
+                foreach (var e in collection)
+                    BestStudents.Add(e);
+            });
+
             this.Messenger.Register<BestStudentsWindowViewModel, string, string>(this, "GradeUpdated", (recipient, msg) =>
             {
                 var collection = restService.Get<AverageByPersonDTO<Student>>("People/Students/Best");

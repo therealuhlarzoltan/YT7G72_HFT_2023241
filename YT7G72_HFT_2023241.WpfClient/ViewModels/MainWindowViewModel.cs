@@ -369,7 +369,17 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 
 
             DeleteStudentCommand = new RelayCommand(
-                async () => { await Students?.Delete(SelectedStudent.StudentId); Grades?.TriggerReset(); },
+                async () => {
+                    try
+                    {
+                        await Students?.Delete(SelectedStudent.StudentId);
+                        Grades?.TriggerReset();
+                        this.Messenger.Send("", "StudentDeleted");
+                    } catch (ArgumentException e)
+                    {
+                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                },
                 () => SelectedStudent != null
             );
 
@@ -385,11 +395,19 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 
             DeleteTeacherCommand = new RelayCommand(
                 async () => {
-                    await Teachers?.Delete(SelectedTeacher.TeacherId);
-                    Subjects?.TriggerReset();
-                    Courses?.TriggerReset();
-                    Grades?.TriggerReset();
-                        },
+                    try
+                    {
+                        await Teachers?.Delete(SelectedTeacher.TeacherId);
+                        Subjects?.TriggerReset();
+                        Courses?.TriggerReset();
+                        Grades?.TriggerReset();
+                        this.Messenger.Send("", "TeacherDeleted");
+                    } 
+                    catch (ArgumentException e)
+                    {
+                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                },
                 () => SelectedTeacher != null
             );
 
@@ -404,7 +422,19 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             );
 
             DeleteSubjectCommand = new RelayCommand(
-                async () => { await Subjects?.Delete(SelectedSubject.SubjectId); Courses?.TriggerReset(); Grades?.TriggerReset(); },
+                async () => {
+                    try
+                    {
+                        await Subjects?.Delete(SelectedSubject.SubjectId);
+                        Courses?.TriggerReset();
+                        Grades?.TriggerReset();
+                        this.Messenger.Send("", "TeacherDeleted");
+                    }
+                    catch (ArgumentException e)
+                    {
+                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                },
                 () => SelectedSubject != null
             );
 
@@ -419,7 +449,20 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
              );
 
             DeleteCurriculumCommand = new RelayCommand(
-                async () => { await Curriculums?.Delete(SelectedCurriculum.CurriculumId); Students?.TriggerReset(); Subjects?.TriggerReset(); },
+                async () => {
+                    try
+                    {
+                        await Curriculums?.Delete(SelectedCurriculum.CurriculumId);
+                        Students?.TriggerReset();
+                        Subjects?.TriggerReset();
+                        Grades?.TriggerReset();
+                        this.Messenger.Send("", "CurriculumDeleted");
+                    } catch (ArgumentException e)
+                    {
+                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+
+                },
                 () => SelectedCurriculum != null
              );
 
@@ -435,7 +478,10 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             );
 
             DeleteGradeCommand = new RelayCommand(
-                () => Grades?.Delete(SelectedGrade.GradeId),
+                async () => {
+                    await Grades?.Delete(SelectedGrade.GradeId);
+                    this.Messenger.Send("", "GradeDeleted");
+                },
                 () => SelectedGrade != null
              );
 

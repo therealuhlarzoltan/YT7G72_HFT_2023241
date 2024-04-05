@@ -120,6 +120,86 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                 }
             });
 
+            this.Messenger.Register<SemesterStatisticsWindowViewModel, string, string>(this, "GradeDeleted", (receipient, msg) =>
+            {
+                if (SemesterStatistics != null)
+                {
+                    var year = SemesterStatistics.Semester.Replace("/", "-");
+                    var stat = this.restService.GetSingle<SemesterStatistics>($"Grades/Semester/Statistics/{year}");
+                    SemesterStatistics = stat;
+                    (HideSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                }
+
+                if (AllSemesterStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<SemesterStatistics>($"Grades/Semester/Statistics");
+                    AllSemesterStatistics.Clear();
+                    foreach (var e in collection)
+                        AllSemesterStatistics.Add(e);
+                    (HideAllSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                }
+            });
+
+            this.Messenger.Register<SemesterStatisticsWindowViewModel, string, string>(this, "SubjectDeleted", (receipient, msg) =>
+            {
+                if (SemesterStatistics != null)
+                {
+                    var year = SemesterStatistics.Semester.Replace("/", "-");
+                    var stat = this.restService.GetSingle<SemesterStatistics>($"Grades/Semester/Statistics/{year}");
+                    SemesterStatistics = stat;
+                    (HideSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                }
+
+                if (AllSemesterStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<SemesterStatistics>($"Grades/Semester/Statistics");
+                    AllSemesterStatistics.Clear();
+                    foreach (var e in collection)
+                        AllSemesterStatistics.Add(e);
+                    (HideAllSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                }
+            });
+
+            this.Messenger.Register<SemesterStatisticsWindowViewModel, string, string>(this, "StudentDeleted", (receipient, msg) =>
+            {
+                if (SemesterStatistics != null)
+                {
+                    var year = SemesterStatistics.Semester.Replace("/", "-");
+                    var stat = this.restService.GetSingle<SemesterStatistics>($"Grades/Semester/Statistics/{year}");
+                    SemesterStatistics = stat;
+                    (HideSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                }
+
+                if (AllSemesterStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<SemesterStatistics>($"Grades/Semester/Statistics");
+                    AllSemesterStatistics.Clear();
+                    foreach (var e in collection)
+                        AllSemesterStatistics.Add(e);
+                    (HideAllSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                }
+            });
+
+            this.Messenger.Register<SemesterStatisticsWindowViewModel, string, string>(this, "CurriculumDeleted", (receipient, msg) =>
+            {
+                if (SemesterStatistics != null)
+                {
+                    var year = SemesterStatistics.Semester.Replace("/", "-");
+                    var stat = this.restService.GetSingle<SemesterStatistics>($"Grades/Semester/Statistics/{year}");
+                    SemesterStatistics = stat;
+                    (HideSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                }
+
+                if (AllSemesterStatistics.Count > 0)
+                {
+                    var collection = this.restService.Get<SemesterStatistics>($"Grades/Semester/Statistics");
+                    AllSemesterStatistics.Clear();
+                    foreach (var e in collection)
+                        AllSemesterStatistics.Add(e);
+                    (HideAllSemesterStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                }
+            });
+
             this.Messenger.Register<SemesterStatisticsWindowViewModel, string, string>(this, "GradeUpdated", (receipient, msg) =>
             {
                 if (SemesterStatistics != null)
