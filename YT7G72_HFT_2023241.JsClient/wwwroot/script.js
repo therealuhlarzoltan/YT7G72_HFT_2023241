@@ -1,5 +1,7 @@
 ﻿let students = [];
 let curriculums = [];
+let isScheduleShowing = false;
+let scheduleStudentId = null;
 financialStatuses = [
     { ordinal: 0, value: 'Without Scholarship' },
     { ordinal: 1, value: 'Full State Scholarship' }
@@ -23,12 +25,17 @@ function setupSignalR() {
     });
 
     connection.on("StudentDeleted", (user, message) => {
-        getStudents();
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
     });
 
     connection.on("CurriculumUpdated", async (user, message) => {
         await getCurriculums();
         getStudents();
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
     });
 
     connection.on("CurriculumDeCreated", async (user, message) => {
@@ -39,6 +46,45 @@ function setupSignalR() {
     connection.on("CurriculumDeleted", async (user, message) => {
         await getCurriculums();
         getStudents();
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
+    });
+
+    connection.on("CourseUpdated", async (user, message) => {
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
+    });
+
+    connection.on("TeacherDeleted", async (user, message) => {
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
+    });
+
+    connection.on("TeacherUpdated", async (user, message) => {
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
+    });
+
+    connection.on("CourseDeleted", async (user, message) => {
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
+    });
+
+    connection.on("SubjectUpdated", async (user, message) => {
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
+    });
+
+    connection.on("SubjectDeleted", async (user, message) => {
+        if (isScheduleShowing == true && scheduleStudentId != null) {
+            getSchedule(scheduleStudentId);
+        }
     });
 
     connection.onclose(async () => {
@@ -109,6 +155,7 @@ async function getSchedule(studentId) {
     await fetch('http://localhost:4180/People/Students/Schedule/' + studentId)
         .then(response => response.text())
         .then(data => displaySchedule(data));
+    scheduleStudentId = studentId;
 }
 
 function convertOrdinalToDay(ordinal) {
@@ -182,7 +229,7 @@ function displaySchedule(schedule) {
         numberOfIterations += 1;
     }
     classRows.forEach(r => tbody.innerHTML += r);
-
+    isScheduleShowing = true;
     window.scrollTo(0, document.body.scrollHeight);
 
 }

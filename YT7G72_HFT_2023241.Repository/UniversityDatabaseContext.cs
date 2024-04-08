@@ -214,7 +214,6 @@ namespace YT7G72_HFT_2023241.Repository
                         new Subject() { SubjectId = 2, SubjectName = "Software Design and Development II", SubjectCode = "NIKCESZTF2", Credits = 6,  CurriculumId = 1, TeacherId = 6, Requirement = Requirement.WRITTEN_AND_SPOKEN_EXAM, PreRequirementId = 3},
                         new Subject() { SubjectId = 1, SubjectName = "Web development using Java and Spring Boot", SubjectCode = "NIKCEJAVAWEB", Credits = 4, CurriculumId = 1, TeacherId = 1, Requirement = Requirement.SPOKEN_EXAM, PreRequirementId = 2 },         
                         new Subject() { SubjectId = 4, SubjectName = "The Java Microservice Project", SubjectCode = "NICKEJAVAMSP", Credits = 3,  CurriculumId = 1, TeacherId = 1, Requirement = Requirement.MID_TERM_MARK, PreRequirementId = 2}
-                        
                     }
                 );
 
@@ -292,7 +291,6 @@ namespace YT7G72_HFT_2023241.Repository
                             new Grade() { GradeId = 6, StudentId = 2, Semester = "2022/23/1", Mark = 1, TeacherId = 12, SubjectId = 1},
                             new Grade() { GradeId = 7, StudentId = 6, Semester = "2022/23/1", Mark = 1, TeacherId = 12, SubjectId = 1},
                             new Grade() { GradeId = 8, StudentId = 4, Semester = "2022/23/1", Mark = 2, TeacherId = 12, SubjectId = 2}
-
                         }
                 );
         }
