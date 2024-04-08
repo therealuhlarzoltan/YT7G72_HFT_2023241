@@ -38,7 +38,7 @@ function setupSignalR() {
         }
     });
 
-    connection.on("CurriculumDeCreated", async (user, message) => {
+    connection.on("CurriculumCreated", async (user, message) => {
         await getCurriculums();
         getStudents();
     });
