@@ -2,6 +2,12 @@
 let subjects = [];
 let grades = [];
 let students = [];
+let isBestTeachersDisplaying = false;
+let isBestStudentsDisplaying = false;
+let isSubjectStatisticsDisplaying = false;
+let isTeacherStatisticsDisplaying = false;
+let subjectStatisticsDisplayId = null;
+let teacherStatisticsDisplayAcademicRank = null;
 
 let academicRanks = [
     { ordinal: 0, value: "Teacher's Assistant" },
@@ -240,14 +246,50 @@ function setupSignalR() {
 
     connection.on("GradeCreated", (user, message) => {
         getGrades();
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("GradeUpdated", (user, message) => {
         getGrades();
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("GradeDeleted", (user, message) => {
         getGrades();
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("SubjectCreated", async (user, message) => {
@@ -258,21 +300,69 @@ function setupSignalR() {
     connection.on("SubjectUpdated", async (user, message) => {
         await getSubjects();
         getGrades();
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("SubjectDeleted", async (user, message) => {
         await getSubjects();
         getGrades();
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("StudentUpdated", async (user, message) => {
         await getStudents();
         getGrades();
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("StudentDeleted", async (user, message) => {
         await getStudents();
         getGrades();
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("StudentCreated", async (user, message) => {
@@ -284,16 +374,64 @@ function setupSignalR() {
     connection.on("TeacherUpdated", async (user, message) => {
         await getTeachers();
         getGrades();
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("TeacherDeleted", async (user, message) => {
         await getTeachers();
         getGrades();
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.on("TeacherCreated", async (user, message) => {
         await getTeachers();
         getGrades();
+    });
+
+    connection.on("CurriculumDeleted", async (user, message) => {
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
+    });
+
+    connection.on("CurriculumUpdated", async (user, message) => {
+        if (isBestStudentsDisplaying == true) {
+            getBestStudents();
+        }
+        if (isBestTeachersDisplaying == true) {
+            getBestTeachers();
+        }
+        if (isSubjectStatisticsDisplaying == true && subjectStatisticsDisplayId != null) {
+            getSubjectStatistics2(subjectStatisticsDisplayId);
+        }
+        if (isTeacherStatisticsDisplaying == true && teacherStatisticsDisplayAcademicRank != null) {
+            getBestTeachersByAcademicRank2(teacherStatisticsDisplayAcademicRank);
+        }
     });
 
     connection.onclose(async () => {
@@ -366,7 +504,7 @@ async function getBestStudents() {
 function displayBestStudents(data) {
     const div = document.getElementById("bestStudentsDiv");
     div.innerHTML = '';
-    data.forEach((ss) => {
+    data?.forEach((ss) => {
         var element = document.createElement("div");
         element.innerHTML = `<div class="col-md-6">
             <div class="statistics-card">
@@ -383,12 +521,14 @@ function displayBestStudents(data) {
     button.classList.add("btn-warning");
     button.classList.add("my-4");
     button.classList.add("mx-0");
+    isBestStudentsDisplaying = true;
     button.onclick = () => hideBestStudents();
     div.appendChild(button);
 }
 
 function hideBestTeachers() {
     document.getElementById("bestTeachersDiv").innerHTML = ` <button onclick="getBestTeachers()" class="btn btn-success mt-4 mx-0">Display best teachers</button>`;
+    isBestTeachersDisplaying = false;
 }
 
 async function getBestTeachers() {
@@ -401,12 +541,13 @@ async function getBestTeachers() {
 
 function hideBestStudents() {
     document.getElementById("bestStudentsDiv").innerHTML = ` <button onclick="getBestStudents()" class="btn btn-success mt-4 mx-0">Display best students</button>`;
+    isBestStudentsDisplaying = false;
 }
 
 function displayBestTeachers(data) {
     const div = document.getElementById("bestTeachersDiv");
     div.innerHTML = '';
-    data.forEach((ts) => {
+    data?.forEach((ts) => {
         var element = document.createElement("div");
         element.innerHTML = `<div class="col-md-6">
             <div class="statistics-card">
@@ -423,6 +564,7 @@ function displayBestTeachers(data) {
     button.classList.add("btn-warning");
     button.classList.add("my-4");
     button.classList.add("mx-0");
+    isBestTeachersDisplaying = true;
     button.onclick = () => hideBestTeachers();
     div.appendChild(button);
 }
@@ -434,6 +576,16 @@ async function getSubjectStatistics() {
         .then(data => {
             displaySubjectStatistics(data);
         });
+    subjectStatisticsDisplayId = id;
+}
+
+async function getSubjectStatistics2(subjectId) {
+    await fetch('http://localhost:4180/Grades/Subjects/Statistics/' + subjectId)
+        .then(response => response.json())
+        .then(data => {
+            displaySubjectStatistics(data);
+        });
+    subjectStatisticsDisplayId = null;
 }
 
 function displaySubjectStatistics(data) {
@@ -442,10 +594,10 @@ function displaySubjectStatistics(data) {
         var element = document.createElement("div");
         element.innerHTML = `<div class="col-md-6">
             <div class="statistics-card">
-                <h4>${data.subject.subjectName}</h4>
-                <p>Number of Registrations: ${data.numberOfRegistrations}</p>
-                <p>Pass/Registration Ratio: ${Math.round((Number(data.passPerRegistrationRatio) + Number.EPSILON) * 100) / 100}</p>
-                <p>Average: ${Math.round((Number(data.avg) + Number.EPSILON) * 100) / 100}</p>
+                <h4>${data?.subject?.subjectName}</h4>
+                <p>Number of Registrations: ${data?.numberOfRegistrations}</p>
+                <p>Pass/Registration Ratio: ${Math.round((Number(data?.passPerRegistrationRatio) + Number.EPSILON) * 100) / 100}</p>
+                <p>Average: ${Math.round((Number(data?.avg) + Number.EPSILON) * 100) / 100}</p>
             </div>
         </div>`
         div.appendChild(element);
@@ -456,12 +608,15 @@ function displaySubjectStatistics(data) {
     button.classList.add("my-4");
     button.classList.add("mx-0");
     button.onclick = () => hideSubjectStatistics();
+    isSubjectStatisticsDisplaying = true;
     div.appendChild(button);
 
 }
 
 function hideSubjectStatistics() {
     document.getElementById("subjectStatistics").innerHTML = '';
+    isSubjectStatisticsDisplaying = false;
+    subjectStatisticsDisplayId = null;
 }
 
 async function getBestTeachersByAcademicRank() {
@@ -471,6 +626,7 @@ async function getBestTeachersByAcademicRank() {
         .then(data => {
             displayTeachersByAcademicRank(data);
         });
+    teacherStatisticsDisplayAcademicRank = academicRank;
 }
 
 function displayTeachersByAcademicRank(data) {
@@ -498,12 +654,15 @@ function displayTeachersByAcademicRank(data) {
     button.classList.add("my-4");
     button.classList.add("mx-0");
     button.onclick = () => hideTeachersByAcademicRank();
+    isTeacherStatisticsDisplaying = true;
     div.appendChild(button);
 
 }
 
 function hideTeachersByAcademicRank() {
     document.getElementById("academicRankStatistics").innerHTML = '';
+    isTeacherStatisticsDisplaying = false;
+    teacherStatisticsDisplayAcademicRank = null;
 }
 
 function generateAcademicRankOptions(selectId) {
