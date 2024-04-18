@@ -10,18 +10,21 @@ using System.Windows;
 using System.Windows.Input;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.Logic;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class StudentEditWindowViewModel : ObservableRecipient, IDisposable
     {
+        IMessageBoxService messageBoxService;
         private Student student;
         public Student Student { get { return student; } set { SetProperty(ref student, value); } } 
         public FinancialStatus[] FinancialStatuses { get; set; } = (FinancialStatus[])Enum.GetValues(typeof(FinancialStatus));
         public ICommand SaveChangesCommand { get; set; }
 
-        public StudentEditWindowViewModel(Student student)
+        public StudentEditWindowViewModel(Student student , IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             Student = new Student()
             {
                 StudentId = student.StudentId,
@@ -45,11 +48,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.Messenger.Register<StudentEditWindowViewModel, string, string>(this, "FailedToUpdateStudent", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                messageBoxService.ShowWarning(msg);
             });
             this.Messenger.Register<StudentEditWindowViewModel, string, string>(this, "StudentUpdated", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                messageBoxService.ShowInfo(msg);
             });
         }
 

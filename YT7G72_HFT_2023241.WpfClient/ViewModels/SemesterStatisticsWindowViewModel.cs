@@ -11,11 +11,13 @@ using System.Windows;
 using System.Windows.Input;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.Logic;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
      public class SemesterStatisticsWindowViewModel : ObservableRecipient, IDisposable
      {
+        private IMessageBoxService messageBoxService;
         private RestService restService;
         private string semesterString;
         private Visibility semesterStatisticsVisibility;
@@ -52,8 +54,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public ICommand HideSemesterStatisticsCommand { get; set; }
         public ICommand HideAllSemesterStatisticsCommand { get; set; }
 
-        public SemesterStatisticsWindowViewModel(RestService restService)
+        public SemesterStatisticsWindowViewModel(RestService restService, IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             this.restService = restService;
             SemesterStatisticsVisibility = Visibility.Collapsed;
 

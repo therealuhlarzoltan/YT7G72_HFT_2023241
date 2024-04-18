@@ -8,17 +8,20 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using YT7G72_HFT_2023241.Models;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class GradeEditWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private Grade grade;
         public Grade Grade { get { return grade; } set { SetProperty(ref grade, value); } }
         public ICommand SaveChangesCommand { get; set; }
 
-        public GradeEditWindowViewModel(Grade grade)
+        public GradeEditWindowViewModel(Grade grade, IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             Grade = new Grade()
             {
                 GradeId = grade.GradeId,
@@ -44,11 +47,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.Messenger.Register<GradeEditWindowViewModel, string, string>(this, "FailedToUpdateGrade", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                messageBoxService.ShowWarning(msg);
             });
             this.Messenger.Register<GradeEditWindowViewModel, string, string>(this, "GradeUpdated", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                messageBoxService.ShowInfo(msg);
             });
         }
 

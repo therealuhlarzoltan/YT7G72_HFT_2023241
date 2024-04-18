@@ -3,11 +3,13 @@ using System;
 using System.Collections.ObjectModel;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.Logic;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class BestStudentsWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private RestService restService;
         private ObservableCollection<AverageByPersonDTO<Student>> bestStudents = new ObservableCollection<AverageByPersonDTO<Student>>();
         public ObservableCollection<AverageByPersonDTO<Student>> BestStudents
@@ -19,8 +21,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             }
         }
 
-        public BestStudentsWindowViewModel(RestService restService)
+        public BestStudentsWindowViewModel(RestService restService, IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             this.restService = restService;
             var collection = restService.Get<AverageByPersonDTO<Student>>("People/Students/Best");
             BestStudents.Clear();

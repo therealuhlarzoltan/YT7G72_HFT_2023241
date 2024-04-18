@@ -30,6 +30,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         private ITeacherStatisticsDisplay teacherStatisticsDisplay;
         private IStudentStatisticsDisplay studentStatisticsDisplay;
         private ISubjectStatisticsDisplay subjectStatisticsDisplay;
+        private IMessageBoxService messageBoxService;
         private RestService restService = new RestService("http://localhost:4180/", "");
         private bool isStudentCreating;
         private bool isStudentUpdating;
@@ -334,13 +335,14 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
              IsInDesignMode ? null : Ioc.Default.GetService<ISemesterStatisticsDisplay>(),
              IsInDesignMode ? null : Ioc.Default.GetService<ITeacherStatisticsDisplay>(),
              IsInDesignMode ? null : Ioc.Default.GetService<IStudentStatisticsDisplay>(),
-             IsInDesignMode ? null : Ioc.Default.GetService<ISubjectStatisticsDisplay>()) { }
+             IsInDesignMode ? null : Ioc.Default.GetService<ISubjectStatisticsDisplay>(),
+             IsInDesignMode ? null : Ioc.Default.GetService<IMessageBoxService>()) { }
 
         public MainWindowViewModel(IStudentCreator studentCreator, IStudentEditor studentEditor, ITeacherCreator teacherCreator, ITeacherEditor teacherEditor,
             ISubjectCreator subjectCreator, ISubjectEditor subjectEditor, ICourseCreator courseCreator, ICourseEditor courseEditor,
             IGradeCreator gradeCreator, IGradeEditor gradeEditor, ICurriculumCreator curriculumCreator, ICurriculumEditor curriculumEditor,
             ISemesterStatisticsDisplay semesterStatisticsDisplay, ITeacherStatisticsDisplay teacherStatisticsDisplay, IStudentStatisticsDisplay studentStatisticsDisplay,
-            ISubjectStatisticsDisplay subjectStatisticsDisplay)
+            ISubjectStatisticsDisplay subjectStatisticsDisplay, IMessageBoxService messageBoxService)
         {
             #region Property Inititalizations
 
@@ -377,7 +379,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         this.Messenger.Send("", "StudentDeleted");
                     } catch (ArgumentException e)
                     {
-                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(e.Message);
                     }
                 },
                 () => SelectedStudent != null
@@ -405,7 +407,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     } 
                     catch (ArgumentException e)
                     {
-                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(e.Message);
                     }
                 },
                 () => SelectedTeacher != null
@@ -432,7 +434,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     }
                     catch (ArgumentException e)
                     {
-                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(e.Message);
                     }
                 },
                 () => SelectedSubject != null
@@ -459,7 +461,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         this.Messenger.Send("", "CurriculumDeleted");
                     } catch (ArgumentException e)
                     {
-                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(e.Message);
                     }
 
                 },
@@ -507,11 +509,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     try
                     {
                         restService.Post($"Education/Subjects/{SelectedSubject.SubjectId}/Register/{SelectedStudent.StudentId}");
-                        MessageBox.Show("Successfully registered for subject!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        messageBoxService.ShowInfo("Successfully registered for subject!");
                     }
                     catch (Exception ex) 
                     {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(ex.Message);
                     }
                 },
                 () => SelectedStudent != null && SelectedSubject != null
@@ -523,11 +525,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     try
                     {
                         restService.Delete($"Education/Subjects/{SelectedSubject.SubjectId}/Register/{SelectedStudent.StudentId}");
-                        MessageBox.Show("Successfully unregistered from subject!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        messageBoxService.ShowInfo("Successfully unregistered from subject!");
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(ex.Message);
                     }
                 },
                 () => SelectedStudent != null && SelectedSubject != null
@@ -539,11 +541,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     try
                     {
                         restService.Post($"Education/Courses/{SelectedCourse.CourseId}/Register/{SelectedStudent.StudentId}");
-                        MessageBox.Show("Successfully registered for course!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        messageBoxService.ShowInfo("Successfully registered for course!");
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(ex.Message);
                     }
                 },
                 () => SelectedStudent != null && SelectedCourse != null
@@ -555,11 +557,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     try
                     {
                         restService.Delete($"Education/Courses/{SelectedCourse.CourseId}/Register/{SelectedStudent.StudentId}");
-                        MessageBox.Show("Successfully unregistered from course!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        messageBoxService.ShowInfo("Successfully unregistered from course!");
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(ex.Message);
                     }
                 },
                 () => SelectedStudent != null && SelectedCourse != null
@@ -571,12 +573,12 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     try
                     {
                         restService.Post("Education/Semester/Reset");
-                        MessageBox.Show("Subject and Course Resgistrations have been cleared!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        messageBoxService.ShowInfo("Subject and Course Resgistrations have been cleared!");
 
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(ex.Message);
                     }
                 }
             );
@@ -590,11 +592,12 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         schedule = schedule.Replace("\"", "");
                         schedule = schedule.Replace("\\n", Environment.NewLine);
                         schedule = schedule.Replace("\\t", "    ");
-                        MessageBox.Show(schedule, "Schedule", MessageBoxButton.OK, MessageBoxImage.Information);
+                        messageBoxService.ShowInfo(schedule, "Schedule");
+
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning(ex.Message);
                     }
                 },
                 () => SelectedStudent != null
@@ -609,11 +612,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                        schedule = schedule.Replace("\"", "");
                        schedule = schedule.Replace("\\n", Environment.NewLine);
                        schedule = schedule.Replace("\\t", "    ");
-                       MessageBox.Show(schedule, "Schedule", MessageBoxButton.OK, MessageBoxImage.Information);
+                       messageBoxService.ShowInfo(schedule, "Schedule");
                    }
                    catch (Exception ex)
                    {
-                       MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                       messageBoxService.ShowWarning(ex.Message);
                    }
                },
                () => SelectedTeacher != null

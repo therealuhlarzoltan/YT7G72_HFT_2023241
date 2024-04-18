@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using YT7G72_HFT_2023241.Models;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class CourseEditWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private Course course;
         private string timeSpanString;
         private string teacherIdFKString;
@@ -27,8 +29,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public CourseType[] CourseTypes { get; set; } = (CourseType[])Enum.GetValues(typeof(CourseType));
         public ICommand SaveChangesCommand { get; set; }
 
-        public CourseEditWindowViewModel(Course course)
+        public CourseEditWindowViewModel(Course course, IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             Course = new Course()
             {
                 CourseId = course.CourseId,
@@ -59,7 +62,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     }
                     catch (Exception e) when (e is FormatException || e is OverflowException)
                     {
-                        MessageBox.Show("Invalid TeacherId provided!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("Invalid TeacherId provided!");
                         return;
                     }
 
@@ -71,7 +74,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     }
                     catch (Exception e) when (e is ArgumentNullException || e is FormatException || e is OverflowException)
                     {
-                        MessageBox.Show("Start Time format: HH:MM", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("Start Time format: HH:MM");
                     }
 
                 }
@@ -85,11 +88,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.Messenger.Register<CourseEditWindowViewModel, string, string>(this, "FailedToUpdateCourse", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                messageBoxService.ShowWarning(msg);
             });
             this.Messenger.Register<CourseEditWindowViewModel, string, string>(this, "CourseUpdated", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                messageBoxService.ShowInfo(msg);
             });
         }
 

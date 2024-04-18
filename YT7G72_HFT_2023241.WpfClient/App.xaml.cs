@@ -39,6 +39,7 @@ namespace YT7G72_HFT_2023241.WpfClient
                     .AddSingleton<ITeacherStatisticsDisplay, TeacherStatisticsDisplay>()
                     .AddSingleton<IStudentStatisticsDisplay, StudentStatisticsDisplay>()
                     .AddSingleton<ISubjectStatisticsDisplay, SubjectStatisticsDisplay>()
+                    .AddSingleton<IMessageBoxService, MessageBoxService>()
                     .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
                     .BuildServiceProvider()
              );

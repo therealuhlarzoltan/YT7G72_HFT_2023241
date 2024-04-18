@@ -10,11 +10,13 @@ using System.Windows;
 using System.Windows.Input;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.Logic;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class TeacherStatisticsWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private RestService restService;
         private AcademicRank? selectedAcademicRank = null;
         private ObservableCollection<AverageByPersonDTO<Teacher>> bestTeachers = new ObservableCollection<AverageByPersonDTO<Teacher>>();
@@ -42,8 +44,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public ICommand HideBestTeachersCommand { get; set; }
         public ICommand GetTeacherStatisticsCommand { get; set; }
         public ICommand HideTeacherStatisticsCommand { get; set; }
-        public TeacherStatisticsWindowViewModel(RestService restService)
+        public TeacherStatisticsWindowViewModel(RestService restService, IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             this.restService = restService;
 
             GetTeacherStatisticsCommand = new RelayCommand(
@@ -54,7 +57,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                  }
             );
 
@@ -76,7 +79,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                       BestTeachers.Add(e);
                   (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                   if (BestTeachers.Count == 0)
-                      MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                      messageBoxService.ShowWarning("No statistics were found");
               },
               () => SelectedAcademicRank != null
             );
@@ -104,7 +107,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         BestTeachers.Add(e);
                     (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (BestTeachers.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
 
                 if (TeacherStatistics.Count > 0)
@@ -115,7 +118,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
             });
 
@@ -129,7 +132,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         BestTeachers.Add(e);
                     (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (BestTeachers.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
 
                 if (TeacherStatistics.Count > 0)
@@ -140,7 +143,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
             });
 
@@ -154,7 +157,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         BestTeachers.Add(e);
                     (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (BestTeachers.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
 
                 if (TeacherStatistics.Count > 0)
@@ -165,7 +168,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
             });
 
@@ -179,7 +182,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         BestTeachers.Add(e);
                     (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (BestTeachers.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
 
                 if (TeacherStatistics.Count > 0)
@@ -190,7 +193,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
             });
 
@@ -204,7 +207,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         BestTeachers.Add(e);
                     (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (BestTeachers.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
 
                 if (TeacherStatistics.Count > 0)
@@ -215,7 +218,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
             });
 
@@ -229,7 +232,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         BestTeachers.Add(e);
                     (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (BestTeachers.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
 
                 if (TeacherStatistics.Count > 0)
@@ -240,7 +243,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
             });
 
@@ -254,7 +257,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         BestTeachers.Add(e);
                     (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (BestTeachers.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
 
                 if (TeacherStatistics.Count > 0)
@@ -265,7 +268,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
             });
 
@@ -279,7 +282,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         BestTeachers.Add(e);
                     (HideBestTeachersCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (BestTeachers.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
 
                 if (TeacherStatistics.Count > 0)
@@ -290,7 +293,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         TeacherStatistics.Add(e);
                     (HideTeacherStatisticsCommand as RelayCommand)?.NotifyCanExecuteChanged();
                     if (TeacherStatistics.Count == 0)
-                        MessageBox.Show("No statistics were found", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("No statistics were found");
                 }
             });
         }

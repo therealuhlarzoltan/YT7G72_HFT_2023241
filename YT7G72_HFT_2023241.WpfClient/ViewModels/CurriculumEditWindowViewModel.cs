@@ -8,17 +8,20 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using YT7G72_HFT_2023241.Models;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class CurriculumEditWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private Curriculum curriculum;
         public Curriculum Curriculum { get { return curriculum; } set { SetProperty(ref curriculum, value); } }
         public ICommand SaveChangesCommand { get; set; }
 
-        public CurriculumEditWindowViewModel(Curriculum curriculum)
+        public CurriculumEditWindowViewModel(Curriculum curriculum, IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             Curriculum = new Curriculum()
             {
                 CurriculumId = curriculum.CurriculumId,
@@ -40,11 +43,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.Messenger.Register<CurriculumEditWindowViewModel, string, string>(this, "FailedToUpdateCurriculum", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                messageBoxService.ShowWarning(msg);
             });
             this.Messenger.Register<CurriculumEditWindowViewModel, string, string>(this, "CurriculumUpdated", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                messageBoxService.ShowInfo(msg);
             });
         }
 

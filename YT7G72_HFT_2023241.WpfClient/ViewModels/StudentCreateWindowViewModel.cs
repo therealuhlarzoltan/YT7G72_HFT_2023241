@@ -10,18 +10,21 @@ using System.Windows.Input;
 using System.Windows;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.Services;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class StudentCreateWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private Student student;
         public Student Student { get { return student; } set { SetProperty(ref student, value); } }
         public FinancialStatus[] FinancialStatuses { get; set; } = (FinancialStatus[])Enum.GetValues(typeof(FinancialStatus));
         public ICommand CreateStudentCommand { get; set; }
 
-        public StudentCreateWindowViewModel()
+        public StudentCreateWindowViewModel(IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             Student = new Student();
 
             CreateStudentCommand = new RelayCommand(
@@ -39,11 +42,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.Messenger.Register<StudentCreateWindowViewModel, string, string>(this, "FailedToCreateStudent", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                messageBoxService.ShowWarning(msg);
             });
             this.Messenger.Register<StudentCreateWindowViewModel, string, string>(this, "StudentCreated", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                messageBoxService.ShowInfo(msg);
             });
         }
 

@@ -10,11 +10,14 @@ using System.Windows;
 using YT7G72_HFT_2023241.Models;
 using System.Windows.Interop;
 using System.Windows.Controls;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class CourseCreateWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private Course course;
         private string timeSpanString;
         private string teacherIdFKString;
@@ -29,8 +32,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public CourseType[] CourseTypes { get; set; } = (CourseType[])Enum.GetValues(typeof(CourseType));
         public ICommand CreateCourseCommand { get; set; }
 
-        public CourseCreateWindowViewModel()
+        public CourseCreateWindowViewModel(IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             Course = new Course();
             TeacherIdFKString = string.Empty;
 
@@ -47,7 +51,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     }
                     catch (Exception e) when (e is FormatException || e is OverflowException)
                     {
-                        MessageBox.Show("Invalid TeacherId provided!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("Invalid TeacherId provided!");
                         return;
                     }
 
@@ -58,7 +62,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     }
                     catch (Exception e) when (e is ArgumentNullException || e is FormatException || e is OverflowException)
                     {
-                        MessageBox.Show("Start Time format: HH:MM", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("Start Time format: HH:MM");
                     }
 
                 }
@@ -72,11 +76,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.Messenger.Register<CourseCreateWindowViewModel, string, string>(this, "FailedToCreateCourse", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                messageBoxService.ShowWarning(msg);
             });
             this.Messenger.Register<CourseCreateWindowViewModel, string, string>(this, "CourseCreated", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                messageBoxService.ShowInfo(msg);
             });
         }
 

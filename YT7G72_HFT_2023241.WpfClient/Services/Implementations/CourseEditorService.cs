@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Services.Implementations
     {
         public void Edit(Course course) 
         {
-            var vm = new CourseEditWindowViewModel(course);
+            var vm = new CourseEditWindowViewModel(course, Ioc.Default.GetService<IMessageBoxService>());
             new CourseEditWindow(vm).Show();
         }
     }

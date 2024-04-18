@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using YT7G72_HFT_2023241.Models;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class SubjectEditWindowViewModel : ObservableRecipient, IDisposable
     {
 
-
+        private IMessageBoxService messageBoxService;
         private Subject subject;
         private string preReqFKString;
         public string PreReqFKString
@@ -33,8 +34,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public Requirement[] Requirements { get; set; } = (Requirement[])Enum.GetValues(typeof(Requirement));
         public ICommand SaveChangesCommand { get; set; }
 
-        public SubjectEditWindowViewModel(Subject subject)
+        public SubjectEditWindowViewModel(Subject subject, IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             Subject = new Subject()
             { 
                 SubjectId = subject.SubjectId,
@@ -69,7 +71,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                     }
                     catch (Exception e) when (e is FormatException || e is OverflowException)
                     {
-                        MessageBox.Show("Invalid argument(s) provided!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        messageBoxService.ShowWarning("Invalid argument(s) provided!");
                     }
                 }
             );
@@ -81,11 +83,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.Messenger.Register<SubjectEditWindowViewModel, string, string>(this, "FailedToUpdateSubject", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                messageBoxService.ShowWarning(msg);
             });
             this.Messenger.Register<SubjectEditWindowViewModel, string, string>(this, "SubjectUpdated", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                messageBoxService.ShowInfo(msg);
             });
         }
 

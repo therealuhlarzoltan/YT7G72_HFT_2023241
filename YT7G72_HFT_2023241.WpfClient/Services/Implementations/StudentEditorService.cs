@@ -8,6 +8,7 @@ using YT7G72_HFT_2023241.WpfClient.ViewModels;
 using YT7G72_HFT_2023241.WpfClient.Windows;
 using YT7G72_HFT_2023241.WpfClient.Logic;
 using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace YT7G72_HFT_2023241.WpfClient.Services.Implementations
 {
@@ -15,7 +16,7 @@ namespace YT7G72_HFT_2023241.WpfClient.Services.Implementations
     {
         public void Edit(Student student)
         {
-            StudentEditWindowViewModel viewModel = new StudentEditWindowViewModel(student);
+            StudentEditWindowViewModel viewModel = new StudentEditWindowViewModel(student, Ioc.Default.GetService<IMessageBoxService>());
             StudentEditWindow window = new StudentEditWindow(viewModel);
             window.Show();
         }

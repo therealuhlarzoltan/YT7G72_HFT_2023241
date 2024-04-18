@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using YT7G72_HFT_2023241.WpfClient.Logic;
 using YT7G72_HFT_2023241.Models;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class SubjectStatisticsWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private RestService restService;
         private int subjectId;
         private SubjectStatistics subjectStatistics;
@@ -24,8 +26,9 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
             }
         }
 
-        public SubjectStatisticsWindowViewModel(RestService restService, int subjectId) 
+        public SubjectStatisticsWindowViewModel(RestService restService, int subjectId, IMessageBoxService messageBoxService) 
         {
+            this.messageBoxService = messageBoxService;
             this.restService = restService;
             this.subjectId = subjectId;
             SubjectStatistics = this.restService.GetSingle<SubjectStatistics>($"Grades/Subjects/Statistics/{subjectId}");

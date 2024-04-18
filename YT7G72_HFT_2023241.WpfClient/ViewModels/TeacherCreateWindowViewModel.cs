@@ -8,18 +8,21 @@ using System.Windows.Input;
 using System.Windows;
 using YT7G72_HFT_2023241.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
     public class TeacherCreateWindowViewModel : ObservableRecipient, IDisposable
     {
+        private IMessageBoxService messageBoxService;
         private Teacher teacher;
         public Teacher Teacher { get { return teacher; } set { SetProperty(ref teacher, value); } }
         public AcademicRank[] AcademicRanks{ get; set; } = (AcademicRank[])Enum.GetValues(typeof(AcademicRank));
         public ICommand CreateTeacherCommand { get; set; }
 
-        public TeacherCreateWindowViewModel()
+        public TeacherCreateWindowViewModel(IMessageBoxService messageBoxService)
         {
+            this.messageBoxService = messageBoxService;
             Teacher = new Teacher();
 
             CreateTeacherCommand = new RelayCommand(
@@ -36,11 +39,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         {
             this.Messenger.Register<TeacherCreateWindowViewModel, string, string>(this, "FailedToCreateTeacher", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                messageBoxService.ShowWarning(msg);
             });
             this.Messenger.Register<TeacherCreateWindowViewModel, string, string>(this, "TeacherCreated", (recipient, msg) =>
             {
-                MessageBox.Show(msg, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                messageBoxService.ShowInfo(msg);
             });
         }
 
