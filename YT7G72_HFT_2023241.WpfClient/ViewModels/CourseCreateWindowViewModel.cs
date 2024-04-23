@@ -32,6 +32,11 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public CourseType[] CourseTypes { get; set; } = (CourseType[])Enum.GetValues(typeof(CourseType));
         public ICommand CreateCourseCommand { get; set; }
 
+        public CourseCreateWindowViewModel() : this(Ioc.Default.GetService<IMessageBoxService>())
+        {
+
+        }
+
         public CourseCreateWindowViewModel(IMessageBoxService messageBoxService)
         {
             this.messageBoxService = messageBoxService;

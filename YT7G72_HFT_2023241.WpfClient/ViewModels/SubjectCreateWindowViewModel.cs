@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
@@ -32,6 +33,8 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public Subject Subject { get { return subject; } set { SetProperty(ref subject, value); } }
         public Requirement[] Requirements { get; set; } = (Requirement[])Enum.GetValues(typeof(Requirement));
         public ICommand CreateSubjectCommand { get; set; }
+
+        public SubjectCreateWindowViewModel() : this(Ioc.Default.GetService<IMessageBoxService>()) { }
 
         public SubjectCreateWindowViewModel(IMessageBoxService messageBoxService)
         {

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
@@ -18,6 +19,8 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         private Curriculum curriculum;
         public Curriculum Curriculum { get { return curriculum; } set { SetProperty(ref curriculum, value); } }
         public ICommand CreateCurriculumCommand { get; set; }
+
+        public CurriculumCreateWindowViewModel() : this(Ioc.Default.GetService<IMessageBoxService>()) { }
 
         public CurriculumCreateWindowViewModel(IMessageBoxService messageBoxService)
         {

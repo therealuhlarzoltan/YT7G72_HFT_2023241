@@ -9,6 +9,7 @@ using System.Windows;
 using YT7G72_HFT_2023241.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
@@ -19,6 +20,8 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public Teacher Teacher { get { return teacher; } set { SetProperty(ref teacher, value); } }
         public AcademicRank[] AcademicRanks{ get; set; } = (AcademicRank[])Enum.GetValues(typeof(AcademicRank));
         public ICommand CreateTeacherCommand { get; set; }
+
+        public TeacherCreateWindowViewModel() : this(Ioc.Default.GetService<IMessageBoxService>()) { }
 
         public TeacherCreateWindowViewModel(IMessageBoxService messageBoxService)
         {

@@ -11,6 +11,7 @@ using System.Windows;
 using YT7G72_HFT_2023241.Models;
 using YT7G72_HFT_2023241.WpfClient.Services;
 using YT7G72_HFT_2023241.WpfClient.Services.Interfaces;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 
 namespace YT7G72_HFT_2023241.WpfClient.ViewModels
 {
@@ -21,6 +22,8 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
         public Student Student { get { return student; } set { SetProperty(ref student, value); } }
         public FinancialStatus[] FinancialStatuses { get; set; } = (FinancialStatus[])Enum.GetValues(typeof(FinancialStatus));
         public ICommand CreateStudentCommand { get; set; }
+
+        public StudentCreateWindowViewModel() : this(Ioc.Default.GetService<IMessageBoxService>()) { }
 
         public StudentCreateWindowViewModel(IMessageBoxService messageBoxService)
         {

@@ -73,7 +73,7 @@ namespace YT7G72_HFT_2023241.WpfClient.ViewModels
                         this.Messenger.Send(Course, "CourseUpdateRequested");
                     }
                     catch (Exception e) when (e is ArgumentNullException || e is FormatException || e is OverflowException)
-                    {
+                    { 
                         messageBoxService.ShowWarning("Start Time format: HH:MM");
                     }
 
