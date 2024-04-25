@@ -21,7 +21,11 @@ namespace YT7G72_HFT_2023241.Repository
 
         public UniversityDatabaseContext()
         {
-            this.Database.EnsureCreated();
+            try
+            {
+                this.Database.EnsureCreated();
+            }
+            catch (Exception) { }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
