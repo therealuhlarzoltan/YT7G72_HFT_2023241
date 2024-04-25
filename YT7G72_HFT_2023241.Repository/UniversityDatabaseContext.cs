@@ -29,10 +29,10 @@ namespace YT7G72_HFT_2023241.Repository
             builder.EnableSensitiveDataLogging();
             if (!builder.IsConfigured)
             {
-                //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB; AttachDbFilename=|DataDirectory|/bin/Debug/net5.0/Database/UniversityDatabase.mdf;Integrated Security=True;Initial Catalog=UniversityDatabase;MultipleActiveResultSets=True";
+                string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB; AttachDbFilename=|DataDirectory|/Database/UniversityDatabase.mdf;Integrated Security=True;Initial Catalog=UniversityDatabase;MultipleActiveResultSets=True";
                 builder
-                    .UseInMemoryDatabase("UniversityDatabase")
-                    //.UseSqlServer(connectionString)
+                    //.UseInMemoryDatabase("UniversityDatabase")
+                    .UseSqlServer(connectionString)
                     .UseLazyLoadingProxies();
             }
         }
